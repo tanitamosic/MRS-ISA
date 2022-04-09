@@ -14,7 +14,7 @@ public abstract class User {
 
     @Id
     @SequenceGenerator(name = "userIdSeqGen", sequenceName = "userId", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userIdSeqGen")
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
