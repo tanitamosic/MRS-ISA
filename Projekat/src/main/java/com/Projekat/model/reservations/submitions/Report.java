@@ -26,7 +26,8 @@ public class Report {
     @Column(name="status", nullable = true)
     private ReportStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy="id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     private Reservation reservation;
 
     public Integer getId() {

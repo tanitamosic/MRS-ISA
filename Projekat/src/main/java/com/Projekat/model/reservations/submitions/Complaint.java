@@ -23,7 +23,8 @@ public class Complaint {
     @Column(name="status", nullable = false)
     private ComplaintStatus status;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy="id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="reservation_id")
     private Reservation reservation;
 
     public Reservation getReservation() {

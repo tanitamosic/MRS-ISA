@@ -39,13 +39,9 @@ public abstract class Service {
 
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "additional_services",
-               joinColumns = {
-                    @JoinColumn(name = "service_id")
-               },
-               inverseJoinColumns = {
-                    @JoinColumn(name = "additional_id")
-               }
+    @JoinTable(name = "additionals",
+                joinColumns = {@JoinColumn(name = "service_id")},
+                inverseJoinColumns = {@JoinColumn(name = "additional_id")}
     )
     Set<AdditionalService> additionalServices;
 

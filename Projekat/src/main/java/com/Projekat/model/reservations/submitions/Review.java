@@ -1,5 +1,7 @@
 package com.Projekat.model.reservations.submitions;
 
+import com.Projekat.model.reservations.Reservation;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,6 +21,10 @@ public class Review {
 
     @Column(name = "status", nullable = false)
     private ReviewStatus status;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+    private Reservation reservation;
 
     public Integer getId() {
         return id;

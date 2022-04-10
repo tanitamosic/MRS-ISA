@@ -1,12 +1,16 @@
 package com.Projekat.model.services;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "boats")
 public class Boat extends Service{
+
+    @Id
+    @SequenceGenerator(name = "boatIdSeqGen", sequenceName = "boatId", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "boatIdSeqGen")
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
 
     @Column(name="type", unique=false, nullable=false)
     private String type;

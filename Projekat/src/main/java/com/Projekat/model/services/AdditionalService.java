@@ -7,8 +7,8 @@ import javax.persistence.*;
 public class AdditionalService {
 
     @Id
-    @SequenceGenerator(name = "additionalServicesIdSeqGen", sequenceName = "additionalServicesIdSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "additionalServicesIdSeqGen")
+    @SequenceGenerator(name = "asIdSeqGen", sequenceName = "asIdSeq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asIdSeqGen")
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 

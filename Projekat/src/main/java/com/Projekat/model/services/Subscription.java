@@ -1,5 +1,6 @@
 package com.Projekat.model.services;
 
+import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.users.Client;
 
 import javax.persistence.*;
@@ -14,10 +15,12 @@ public class Subscription {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     private Client client;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     private Service service;
 
 }

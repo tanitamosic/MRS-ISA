@@ -15,8 +15,8 @@ public class Promotion {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    // servis
-    @OneToOne(mappedBy = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     private Service service;
 
 

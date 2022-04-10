@@ -24,7 +24,8 @@ public class Account {
     @Column(name = "deleted", nullable = false)
     private Boolean isDeleted;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
     private User user;
 
 }

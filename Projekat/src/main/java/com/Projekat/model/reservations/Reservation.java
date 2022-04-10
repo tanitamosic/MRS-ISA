@@ -40,7 +40,8 @@ public class Reservation {
     @JoinColumn(name = "service_id")
     private Service service;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     private Review review;
 
     public Integer getId() {
