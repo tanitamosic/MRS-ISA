@@ -1,0 +1,54 @@
+<form action="POST">
+    <b>Kreiraj čas pecanja</b>
+    <div>
+        <input name='name' class='textinput' type='text' placeholder="Naziv" required/>
+    </div>
+    <div>
+        <input name='address' class='textinput' type='text' placeholder="Adresa" required/>
+    </div>
+    <div>
+        <b>Uslovi otkazivanja </b>
+        <p>
+            <input class='radiobtn' name="condition" type='radio' id='quit_condition1' value='free'><label for='quit_condition1'>Besplatno</label><input class='radiobtn' name="condition" type='radio' id='quit_condition2' value='keep_percentage'><label for='quit_condition2'>Zadrži procenat (#%)</label>
+        </p>
+    </div>
+    <div>
+        <b>Cena:</b> 
+        <select id ="price" name = "P">
+            <option>100</option>
+            <option>200</option>
+            <option>300</option>
+        </select>
+    </div>
+    <div>
+        <b>Maksimalan broj osoba:</b> 
+        <select id ="costumer_count" name = "P">
+            <option>1</option>
+            <option>2</option>
+        </select>
+    </div>
+    <div>
+        <input name='equipment' class='textinput' type='text' placeholder="Oprema" required/>
+    </div>
+    <div>
+        <input name='description' class='textinput' type='text' placeholder="Promotivni opis" required/>
+    </div>
+    <div>
+        <input name='codeofconduct' class='textinput' type='text' placeholder="Pravila ponašanja" required/>
+    </div>
+    <!-- <div>
+        <input name='additionalservices' class='textinput' type='text' placeholder="Dodatne usluge" required/>
+    </div> -->
+    <div>
+        <b>Od: </b><input type="datetime-local" id="datum" name="from">
+    </div>
+    <div>
+        <b>Do: </b><input type="datetime-local" id="datum" name="to">
+    </div>
+    <div>
+        <label id="biography">Biografija instruktora ...</label>
+    </div>
+    <div>
+        <input type='button' name='appointment' value='Kreiraj čas' class='appointbtn' onclick="">
+    </div>
+</form>

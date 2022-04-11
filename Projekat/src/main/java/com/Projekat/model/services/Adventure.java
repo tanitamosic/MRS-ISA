@@ -15,7 +15,30 @@ public class Adventure extends Service {
     @Column(name="capacity", unique=false, nullable=false)
     private Integer capacity;
 
-    @Column(name="fishing_equipment", unique=false, nullable=false)
+    @Column(name="fishing_equipment", unique=false, nullable=true)
     private String fishingEquipment;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public String getFishingEquipment() {
+        return fishingEquipment;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setFishingEquipment(String fishingEquipment) {
+        this.fishingEquipment = fishingEquipment;
+    }
 }
