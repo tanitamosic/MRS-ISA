@@ -1,0 +1,67 @@
+<html>
+    <body>
+        <form action="POST">
+            <b>Kreiranje vikendice</b>
+            <div>
+                <input name='name' class='textinput' type='text' placeholder="Naziv" required/><label class="warninglbl" id="namelbl" text=""></label>
+            </div>
+            <div>
+                <input name='address' class='textinput' type='text' placeholder="Adresa" required/><label class="warninglbl" id="addresslbl" text=""></label>
+            </div>
+            <div>
+                <b>Uslovi otkazivanja </b><label class="warninglbl" id="genderlbl" text=""></label>
+                <p>
+                    <input class='textinput' name="condition" placeholder="Uslovi" required </label>
+                </p>
+            </div>
+            <div>
+                <b>Cena:</b> 
+                <select id ="price" name = "P">
+                    <option>100</option>
+                    <option>200</option>
+                    <option>300</option>
+                </select>
+            </div>
+            <div>
+                <b>Broj soba:</b> 
+                <select id ="costumer_count" name = "P">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+            </div>
+            <div>
+                <b>Broj kreveta:</b> 
+                <select id ="costumer_count" name = "P">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+            </div>
+            <div>
+                <input name='description' class='textinput' type='text' placeholder="Promotivni opis" required/><label class="warninglbl" id="emaillbl" text=""></label>
+            </div>
+            <div>
+                <input name='codeofconduct' class='textinput' type='text' placeholder="Pravila ponašanja" required/><label class="warninglbl" id="passwordlbl" text=""></label>
+            </div>
+            <!-- <div>
+                <input name='additionalservices' class='textinput' type='text' placeholder="Dodatne usluge" required/>
+            </div> -->
+            <div>
+                <b>Početak dostupnosti: </b><input type="datetime-local" id="datum" name="startDate">
+            </div>
+            <div>
+                <b>Kraj dostupnosti: </b><input type="datetime-local" id="datum" name="endDate">
+            </div>
+            <div>
+                <input type='button' name='appointment' value='Kreiraj vikendicu' class='appointbtn' onclick="">
+            </div>
+        </form>
+    </body>
+</html>
