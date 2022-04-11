@@ -22,7 +22,7 @@ public class CottageDTO {
     public CottageDTO(Cottage cottage){
         this(   cottage.getId(),                cottage.getName(),              cottage.getAddress(),
                 cottage.getDescription(),       cottage.getRules(),             cottage.getPrice(),
-                cottage.getCancelationTerms(),  cottage.getAvailabilityStart(), cottage.getAvailabilityEnd(),
+                cottage.getCancellationTerms(),  cottage.getAvailabilityStart(), cottage.getAvailabilityEnd(),
                 cottage.getDeleted(),           cottage.getNumberOfRooms(),     cottage.getNumberOfBeds());
     }
 

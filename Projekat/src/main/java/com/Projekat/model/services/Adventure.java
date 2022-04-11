@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "adventures")
-public class Adventure {
+public class Adventure extends Service {
 
     @Id
     @SequenceGenerator(name = "advIdSeqGen", sequenceName = "advId", initialValue = 1, allocationSize = 1)

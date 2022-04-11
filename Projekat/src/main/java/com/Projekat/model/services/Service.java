@@ -46,11 +46,18 @@ public abstract class Service {
     Set<AdditionalService> additionalServices;
 
 
-    @Column(name="cancelation_terms", unique=false, nullable=false)
-    private String cancelationTerms;
+    @Column(name="cancellation_terms", unique=false, nullable=false)
+    private String cancellationTerms;
 
     @Column(name="availability_start", unique=false, nullable=false)
     private LocalDateTime availabilityStart;
+
+
+    @Column(name="availability_end", unique=false, nullable=false)
+    private LocalDateTime availabilityEnd;
+
+    @Column(name="is_deleted", unique=false, nullable=false)
+    private Boolean isDeleted;
 
     public String getName() {
         return name;
@@ -100,12 +107,12 @@ public abstract class Service {
         this.additionalServices = additionalServices;
     }
 
-    public String getCancelationTerms() {
-        return cancelationTerms;
+    public String getCancellationTerms() {
+        return cancellationTerms;
     }
 
-    public void setCancelationTerms(String cancelationTerms) {
-        this.cancelationTerms = cancelationTerms;
+    public void setCancellationTerms(String cancellationTerms) {
+        this.cancellationTerms = cancellationTerms;
     }
 
     public LocalDateTime getAvailabilityStart() {
@@ -132,10 +139,5 @@ public abstract class Service {
         isDeleted = deleted;
     }
 
-    @Column(name="availability_end", unique=false, nullable=false)
-    private LocalDateTime availabilityEnd;
-
-    @Column(name="is_deleted", unique=false, nullable=false)
-    private Boolean isDeleted;
 
 }

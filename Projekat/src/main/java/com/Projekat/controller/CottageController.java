@@ -6,10 +6,7 @@ import com.Projekat.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,5 +41,62 @@ public class CottageController {
         return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.OK);
     }
 
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<CottageDTO> saveCottage(@RequestBody CottageDTO cottageDTO) {
 
+        Cottage cottage = new Cottage();
+        cottage.setName(cottageDTO.getName());
+        cottage.setDescription(cottageDTO.getDescription());
+        cottage.setAddress(cottageDTO.getAddress());
+        cottage.setRules(cottageDTO.getRules());
+        cottage.setPrice(cottageDTO.getPrice());
+        cottage.setCancellationTerms(cottageDTO.getCancellationTerms());
+        cottage.setAvailabilityStart(cottageDTO.getAvailabilityStart());
+        cottage.setAvailabilityEnd(cottageDTO.getAvailabilityEnd());
+        cottage.setDeleted(cottageDTO.getDeleted());
+        cottage.setNumberOfRooms(cottageDTO.getNumberOfRooms());
+        cottage.setNumberOfBeds(cottageDTO.getNumberOfBeds());
+
+        cottage = cottageService.save(cottage);
+        return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.CREATED);
+    }
+
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<CottageDTO> updateCottage(@RequestBody CottageDTO cottageDTO) {
+
+        // a cottage must exist
+        Cottage cottage = cottageService.findOne(cottageDTO.getId());
+
+        if (cottage == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        cottage.setName(cottageDTO.getName());
+        cottage.setDescription(cottageDTO.getDescription());
+        cottage.setAddress(cottageDTO.getAddress());
+        cottage.setRules(cottageDTO.getRules());
+        cottage.setPrice(cottageDTO.getPrice());
+        cottage.setCancellationTerms(cottageDTO.getCancellationTerms());
+        cottage.setAvailabilityStart(cottageDTO.getAvailabilityStart());
+        cottage.setAvailabilityEnd(cottageDTO.getAvailabilityEnd());
+        cottage.setDeleted(cottageDTO.getDeleted());
+        cottage.setNumberOfRooms(cottageDTO.getNumberOfRooms());
+        cottage.setNumberOfBeds(cottageDTO.getNumberOfBeds());
+
+        cottage = cottageService.save(cottage);
+        return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteCottage(@PathVariable Integer id) {
+
+        Cottage cottage = cottageService.findOne(id);
+
+        if (cottage != null) {
+            cottageService.remove(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
