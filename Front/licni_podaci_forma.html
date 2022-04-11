@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+
+    <style>
+        .forma{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            --height: 200px;
+            border: 3px solid green;
+            width: 100%;
+        }
+        .dugme{
+            margin: 2em 0em 0em 0em;
+            width: 10em; height: 3em; background-color: rgb(10, 238, 162);
+        }
+        .tabela{
+            border-spacing: 2em .5em;
+            --border: 1px solid black;      /* ovo je za border oko cele tabele*/
+        }
+        th, td {
+            padding: 0.5em;
+        }
+        table, th, td {
+            --border: 1px solid black;      /*ovo je za prikazivanje bordera*/
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Prikaz i izmena profila</h1>
+
+    <p>Na ovoj stranici možete da vidite podatke o profilu i da ih izmenite.</p>
+
+    <form action="" class="forma">
+        <table class="tabela">
+            <tr>
+                <th colspan="2">Korisnik</th>
+            </tr>
+
+            <tr>
+                <td>Email:</td>
+                <td><input type="text" value="izmišljeni_mejl@gmail.com"></td>
+            </tr>
+
+            <tr>
+                <td>Ime:</td>
+                <td><input type="text" value="John"></td>
+            </tr>
+            
+            <tr>
+                <td>Prezime:</td>
+                <td><input type="text" value="Doe"></td>
+            </tr>
+
+            <tr>
+                <td>Adresa:</td>
+                <td><input type="text" value="Dunavska 1"></td>
+            </tr>
+
+            <tr>
+                <td>Grad:</td>
+                <td><input type="text" value="Novi Sad"></td>
+            </tr>
+
+            <tr>
+                <td>Država:</td>
+                <td><input type="text" value="Srbija"></td>
+            </tr>
+
+            <tr>
+                <td>Broj telefona:</td>
+                <td><input type="text" value="123456789"></td>
+            </tr>
+
+            <tr>
+                <td>Penali:</td>
+                <td><input type="text" value="0"></td>
+            </tr>
+
+            <tr>
+                <td>Kategorija korisnika:</td>
+                <td><input type="text" value="Regular"></td>
+            </tr>
+            
+
+            <tr>
+                <td colspan="2">
+                    <!-- <a href="drugi_d.html">Izmeni</a>  -->
+                    <center>
+                        <input type="submit" class="dugme" value="Izmeni">
+                    </center>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>
