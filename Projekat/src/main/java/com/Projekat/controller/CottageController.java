@@ -47,7 +47,7 @@ public class CottageController {
         Cottage cottage = new Cottage();
         cottage.setName(cottageDTO.getName());
         cottage.setDescription(cottageDTO.getDescription());
-        cottage.setAddress(cottageDTO.getAddress());
+        // cottage.setAddress(cottageDTO.getAddress());
         cottage.setRules(cottageDTO.getRules());
         cottage.setPrice(cottageDTO.getPrice());
         cottage.setCancellationTerms(cottageDTO.getCancellationTerms());

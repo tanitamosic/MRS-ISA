@@ -52,7 +52,6 @@ public abstract class Service {
     @Column(name="availability_start", unique=false, nullable=false)
     private LocalDateTime availabilityStart;
 
-
     @Column(name="availability_end", unique=false, nullable=false)
     private LocalDateTime availabilityEnd;
 

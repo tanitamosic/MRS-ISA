@@ -12,6 +12,12 @@ public class Cottage extends Service {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
+    @Column(name="number_of_rooms", unique=false, nullable=false)
+    private Integer numberOfRooms;
+
+    @Column(name="number_of_beds", unique=false, nullable=false)
+    private Integer numberOfBeds;
+
     public Integer getId() {
         return id;
     }
@@ -35,11 +41,5 @@ public class Cottage extends Service {
     public void setNumberOfBeds(Integer numberOfBeds) {
         this.numberOfBeds = numberOfBeds;
     }
-
-    @Column(name="number_of_rooms", unique=false, nullable=false)
-    private Integer numberOfRooms;
-
-    @Column(name="number_of_beds", unique=false, nullable=false)
-    private Integer numberOfBeds;
 
 }
