@@ -31,7 +31,7 @@ public abstract class Service {
 
     // TODO: pictures
 
-    @Column(name="rules", unique=false, nullable=false)
+    @Column(name="rules", unique=false)
     private String rules;
 
     @Column(name="price", unique=false, nullable=false)
@@ -51,6 +51,86 @@ public abstract class Service {
 
     @Column(name="availability_start", unique=false, nullable=false)
     private LocalDateTime availabilityStart;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Set<AdditionalService> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(Set<AdditionalService> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
+
+    public String getCancelationTerms() {
+        return cancelationTerms;
+    }
+
+    public void setCancelationTerms(String cancelationTerms) {
+        this.cancelationTerms = cancelationTerms;
+    }
+
+    public LocalDateTime getAvailabilityStart() {
+        return availabilityStart;
+    }
+
+    public void setAvailabilityStart(LocalDateTime availabilityStart) {
+        this.availabilityStart = availabilityStart;
+    }
+
+    public LocalDateTime getAvailabilityEnd() {
+        return availabilityEnd;
+    }
+
+    public void setAvailabilityEnd(LocalDateTime availabilityEnd) {
+        this.availabilityEnd = availabilityEnd;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 
     @Column(name="availability_end", unique=false, nullable=false)
     private LocalDateTime availabilityEnd;
