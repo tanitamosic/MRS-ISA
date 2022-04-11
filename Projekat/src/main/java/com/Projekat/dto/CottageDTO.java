@@ -20,19 +20,19 @@ public class CottageDTO {
     private Integer numberOfBeds;
 
     public CottageDTO(Cottage cottage){
-        this(   cottage.getId(),                cottage.getName(),              cottage.getAddress(),
+        this(   cottage.getId(),                cottage.getName(),              //cottage.getAddress(),
                 cottage.getDescription(),       cottage.getRules(),             cottage.getPrice(),
                 cottage.getCancellationTerms(),  cottage.getAvailabilityStart(), cottage.getAvailabilityEnd(),
                 cottage.getDeleted(),           cottage.getNumberOfRooms(),     cottage.getNumberOfBeds());
     }
 
-    public CottageDTO(Integer id, String name, Address address, String description,
+    public CottageDTO(Integer id, String name, String description,
                       String rules, Double price, String cancellationTerms,
                       LocalDateTime availabilityStart, LocalDateTime availabilityEnd,
                       Boolean isDeleted, Integer numberOfRooms, Integer numberOfBeds) {
         this.id = id;
         this.name = name;
-        this.address = address;
+//        this.address = address;
         this.description = description;
         this.rules = rules;
         this.price = price;
