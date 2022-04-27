@@ -14,4 +14,20 @@ public class Client extends User{
     @Column(name = "loyalty_score")
     private Integer loyaltyScore;
 
+
+    public Integer getPenalties() {
+        return penalties;
+    }
+
+    public void setPenalties(Integer penalties) {
+        this.penalties = penalties;
+    }
+
+    public Integer getLoyaltyScore() {
+        return loyaltyScore;
+    }
+
+    public void setLoyaltyScore(Integer loyaltyScore) {
+        this.loyaltyScore = loyaltyScore;
+    }
 }
