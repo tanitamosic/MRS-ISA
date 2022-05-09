@@ -30,4 +30,6 @@ public class Client extends User{
     public void setLoyaltyScore(Integer loyaltyScore) {
         this.loyaltyScore = loyaltyScore;
     }
+
+
 }

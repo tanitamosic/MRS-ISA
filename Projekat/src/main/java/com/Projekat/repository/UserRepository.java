@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM USERS U WHERE U.type = 'CL'")
     public List<Client> findAllClients();
 
+    User findByUsername(String username);
+
 }
