@@ -7,8 +7,8 @@
         </div>
 
         <div class="nav-links">
+            <router-link to="/" id="registration-link">Pregled Vikendica</router-link>
             <router-link to="/register" id="registration-link">Registracija   </router-link>
-            <router-link to="/register">Prijava na sistem</router-link>
         </div>
     </div>
 </template>
