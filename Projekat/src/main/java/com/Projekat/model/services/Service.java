@@ -1,10 +1,12 @@
 package com.Projekat.model.services;
 
 import com.Projekat.model.Address;
+import com.Projekat.model.Photo;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
@@ -30,6 +32,13 @@ public abstract class Service {
     private String description;
 
     // TODO: pictures
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+    private Photo primaryPhoto;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    private List<Photo> photos;
 
     @Column(name="rules", unique=false)
     private String rules;
