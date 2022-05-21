@@ -38,7 +38,7 @@ public abstract class Service {
     private Double price;
 
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "additionals",
                 joinColumns = {@JoinColumn(name = "service_id")},
                 inverseJoinColumns = {@JoinColumn(name = "additional_id")}
