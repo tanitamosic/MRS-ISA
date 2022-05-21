@@ -1,16 +1,19 @@
 <template>
-    <div class="nav">
-        <div class="nav-header">
-            <div class="nav-title">
-                Pecanje
+
+    <nav class="navbar navbar-expand-sm">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav me-auto order-0 nav-title navtxt">
+                   Turizam
+                </div>
+                <div class="d-flex ms-auto order-5">
+                    <router-link class="me-2 navtxt" to="/" >Pregled Vikendica</router-link>
+
+                    <router-link class="me-2 navtxt" to="/register">Registracija</router-link>
+                </div>
             </div>
         </div>
-
-        <div class="nav-links">
-            <router-link to="/" id="registration-link">Pregled Vikendica</router-link>
-            <router-link to="/register" id="registration-link">Registracija   </router-link>
-        </div>
-    </div>
+    </nav>
 </template>
 
 <style scoped>
@@ -19,40 +22,27 @@
 }
 
 body {
-    font-family: 'segoe ui';
+    font-family: "segoe ui";
 }
 
-.nav {
+nav {
     height: 50px;
     width: 100%;
-    background-color: #33d466;
-    position: relative;
+    /* background-color: #33d466; */
+    background-color: #8d8741;
+    position: fixed;
+    top: 0px;
+
+    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.nav>.nav-header {
-    display: inline;
-}
-
-.nav>.nav-header>.nav-title {
-    display: inline-block;
+.navtxt {
+    color: white;
     font-size: 22px;
-    color: #fff;
-    padding: 10px 10px 10px 10px;
 }
 
-.nav>.nav-links {
-    display: inline;
-    float: right;
-    font-size: 18px;
-    padding: 13px 10px 13px 10px;
-    text-decoration: none;
-    color: #efefef;
-}
-
-#registration-link {
-    margin: 30px;
-    color: #efefef;
-    text-underline-offset: none;
+.navtxt:hover {
+    color: #659dbd;
 }
 
 </style>
