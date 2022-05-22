@@ -33,12 +33,13 @@ public abstract class Service {
 
     // TODO: pictures
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+    //@PrimaryKeyJoinColumn(name = "service_id",referencedColumnName = "primaryPhoto_id")
+    @JoinColumn(name = "photo_id")
     private Photo primaryPhoto;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
-    private List<Photo> photos;
+    // @OneToMany(fetch = FetchType.EAGER)
+    // @JoinColumn(name = "service_id")
+    // private Set<Photo> photos;
 
     @Column(name="rules", unique=false)
     private String rules;
@@ -90,6 +91,15 @@ public abstract class Service {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Photo getPrimaryPhoto() {
+        return primaryPhoto;
+    }
+
+    public void setPrimaryPhoto(Photo primaryPhoto) {
+        this.primaryPhoto = primaryPhoto;
+    }
+
 
     public String getRules() {
         return rules;

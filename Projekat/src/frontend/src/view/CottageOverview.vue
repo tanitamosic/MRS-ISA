@@ -2,15 +2,18 @@
     <div v-if="CottagesEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
     <div v-else class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
-            <div class="col-md-10">
+            <div class="col-md-10 mt-5">
                 <div class="row p-2 bg-white border rounded mt-2" v-for="(cotage, i) in Cottages" :key="i">
                     <div class="col-md-3 col- mt-1">
-                        <img class="img-fluid img-responsive rounded product-image" :src="cotage.img_path">
+                        <!-- <img class="img-fluid img-responsive rounded product-image" :src="cotage.img_path"> -->
+                        <img class="img-fluid img-responsive rounded product-image" src="@/assets/cottages/vikendica1.jpg">
                     </div>
                     <div class="col-md-6 mt-1">
                         <h5>{{ cotage.name }}</h5>
                         <br />
                         <p class="text-justify para mb-0">{{cotage.description}}<br><br></p>
+                        <br />
+                        <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(cotage.address) }}</p>
                     </div>
                     <div class="align-items-center align-content-center col-md-3 border-left pb-3">
                         <div class="d-flex flex-row align-items-center">
@@ -88,6 +91,9 @@ export default {
             // console.log("Pre " + this.CottagesEmpty);
             // console.log("Posle " + this.CottagesEmpty);
             // console.log("Duzina this.Cottages.length: " + this.Cottages.length);
+        },
+        transformAddress(address) {
+            return address.street + ', ' + address.city + ', ' + address.state;
         }
     },
     components: {

@@ -15,6 +15,13 @@ INSERT INTO addresses (id, street, city, state)
 INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 7', 'Novi Sad', 'Srbija');
 
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 8', 'Novi Sad', 'Srbija');
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 9', 'Novi Sad', 'Srbija');
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 10', 'Novi Sad', 'Srbija');
+
 -- Client
 INSERT INTO users (id, type, name, surname, phone, address_id, penalties, loyalty_score, biography)
     VALUES (nextval('user_id'), 'CL', 'Jane', 'Austen', '1234567891', 1, 0, 0, NULL);
@@ -82,31 +89,41 @@ INSERT INTO additional_services (id, name) VALUES (nextval('as_id_seq'), 'WIFI')
 --	VALUES (nextval('service_id_seq'), 10, 15, 1999-01-08 04:05:06, 1999-01-08 04:05:06,
 --	"Najlepsa vikendica, samo nam dodjite", false, "Vila Morava", 500, "Pravila", 1, "Uslovi otkaza");
 
-INSERT INTO public.cottages(
-	id, number_of_beds, number_of_rooms, availability_end,
-	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms)
-	VALUES (nextval('service_id_seq'), 10, 15,
-			'2016-06-22 19:10:25-07',
-			'2016-06-22 19:10:25-07',
-			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 1, 'Uslovi otkaza');
+INSERT INTO public.photos(id, asset_path)
+    VALUES (nextval('photo_id_seq'), '@/assets/cottages/vikendica1.jpg');
+
+INSERT INTO public.photos(id, asset_path)
+    VALUES (nextval('photo_id_seq'), '@/assets/cottages/vikendica2.jpg');
+
+INSERT INTO public.photos(id, asset_path)
+    VALUES (nextval('photo_id_seq'), '@/assets/cottages/vikendica3.jpg');
+
 
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms)
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Najlepsa vikendica na Dunavu, samo nam dodjite', false, 'Vila Dunav', 300, 'Pravila', 1, 'Uslovi otkaza');
+			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 8, 'Uslovi otkaza', 1);
 
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms)
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Veoma lepa kuća', false, 'Vila Dragulj', 500, 'Pravila', 1, 'Uslovi otkaza');
+			'Najlepsa vikendica na Dunavu, samo nam dodjite', false, 'Vila Dunav', 300, 'Pravila', 9, 'Uslovi otkaza', 2);
+
+INSERT INTO public.cottages(
+	id, number_of_beds, number_of_rooms, availability_end,
+	availability_start,
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+	VALUES (nextval('service_id_seq'), 10, 15,
+			'2016-06-22 19:10:25-07',
+			'2016-06-22 19:10:25-07',
+			'Veoma lepa kuća', false, 'Vila Dragulj', 500, 'Pravila', 10, 'Uslovi otkaza', 3);
 
 INSERT INTO additionals (service_id, additional_id) VALUES (1, 1);

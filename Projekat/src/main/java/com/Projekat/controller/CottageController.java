@@ -1,6 +1,7 @@
 package com.Projekat.controller;
 
 import com.Projekat.dto.CottageDTO;
+import com.Projekat.dto.SimpleCottageDTO;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,13 @@ public class CottageController {
     }
 
     @GetMapping(value = "all/withPagination")
-    public Page<Cottage> getCottagesWithPagination(Pageable page) {
+    public Page<SimpleCottageDTO> getCottagesWithPagination(Pageable page) {
         Page<Cottage> pageCottage = cottageService.findAll(page);
-        //Page<CottageDTO> pageCottageDTO = pageCottage.map(this::convertToCottageDTO);
-        return pageCottage;
+        Page<SimpleCottageDTO> pageCottageDTO = pageCottage.map(this::convertToSimpleCottageDTO);
+        return pageCottageDTO;
+    }
+    private SimpleCottageDTO convertToSimpleCottageDTO(Cottage c) {
+        return new SimpleCottageDTO(c);
     }
 
     /*
