@@ -3,6 +3,7 @@ import Registration from '../view/Registration-Component.vue'
 import CottageOverview from '../view/CottageOverview.vue'
 import Login from '../view/Login.vue'
 import Proba from '../view/ProbaView.vue'
+import CottageDetails from '@/view/CottageDetails.vue'
 
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     path: '/novaKomponenta',
     name: 'NekaNovaKomponenta',
     component: Proba
+  },
+  {
+    path: '/CottageDetails/:id?',
+    name: 'CottageDetails',
+    component: CottageDetails
   }
 ]
 

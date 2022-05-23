@@ -22,7 +22,7 @@
                         <div class="d-flex flex-column mt-4">
                             <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                             <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                            <router-link class="btn btn-primary btn-sm" to="/novaKomponenta">Detalji</router-link>
+                            <router-link class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji</router-link>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export default {
             Cottages : [],
             CottagesEmpty : true,
             page: 1,
-            size: 2,
+            size: 5,
             totalPages: 0,
             responseData: {}
         }
@@ -94,7 +94,10 @@ export default {
         },
         transformAddress(address) {
             return address.street + ', ' + address.city + ', ' + address.state;
-        }
+        },
+        getNextPath(id) {
+            return '/CottageDetails/' + id;
+        } 
     },
     components: {
         paginate: Paginate

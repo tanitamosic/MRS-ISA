@@ -1,0 +1,204 @@
+<template>
+    <div class="container mt-5 mb-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-lg-8 border p-3 main-section bg-white">
+                <div class="row m-0 pt-3">
+                    <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
+                        <img class="border p-3 img-thumbnail" :src="this.cotage.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
+                    </div>
+                    <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
+                            data-bs-interval="false">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="images/vikendica1.jpg" class="d-block w-100 img-fluid img-responsive"
+                                        alt="image">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="images/vikendica2.jpg" class="d-block w-100 img-fluid img-responsive"
+                                        alt="image">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="images/vikendica3.jpg" class="d-block w-100 img-fluid img-responsive"
+                                        alt="image">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div> -->
+                    <div class="col-lg-7 col-sm-12">
+                        <div class="right-side-pro-detail border p-3 m-0">
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12">
+                                    <p class="m-0 p-0">{{this.cotage.name}}</p>
+                                </div>
+                                <div class="col-lg-12 col-sm-12">
+                                    <p class="m-0 p-0 price-pro">${{this.cotage.price}}</p>
+                                    <hr class="p-0 m-0 mt-2">
+                                </div>
+                                <div class="col-lg-12 col-sm-12 pt-2">
+                                    <h5>Opis</h5>
+                                    <div>{{this.cotage.description}}</div>
+                                    <hr class="m-0 p-0 pt-0 mt-3">
+                                </div>
+                                <div class="col-lg-12 col-sm-12 pt-2">
+                                    <span>Adresa: </span>
+                                    <span>Marka Kraljevića 18, Novi Sad, Srbija</span>
+                                    <!-- <span>{{ this.transformAddress(this.cotage.address) }}</span> -->
+                                    <hr class="m-0 p-0 pt-0 mt-3">
+                                </div>
+                                <div class="col-lg-12 col-sm-12 mt-5">
+                                    <div class="row">
+                                        <!-- <div class="col-md-6 col-sm-6 pb-2">
+                                            <a href="#" class="btn btn-danger w-100">Add To Cart</a>
+                                        </div> -->
+                                        <div class="col-lg-6 col-sm-6"></div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <a href="#" class="btn btn-success w-100">Rezerviši</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Detalji deo -->
+                    <div class="col-lg-12 col-sm-12 text-center pt-5">
+                        <h4>Detalji</h4>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 text-left pt-3">
+                        <span>Pravila: </span>
+                        <span>{{this.cotage.rules}}</span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 text-left pt-1">
+                        <span>Uslovi otkazivanja: </span>
+                        <span>{{this.cotage.cancellationTerms}}</span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 text-left pt-1">
+                        <span>Broj soba: </span>
+                        <span>{{this.cotage.numberOfRooms}}</span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 text-left pt-1">
+                        <span>Broj kreveta: </span>
+                        <span>{{this.cotage.numberOfBeds}}</span>
+                    </div>
+                </div>
+                <div class="row" v-if="this.additionalServicesExists">
+                    <!-- Dodatne usluge deo -->
+                    <div class="col-lg-12 col-sm-12 text-center pt-2">
+                        <h4>Dodatne usluge</h4>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 text-left pt-3">
+                        <div v-for="service in this.cotage.additionalServices" :key="service.id">{{service.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    name: 'CottageDetails',
+    data() {
+        return {
+            id: null,
+            cotage: {},
+            additionalServicesExists: false,
+            primaryPhotoExists: false
+        };
+    },
+    mounted() {
+        this.id=this.$route.params.id;
+        axios
+            .get('/api/cottages/getCottage/' + this.id)
+            .then(response => (
+                this.cotage = response.data,
+                this.additionalServicesExists = this.cotage.additionalServices.length === 0 ? false : true,
+                this.primaryPhotoExists = this.cotage.primaryPhoto === undefined ? false : true
+                ));
+    },
+    methods: {
+        transformAddress(address) {
+            if (!(address === null))
+                return address.street + ', ' + address.city + ', ' + address.state;
+            else
+                return '';
+        }
+    }
+
+}
+</script>
+
+
+<style scoped>
+    body {
+      font-family: 'Roboto Condensed', sans-serif;
+      background-color: #f5f5f5
+    }
+
+    .hedding {
+      font-size: 20px;
+      color: #ab8181;
+    }
+
+    .main-section {
+      position: absolute;
+      left: 50%;
+      right: 50%;
+      transform: translate(-50%, 5%);
+    }
+
+    .left-side-product-box img {
+      width: 100%;
+    }
+
+    .left-side-product-box .sub-img img {
+      margin-top: 5px;
+      width: 83px;
+      height: 100px;
+    }
+
+    .right-side-pro-detail span {
+      font-size: 15px;
+    }
+
+    .right-side-pro-detail p {
+      font-size: 25px;
+      color: #a1a1a1;
+    }
+
+    .right-side-pro-detail .price-pro {
+      color: #E45641;
+    }
+
+    .right-side-pro-detail .tag-section {
+      font-size: 18px;
+      color: #5D4C46;
+    }
+
+    .pro-box-section .pro-box img {
+      width: 100%;
+      height: 200px;
+    }
+</style>
