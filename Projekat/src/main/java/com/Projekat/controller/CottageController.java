@@ -1,5 +1,6 @@
 package com.Projekat.controller;
 
+import com.Projekat.dto.ComplexCottageDTO;
 import com.Projekat.dto.CottageDTO;
 import com.Projekat.dto.SimpleCottageDTO;
 import com.Projekat.model.services.Cottage;
@@ -60,6 +61,19 @@ public class CottageController {
         }
 
         return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "getCottage/{id}")
+    public ResponseEntity<ComplexCottageDTO> getComplexCottage(@PathVariable Integer id) {
+
+        Cottage cottage = cottageService.findOne(id);
+
+        // cottage must exist
+        if (cottage == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ComplexCottageDTO(cottage), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
