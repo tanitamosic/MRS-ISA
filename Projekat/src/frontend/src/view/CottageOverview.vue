@@ -5,8 +5,8 @@
             <div class="col-md-10 mt-5">
                 <div class="row p-2 bg-white border rounded mt-2" v-for="(cotage, i) in Cottages" :key="i">
                     <div class="col-md-3 col- mt-1">
-                        <!-- <img class="img-fluid img-responsive rounded product-image" :src="cotage.img_path"> -->
-                        <img class="img-fluid img-responsive rounded product-image" src="@/assets/cottages/vikendica1.jpg">
+                        <img class="img-fluid img-responsive rounded product-image" :src="cotage.primaryPhoto.assetPath">
+                        <!-- <img class="img-fluid img-responsive rounded product-image" src="/img/cottages/vikendica1.jpg"> -->
                     </div>
                     <div class="col-md-6 mt-1">
                         <h5>{{ cotage.name }}</h5>
