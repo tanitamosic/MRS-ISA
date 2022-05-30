@@ -37,9 +37,9 @@ public abstract class Service {
     @JoinColumn(name = "photo_id")
     private Photo primaryPhoto;
 
-    // @OneToMany(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "service_id")
-    // private Set<Photo> photos;
+     @OneToMany(fetch = FetchType.EAGER)
+     @JoinColumn(name = "service_id")
+     private Set<Photo> photos;
 
     @Column(name="rules", unique=false)
     private String rules;
@@ -67,6 +67,14 @@ public abstract class Service {
 
     @Column(name="is_deleted", unique=false, nullable=false)
     private Boolean isDeleted;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -100,6 +108,13 @@ public abstract class Service {
         this.primaryPhoto = primaryPhoto;
     }
 
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
+    }
 
     public String getRules() {
         return rules;

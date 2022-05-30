@@ -89,42 +89,46 @@ INSERT INTO additional_services (id, name) VALUES (nextval('as_id_seq'), 'WIFI')
 --	VALUES (nextval('service_id_seq'), 10, 15, 1999-01-08 04:05:06, 1999-01-08 04:05:06,
 --	"Najlepsa vikendica, samo nam dodjite", false, "Vila Morava", 500, "Pravila", 1, "Uslovi otkaza");
 
-INSERT INTO public.photos(id, asset_path)
-    VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica1.jpg');
+INSERT INTO public.photos(id, asset_path, service_id)
+    VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica1.jpg', 1);
 
-INSERT INTO public.photos(id, asset_path)
-    VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica2.jpg');
+INSERT INTO public.photos(id, asset_path, service_id)
+    VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica2.jpg', 2);
 
-INSERT INTO public.photos(id, asset_path)
-    VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica3.jpg');
-
-INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica4.jpg');
+INSERT INTO public.photos(id, asset_path, service_id)
+    VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica3.jpg', 3);
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica5.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica4.jpg', 4);
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica6.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica5.jpg', 5);
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica7.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica6.jpg', 6);
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica8.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica7.jpg', 7);
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica9.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica8.jpg', 8);
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica10.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica9.jpg', 9);
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica10.jpg', 10);
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica11.jpg', 1);
 
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
@@ -218,3 +222,31 @@ INSERT INTO public.cottages(
                  'Uslovi otkaza', 10);
 
 INSERT INTO additionals (service_id, additional_id) VALUES (1, 1);
+
+-- Jedna avantura
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 11', 'Novi Sad', 'Srbija');
+
+INSERT INTO public.adventures(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), '2020-06-16 15:46:27',
+                 			'2020-06-05 15:46:27', 'Otkaz', 'Opis', false, 'Avantura 1', 200, 'Pravila pravila', 11, 1, 5, 'Oprema');
+
+-- Jedan Cottage
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 12', 'Novi Sad', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica11.jpg');
+
+INSERT INTO public.cottages(
+	id, number_of_beds, number_of_rooms, availability_end,
+	availability_start,
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+	VALUES (nextval('service_id_seq'), 10, 15,
+			'2016-06-22 19:10:25-07',
+			'2016-06-22 19:10:25-07',
+			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 12, 'Uslovi otkaza', 11);
+
+

@@ -6,11 +6,11 @@ import javax.persistence.*;
 @Table(name = "cottages")
 public class Cottage extends Service {
 
-    @Id
-    @SequenceGenerator(name = "cotIdSeqGen", sequenceName = "cotId", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cotIdSeqGen")
-    @Column(name="id", unique=true, nullable=false)
-    private Integer id;
+//    @Id
+//    @SequenceGenerator(name = "cotIdSeqGen", sequenceName = "cotId", initialValue = 1, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cotIdSeqGen")
+//    @Column(name="id", unique=true, nullable=false)
+//    private Integer id;
 
     @Column(name="number_of_rooms", unique=false, nullable=false)
     private Integer numberOfRooms;
@@ -18,13 +18,13 @@ public class Cottage extends Service {
     @Column(name="number_of_beds", unique=false, nullable=false)
     private Integer numberOfBeds;
 
-    public Integer getId() {
-        return id;
-    }
+//    public Integer getId() {
+//        return id;
+//    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     public Integer getNumberOfRooms() {
         return numberOfRooms;

@@ -5,6 +5,7 @@ import com.Projekat.model.Photo;
 import com.Projekat.model.services.Cottage;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class SimpleCottageDTO {
 
@@ -13,25 +14,27 @@ public class SimpleCottageDTO {
     private Address address;
     private String description;
     private Photo primaryPhoto;
+    private Set<Photo> photos;
     private Double price;
 
     public SimpleCottageDTO() {}
 
     public SimpleCottageDTO(Integer id, String name,
                             Address address, String description,
-                            Photo primaryPhoto, Double price) {
+                            Photo primaryPhoto, Set<Photo> photos,Double price) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.description = description;
         this.primaryPhoto = primaryPhoto;
+        this.photos = photos;
         this.price = price;
     }
 
     public SimpleCottageDTO(Cottage c) {
         this(c.getId(), c.getName(),
                 c.getAddress(), c.getDescription(),
-                c.getPrimaryPhoto(), c.getPrice());
+                c.getPrimaryPhoto(), c.getPhotos(),c.getPrice());
     }
 
     public Integer getId() {
@@ -52,6 +55,10 @@ public class SimpleCottageDTO {
 
     public Photo getPrimaryPhoto() {
         return primaryPhoto;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
     }
 
     public Double getPrice() {

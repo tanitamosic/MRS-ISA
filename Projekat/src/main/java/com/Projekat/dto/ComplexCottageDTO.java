@@ -21,6 +21,7 @@ public class ComplexCottageDTO {
     private Integer numberOfBeds;
     private Set<AdditionalService> additionalServices;
     private Photo primaryPhoto;
+    private Set<Photo> photos;
 
     public ComplexCottageDTO() {}
 
@@ -29,7 +30,7 @@ public class ComplexCottageDTO {
                              String rules, Double price,
                              String cancellationTerms,
                              Integer numberOfRooms, Integer numberOfBeds,
-                             Set<AdditionalService> additionalServices,Photo primaryPhoto) {
+                             Set<AdditionalService> additionalServices,Photo primaryPhoto, Set<Photo> photos) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -41,13 +42,14 @@ public class ComplexCottageDTO {
         this.numberOfBeds = numberOfBeds;
         this.additionalServices = additionalServices;
         this.primaryPhoto = primaryPhoto;
+        this.photos = photos;
     }
 
     public ComplexCottageDTO(Cottage c){
         this(c.getId(), c.getName(), c.getAddress(),
                 c.getDescription(), c.getRules(),
                 c.getPrice(), c.getCancellationTerms(),
-                c.getNumberOfRooms(), c.getNumberOfBeds(), c.getAdditionalServices(),c.getPrimaryPhoto());
+                c.getNumberOfRooms(), c.getNumberOfBeds(), c.getAdditionalServices(),c.getPrimaryPhoto(), c.getPhotos());
     }
 
     public Integer getId() {
@@ -92,5 +94,9 @@ public class ComplexCottageDTO {
 
     public Photo getPrimaryPhoto() {
         return primaryPhoto;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
     }
 }
