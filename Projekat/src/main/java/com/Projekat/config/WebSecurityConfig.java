@@ -25,8 +25,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// @Bean
-	// public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+	@Bean
+	public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
 	@Autowired
 	private CustomAccountDetailsService customUserDetailsService;
@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailsService)
-				.passwordEncoder(new BCryptPasswordEncoder());
+				.passwordEncoder(passwordEncoder());
 	}
 
 	@Autowired
@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
-			.authorizeRequests().antMatchers("/auth/**").permitAll()
+			.authorizeRequests().antMatchers("/auth/*").permitAll()
 								.antMatchers("/index").permitAll() // pocetna strana sa svim ponudama
 								.antMatchers("/admin").hasRole("ADMIN")
 								.anyRequest().authenticated().and()

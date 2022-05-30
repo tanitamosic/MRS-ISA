@@ -57,4 +57,6 @@ build/
 
 ### VS Code ###
 .vscode/
-.src/frontend/node_modules
+
+
+Projekat/src/frontend/node_modules

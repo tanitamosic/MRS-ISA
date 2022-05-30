@@ -1,6 +1,8 @@
 package com.Projekat.util;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,6 +41,7 @@ public class TokenUtils {
 
 
     public String generateToken(String username) {
+
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)

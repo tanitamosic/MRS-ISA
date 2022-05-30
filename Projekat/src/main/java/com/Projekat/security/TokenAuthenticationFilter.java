@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.Projekat.util.TokenUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -38,32 +40,32 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
-
         String username;
-
-        // 1. Preuzimanje JWT tokena iz zahteva
         String authToken = tokenUtils.getToken(request);
-
         try {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            String token = httpServletRequest.getHeader("Authorization");
 
+            if(token != null){
+                if(token.startsWith("Bearer ")){
+                    token = token.substring(7);
+                }
+            }
             if (authToken != null) {
-
-                // 2. Citanje korisnickog imena iz tokena
                 username = tokenUtils.getUsernameFromToken(authToken);
-
                 if (username != null) {
-
-                    // 3. Preuzimanje korisnika na osnovu username-a
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    System.out.println("filter: "+ userDetails.getUsername());
 
-                    // 4. Provera da li je prosledjeni token validan
                     if (tokenUtils.validateToken(authToken, userDetails)) {
-
-                        // 5. Kreiraj autentifikaciju
                         TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                         authentication.setToken(authToken);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
+                        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities()
+                        );
+                        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                        SecurityContextHolder.getContext().setAuthentication(auth);
                     }
                 }
             }
@@ -72,7 +74,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             LOGGER.debug("Token expired!");
         }
 
-        // prosledi request dalje u sledeci filter
         chain.doFilter(request, response);
     }
 

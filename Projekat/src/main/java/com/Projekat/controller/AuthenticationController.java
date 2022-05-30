@@ -7,6 +7,7 @@ import com.Projekat.dto.JwtAuthenticationRequest;
 import com.Projekat.dto.AccountTokenState;
 import com.Projekat.exception.ResourceConflictException;
 import com.Projekat.model.Account;
+import com.Projekat.model.users.User;
 import com.Projekat.service.AccountService;
 import com.Projekat.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,33 +44,35 @@ public class AuthenticationController {
     public ResponseEntity<AccountTokenState> createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+        String u = authenticationRequest.getUsername();
+        String p = authenticationRequest.getPassword();
+        System.out.println(u + " " + p );
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(u, p));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        Account user = (Account) authentication.getPrincipal();
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        Account user = (Account) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(authenticationRequest.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
         return ResponseEntity.ok(new AccountTokenState(jwt, expiresIn));
     }
 
+      // Endpoint za registraciju novog korisnika
+      @PostMapping("/signup")
+     public ResponseEntity<Account> addAccount(@RequestBody AccountDTO userRequest, UriComponentsBuilder ucBuilder) {
 
+          Account existAccount = this.accountService.findByUsername(userRequest.getUsername());
 
-          // Endpoint za registraciju novog korisnika
-          @PostMapping("/signup")
-         public ResponseEntity<Account> addAccount(@RequestBody AccountDTO userRequest, UriComponentsBuilder ucBuilder) {
-
-              Account existAccount = this.accountService.findByUsername(userRequest.getUsername());
-
-              if (existAccount != null) {
-                  throw new ResourceConflictException(userRequest.getId(), "Username already exists");
-              }
-
-              Account user = this.accountService.save(userRequest);
-
-              return new ResponseEntity<>(user, HttpStatus.CREATED);
+          if (existAccount != null) {
+              throw new ResourceConflictException(userRequest.getId(), "Username already exists");
           }
+
+          Account user = this.accountService.save(userRequest);
+
+          return new ResponseEntity<>(user, HttpStatus.CREATED);
+      }
 
 }
