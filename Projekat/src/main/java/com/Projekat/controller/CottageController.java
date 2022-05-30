@@ -4,9 +4,11 @@ import com.Projekat.dto.CottageDTO;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,21 @@ public class CottageController {
         }
         return new ResponseEntity<>(cottagesDTO, HttpStatus.OK);
     }
+
+    @GetMapping(value = "all/withPagination")
+    public Page<Cottage> getCottagesWithPagination(Pageable page) {
+        Page<Cottage> pageCottage = cottageService.findAll(page);
+        //Page<CottageDTO> pageCottageDTO = pageCottage.map(this::convertToCottageDTO);
+        return pageCottage;
+    }
+
+    /*
+    private CottageDTO convertToCottageDTO(Cottage cottage) {
+        CottageDTO dto = new CottageDTO(cottage);
+        return dto;
+    }
+    */
+
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<CottageDTO> getCottage(@PathVariable Integer id) {

@@ -1,0 +1,6 @@
+[
+    {'name': 'Dunav Vila', 'description': 'Opis1', 'img_path': 'node_modules/images/vikendica1.jpg'
+    },
+    {'name': 'Morava Vila', 'description': 'Opis2', 'img_path': 'node_modules/images/vikendica2.jpg'
+    }
+]

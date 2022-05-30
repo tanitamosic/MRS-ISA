@@ -36,6 +36,15 @@ public class Address {
                 '}';
     }
 
+    public Address() {}
+
+    public Address(Integer id, String street, String city, String state) {
+        this.id = id;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+    }
+
     public Integer getId() {
         return id;
     }
