@@ -237,8 +237,8 @@ INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 12', 'Novi Sad', 'Srbija');
 
 INSERT INTO public.photos(
-	id, asset_path)
-	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica11.jpg');
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica12.jpg', 12);
 
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
@@ -247,6 +247,6 @@ INSERT INTO public.cottages(
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 12, 'Uslovi otkaza', 11);
+			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12);
 
 

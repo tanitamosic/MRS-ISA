@@ -5,13 +5,37 @@
             <div class="col-md-10 mt-5">
                 <div class="row p-2 bg-white border rounded mt-2" v-for="(cotage, i) in Cottages" :key="i">
                     <div class="col-md-3 col- mt-1">
-                        <img class="img-fluid img-responsive rounded product-image" :src="cotage.primaryPhoto.assetPath">
+                        <!-- <img class="img-fluid img-responsive rounded product-image" :src="cotage.primaryPhoto.assetPath"> -->
                         <!-- <img class="img-fluid img-responsive rounded product-image" src="/img/cottages/vikendica1.jpg"> -->
+
+                        <div :id="generateIdSlider(i)" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img :src="cotage.photos[0].assetPath"
+                                        class="img-fluid img-responsive rounded product-image" alt="image">
+                                </div>
+                                <div v-for="(photo, i) in cotage.photos.slice(1)" :key="i" class="carousel-item">
+                                    <img :src="photo.assetPath" class="img-fluid img-responsive rounded product-image"
+                                        alt="image">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                :data-bs-target="generateIdSliderWithHashTag(i)" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                :data-bs-target="generateIdSliderWithHashTag(i)" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
                     </div>
                     <div class="col-md-6 mt-1">
                         <h5>{{ cotage.name }}</h5>
                         <br />
-                        <p class="text-justify para mb-0">{{cotage.description}}<br><br></p>
+                        <p class="text-justify para mb-0">{{ cotage.description }}<br><br></p>
                         <br />
                         <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(cotage.address) }}</p>
                     </div>
@@ -22,7 +46,8 @@
                         <div class="d-flex flex-column mt-4">
                             <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                             <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                            <router-link class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji</router-link>
+                            <router-link class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -30,17 +55,8 @@
         </div>
     </div>
     <div>
-        <paginate
-            v-model="page"
-            :page-count=totalPages
-            :page-range="3"
-            :margin-pages="2"
-            :click-handler="clickCallback"
-            :prev-text="'Nazad'"
-            :next-text="'Napred'"
-            :container-class="'pagination'"
-            :page-class="'page-item'"
-        >
+        <paginate v-model="page" :page-count=totalPages :page-range="3" :margin-pages="2" :click-handler="clickCallback"
+            :prev-text="'Nazad'" :next-text="'Napred'" :container-class="'pagination'" :page-class="'page-item'">
         </paginate>
     </div>
 </template>
@@ -53,12 +69,13 @@ export default {
     name: 'CardComponent',
     data() {
         return {
-            Cottages : [],
-            CottagesEmpty : true,
+            Cottages: [],
+            CottagesEmpty: true,
             page: 1,
             size: 5,
             totalPages: 0,
-            responseData: {}
+            responseData: {},
+            photosExists: false
         }
     },
     mounted() {
@@ -69,24 +86,26 @@ export default {
                 this.Cottages = this.responseData.content,
                 this.totalPages = this.responseData.totalPages,
                 this.CottagesEmpty = this.Cottages.length === 0 ? true : false
-                ));
+            ));
+        window.scrollTo(0, 0);
         // this.Cottages = response.data.content
         // console.log("Pre " + this.CottagesEmpty);
         // console.log("Posle " + this.CottagesEmpty);
         // console.log("Duzina this.Cottages.length: " + this.Cottages.length);
     },
     methods: {
-        clickCallback (pageNum) {
+        clickCallback(pageNum) {
             console.log(pageNum);
             this.page = pageNum
             axios
                 .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + pageNum)
                 .then(response => (
-                        this.responseData = response.data,
-                        this.Cottages = this.responseData.content,
-                        this.totalPages = this.responseData.totalPages,
-                        this.CottagesEmpty = this.Cottages.length === 0 ? true : false
-                    ));
+                    this.responseData = response.data,
+                    this.Cottages = this.responseData.content,
+                    this.totalPages = this.responseData.totalPages,
+                    this.CottagesEmpty = this.Cottages.length === 0 ? true : false
+                ));
+            window.scrollTo(0, 0);
             // this.Cottages = response.data.content
             // console.log("Pre " + this.CottagesEmpty);
             // console.log("Posle " + this.CottagesEmpty);
@@ -97,7 +116,13 @@ export default {
         },
         getNextPath(id) {
             return '/CottageDetails/' + id;
-        } 
+        },
+        generateIdSlider(id) {
+            return 'carouselExampleIndicators' + id;
+        },
+        generateIdSliderWithHashTag(id) {
+            return '#carouselExampleIndicators' + id;
+        }
     },
     components: {
         paginate: Paginate
@@ -156,8 +181,6 @@ h5 {
     display: flex;
     justify-content: center;
 }
-
-
 </style>
 
 

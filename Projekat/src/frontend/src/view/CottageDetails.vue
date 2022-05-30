@@ -3,33 +3,38 @@
         <div class="d-flex justify-content-center row">
             <div class="col-lg-8 border p-3 main-section bg-white">
                 <div class="row m-0 pt-3">
-                    <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
-                        <img class="border p-3 img-thumbnail" :src="this.cotage.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
-                    </div>
                     <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
-                            data-bs-interval="false">
+                        <img class="border p-3 img-thumbnail" :src="this.cotage.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
+                    </div> -->
+
+                    <div class="col-lg-5 col-sm-12 left-side-product-box pb-3" v-if="this.photosExists">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                             <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                                    class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                <button v-for="(photo, i) in this.cotage.photos" :key="i" type="button" 
+                                    data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i"
+                                    class="active" aria-current="true" :aria-label="createAriaLabel(i)"></button>
+                                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
                                     aria-label="Slide 2"></button>
                                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
+                                    aria-label="Slide 3"></button> -->
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="images/vikendica1.jpg" class="d-block w-100 img-fluid img-responsive"
+                                    <img :src="this.cotage.photos[0].assetPath" class="d-block w-100 img-fluid img-responsive"
+                                        alt="image">
+                                </div>
+                                <div v-for="(photo, i) in this.cotage.photos.slice(1)" :key="i" class="carousel-item">
+                                    <img :src="photo.assetPath" class="d-block w-100 img-fluid img-responsive"
+                                        alt="image">
+                                </div>
+                                <!-- <div class="carousel-item active">
+                                    <img src="img/cottages/vikendica11.jpg" class="d-block w-100 img-fluid img-responsive"
                                         alt="image">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="images/vikendica2.jpg" class="d-block w-100 img-fluid img-responsive"
+                                    <img src="img/cottages/vikendica12.jpg" class="d-block w-100 img-fluid img-responsive"
                                         alt="image">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="images/vikendica3.jpg" class="d-block w-100 img-fluid img-responsive"
-                                        alt="image">
-                                </div>
+                                </div> -->
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                                 data-bs-slide="prev">
@@ -42,7 +47,8 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
-                    </div> -->
+                    </div>
+
                     <div class="col-lg-7 col-sm-12">
                         <div class="right-side-pro-detail border p-3 m-0">
                             <div class="row">
@@ -60,8 +66,8 @@
                                 </div>
                                 <div class="col-lg-12 col-sm-12 pt-2">
                                     <span>Adresa: </span>
-                                    <span>Marka Kraljevića 18, Novi Sad, Srbija</span>
-                                    <!-- <span>{{ this.transformAddress(this.cotage.address) }}</span> -->
+                                    <!-- <span>Marka Kraljevića 18, Novi Sad, Srbija</span> -->
+                                    <span v-if="this.addressExists">{{ this.transformAddress(this.cotage.address) }}</span>
                                     <hr class="m-0 p-0 pt-0 mt-3">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 mt-5">
@@ -125,7 +131,9 @@ export default {
             id: null,
             cotage: {},
             additionalServicesExists: false,
-            primaryPhotoExists: false
+            primaryPhotoExists: false,
+            addressExists: false,
+            photosExists: false
         };
     },
     mounted() {
@@ -135,7 +143,9 @@ export default {
             .then(response => (
                 this.cotage = response.data,
                 this.additionalServicesExists = this.cotage.additionalServices.length === 0 ? false : true,
-                this.primaryPhotoExists = this.cotage.primaryPhoto === undefined ? false : true
+                this.primaryPhotoExists = this.cotage.primaryPhoto === undefined ? false : true,
+                this.photosExists = this.cotage.photos.length === 0 ? false : true,
+                this.addressExists = this.cotage.address === undefined ? false : true
                 ));
     },
     methods: {
@@ -144,6 +154,9 @@ export default {
                 return address.street + ', ' + address.city + ', ' + address.state;
             else
                 return '';
+        },
+        createAriaLabel(index) {
+            return 'Slide ' + index;
         }
     }
 
