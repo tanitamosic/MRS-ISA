@@ -6,6 +6,7 @@ import AdminProfileView from '../view/AdminProfileView.vue'
 import CottageDetails from '@/view/CottageDetails.vue'
 import BoatsOverview from '@/view/BoatsOverview.vue'
 import BoatDetails from '@/view/BoatDetails.vue'
+import AdventureOverview from '@/view/AdventureOverview.vue'
 
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
     path: '/BoatDetails/:id?',
     name: 'BoatDetails',
     component: BoatDetails
+  },
+  {
+    path: '/AdventureOverview',
+    name: 'AdventureOverview',
+    component: AdventureOverview
   }
 ]
 
