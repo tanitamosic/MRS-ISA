@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Registration from '../view/Registration-Component.vue'
 import CottageOverview from '../view/CottageOverview.vue'
 import Login from '../view/Login.vue'
-import Proba from '../view/ProbaView.vue'
+import AdminProfileView from '../view/AdminProfileView.vue'
 import CottageDetails from '@/view/CottageDetails.vue'
 
 
@@ -23,9 +23,9 @@ const routes = [
     component: Login
   },
   {
-    path: '/novaKomponenta',
-    name: 'NekaNovaKomponenta',
-    component: Proba
+    path: '/admin',
+    name: 'AdminProfileView',
+    component: AdminProfileView
   },
   {
     path: '/CottageDetails/:id?',
