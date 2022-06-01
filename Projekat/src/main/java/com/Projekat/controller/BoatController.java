@@ -28,7 +28,7 @@ public class BoatController {
 
         Boat boat = boatService.findOne(id);
 
-        // cottage must exist
+        // boat must exist
         if (boat == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -37,7 +37,7 @@ public class BoatController {
     }
 
     @GetMapping(value = "all")
-    public ResponseEntity<List<SimpleBoatDTO>> getAllCottages(){
+    public ResponseEntity<List<SimpleBoatDTO>> getAllBoats(){
         List<Boat> boats = boatService.findAll();
         List<SimpleBoatDTO> boatsDTO = new ArrayList<>();
         for (Boat b : boats){
