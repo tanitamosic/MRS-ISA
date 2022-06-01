@@ -4,6 +4,8 @@ import CottageOverview from '../view/CottageOverview.vue'
 import Login from '../view/Login.vue'
 import AdminProfileView from '../view/AdminProfileView.vue'
 import CottageDetails from '@/view/CottageDetails.vue'
+import BoatsOverview from '@/view/BoatsOverview.vue'
+import BoatDetails from '@/view/BoatDetails.vue'
 
 
 const routes = [
@@ -31,6 +33,16 @@ const routes = [
     path: '/CottageDetails/:id?',
     name: 'CottageDetails',
     component: CottageDetails
+  },
+  {
+    path: '/BoatsOverview',
+    name: 'BoatsOverview',
+    component: BoatsOverview
+  },
+  {
+    path: '/BoatDetails/:id?',
+    name: 'BoatDetails',
+    component: BoatDetails
   }
 ]
 

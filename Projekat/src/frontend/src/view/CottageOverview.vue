@@ -1,5 +1,6 @@
 <template>
-    <div v-if="CottagesEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
+    <div v-if="!this.cottagesLoaded" id="ucitavanje">Učitavanje!</div>
+    <div v-else-if="this.cottagesLoaded && this.CottagesEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
     <div v-else class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-md-10 mt-5">
@@ -75,17 +76,20 @@ export default {
             size: 5,
             totalPages: 0,
             responseData: {},
-            photosExists: false
+            photosExists: false,
+            cottagesLoaded: false
         }
     },
     mounted() {
+        this.cottagesLoaded = false;
         axios
             .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + this.page)
             .then(response => (
                 this.responseData = response.data,
                 this.Cottages = this.responseData.content,
                 this.totalPages = this.responseData.totalPages,
-                this.CottagesEmpty = this.Cottages.length === 0 ? true : false
+                this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
+                this.cottagesLoaded = true
             ));
         window.scrollTo(0, 0);
         // this.Cottages = response.data.content
@@ -95,7 +99,8 @@ export default {
     },
     methods: {
         clickCallback(pageNum) {
-            console.log(pageNum);
+            //console.log(pageNum);
+            this.cottagesLoaded = false;
             this.page = pageNum
             axios
                 .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + pageNum)
@@ -172,7 +177,18 @@ h5 {
     min-height: 100vh;
     font-size: 28px;
     color: royalblue;
-    background-color: beige;
+    background-color: white;
+}
+
+#ucitavanje {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    font-size: 28px;
+    color: royalblue;
+    background-color: white;
 }
 
 .pagination {
