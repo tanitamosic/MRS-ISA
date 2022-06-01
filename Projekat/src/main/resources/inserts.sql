@@ -249,4 +249,55 @@ INSERT INTO public.cottages(
 			'2016-06-22 19:10:25-07',
 			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12);
 
+-- BRODOVI
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 13', 'Beograd', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/boats/boat1.jpg', 13);
+
+INSERT INTO public.boats(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
+			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
+			false, 'Brod Sanja1', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
+			13, 13, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser');
+
+-----------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 14', 'Novi Sad', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/boats/boat2.jpg', 14);
+
+INSERT INTO public.boats(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
+			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
+			false, 'Brod Alisa2', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
+			14, 14, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser');
+
+-----------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 15', 'Beočin', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/boats/boat3.jpg', 15);
+
+INSERT INTO public.boats(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
+			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
+			false, 'Brod WIEN1', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
+			15, 15, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser');
+
+-----------------------------------------------------------------------------------------------------------------------
 

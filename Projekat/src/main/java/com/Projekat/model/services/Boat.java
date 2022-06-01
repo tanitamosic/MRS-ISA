@@ -36,4 +36,35 @@ public class Boat extends Service{
     @Column(name="fishing_equipment", unique=false, nullable=false)
     private String fishingEquipment;
 
+    public String getType() {
+        return type;
+    }
+
+    public Double getLength() {
+        return length;
+    }
+
+    public Integer getNumberOfEngines() {
+        return numberOfEngines;
+    }
+
+    public Double getEnginePower() {
+        return enginePower;
+    }
+
+    public Double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public String getNavigationalEquipment() {
+        return navigationalEquipment;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public String getFishingEquipment() {
+        return fishingEquipment;
+    }
 }
