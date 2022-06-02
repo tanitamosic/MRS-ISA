@@ -66,15 +66,39 @@ export default {
   name: "LoginView",
   methods: {
     login: function () {
-      let email = document.getElementById('emailInput').value;
+      
+      
+      
+      let username = document.getElementById('emailInput').value;
       let password = document.getElementById('passwordInput').value;
-      if (email === '' || password === '') {
+      if (username === '' || password === '') {
         alert('Email i sifra ne mogu biti prazni');
         return;
       }
-      let loginData = {'Email': email, 'Password': password};
+      let loginData = {'username': username, 'password': password};
       let jsonData = JSON.stringify(loginData);
-      axios.get('api/login', jsonData, { headers: { 'Content-Type': 'application/json' } });
+
+      let self = this; // OVO JE KLJUC ZA REDIREKCIJU
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json'} })
+      .then((loginResponse) => {
+        let cookie = loginResponse.data;
+        this.$store.accessToken = cookie.accessToken;
+        this.$store.role = cookie.role;
+        //alert(this.$store.accessToken);
+
+        switch (cookie.role) {
+          case 'AD': {
+            self.$router.push('/admin');
+            break;
+          }
+          case 'CL': break;
+          case 'IN': break;
+          case 'CO': break;
+          case 'BO': break;
+        }
+
+      });
     }
   }
 }

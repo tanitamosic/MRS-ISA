@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM USERS U WHERE U.type = 'CL'")
     public List<Client> findAllClients();
 
+    @Query(nativeQuery = true, value="SELECT USERS.type FROM ACCOUNTS INNER JOIN USERS ON ACCOUNTS.user_id=USERS.id WHERE ACCOUNTS.username=?1")
+    public String getUserRole(String username);
     //User findByUsername(String username);
 
 }

@@ -12,4 +12,6 @@ public class UserService {
     private UserRepository userRepository;
 
     public void saveNewUser(User newUser) { userRepository.saveAndFlush(newUser); }
+
+    public String getUserRole(String username) { return userRepository.getUserRole(username); }
 }

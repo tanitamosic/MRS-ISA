@@ -181,10 +181,11 @@ export default {
                 'Password1': this.Password1,
                 'Password2': this.Password2
             });
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.
-                post('api/register/' + role,
+                post('auth/register/' + role,
                     jsonData,
-                    { headers: { 'Content-Type': 'application/json' } })
+                    { headers: { 'Content-Type': 'application/json'} })
                 .then(function response(requestResponse) {
                     if (requestResponse.status === 200) {
                         alert(requestResponse.data);
