@@ -6,11 +6,11 @@ import javax.persistence.*;
 @Table(name = "boats")
 public class Boat extends Service{
 
-    @Id
-    @SequenceGenerator(name = "boatIdSeqGen", sequenceName = "boatId", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "boatIdSeqGen")
-    @Column(name="id", unique=true, nullable=false)
-    private Integer id;
+//    @Id
+//    @SequenceGenerator(name = "boatIdSeqGen", sequenceName = "boatId", initialValue = 1, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "boatIdSeqGen")
+//    @Column(name="id", unique=true, nullable=false)
+//    private Integer id;
 
     @Column(name="type", unique=false, nullable=false)
     private String type;
@@ -36,4 +36,35 @@ public class Boat extends Service{
     @Column(name="fishing_equipment", unique=false, nullable=false)
     private String fishingEquipment;
 
+    public String getType() {
+        return type;
+    }
+
+    public Double getLength() {
+        return length;
+    }
+
+    public Integer getNumberOfEngines() {
+        return numberOfEngines;
+    }
+
+    public Double getEnginePower() {
+        return enginePower;
+    }
+
+    public Double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public String getNavigationalEquipment() {
+        return navigationalEquipment;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public String getFishingEquipment() {
+        return fishingEquipment;
+    }
 }

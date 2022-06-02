@@ -18,35 +18,48 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <h2 class="fw-bold mb-5">Registracija</h2>
-                        <form id="registrationForm">
+                        <form id="registrationForm" name="registrationForm">
                             <!-- 2 column grid layout with text inputs for the first and last names -->
                             <div class="row">
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <div class="form-outline">
-                                        <input type="text" id="Name" class="form-control" maxlength="25" required />
+                                        <input type="text" id="Name" name="Name" class="form-control" maxlength="25" v-model="Name" required />
                                         <label class="form-label" for="Name">Ime</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <div class="form-outline">
-                                        <input type="text" id="Surname" class="form-control" maxlength="25" required />
+                                        <input type="text" name="Surname" id="Surname" class="form-control" maxlength="25" v-model="Surname" required />
                                         <label class="form-label" for="Surname">Prezime</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="form-outline">
+                                        <input type="text" name="Phone" class="form-control" id="Phone" v-model="Phone" required />
+                                        <label for="Phone">Telefon</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <div class="form-outline">
-                                        <input type="text" class="form-control" id="addressInput" required />
-                                        <label for="addressInput">Adresa</label>
+                                        <input type="text" name="Address" class="form-control" id="addressInputState" v-model="State" required />
+                                        <label for="addressInput">Država</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <div class="form-outline">
-                                        <input type="text" class="form-control" id="phoneInput" required />
-                                        <label for="phoneInput">Telefon</label>
+                                        <input type="text" name="Address" class="form-control" id="addressInputCity" v-model="City" required />
+                                        <label for="addressInput">Grad</label>
                                     </div>
                                 </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="form-outline">
+                                        <input type="text" name="Address" class="form-control" id="addressInputStreet" v-model="Street" required />
+                                        <label for="addressInput">Ulica i broj</label>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <fieldset class="form-group">
                                 <div class="row">
@@ -54,7 +67,7 @@
                                         <label class="form-label" id="datelbl" for="date">Datum rođenja</label>
                                     </div>
                                     <div class="col-sm-2 align-items-left">
-                                        <input class="form-control mb-2" type="date" name="date" id="date" />
+                                        <input class="form-control mb-2" type="date" name="date" id="date" v-model="date"/>
                                     </div>
                                     <label class="col-sm-1">Uloga:</label>
                                     <div class="col-sm-7">
@@ -84,20 +97,24 @@
 
                             <!-- Email input -->
                             <div class="form-outline mt-4">
-                                <input type="email" id="email" class="form-control" required />
+                                <input type="email" id="Email" class="form-control" name="Email" v-model="Username" required />
                                 <label class="form-label" for="email">Email adresa</label>
                             </div>
 
                             <!-- Password 1 input -->
                             <div class="form-outline mb-4">
                                 <input title="Lozinka mora imati najmanje 6 ili najviše 18 karaktera." type="password"
-                                    id="password1" class="form-control" placeholder="Lozinka" maxlength="18"
+                                    id="Password1" class="form-control" placeholder="Lozinka" maxlength="18"
+                                    name="Password1"
+                                    v-model="Password1"
                                     minlength="6" required />
                             </div>
                             <!-- Password 2 input -->
                             <div class="form-outline mb-4">
                                 <input title="Morate ponoviti unos lozinke" v-on:keyup="checkPassword" type="password"
-                                    id="password2" class="form-control" placeholder="Ponovite lozinku" maxlength="18"
+                                    id="Password2" class="form-control" placeholder="Ponovite lozinku" maxlength="18"
+                                    name="Password2"
+                                    v-model="Password2"
                                     minlength="6" required />
                             </div>
 
@@ -130,6 +147,20 @@
 import axios from 'axios'
 export default {
     name: "Registration-component",
+    data() {
+        return {
+            Name: '',
+            Surname: '',
+            State: '',
+            Street: '',
+            City: '',
+            Phone: '',
+            Username: '',
+            date: '',
+            Password1: '',
+            Password2: ''
+        }
+    },
     methods: {
         register: function () {
             let role = ''
@@ -138,21 +169,46 @@ export default {
             if (role === '') return;
             if (!checkInput()) return;
 
-            let formData = new FormData(document.getElementById("registrationForm"));
-            let jsonData = JSON.stringify(formData);
-            axios.post('api/register/' + role, jsonData, { headers: { 'Content-Type': 'application/json' } })
-            //alert('Uspesno ste se registrovali');
-            location.reload();
+            let jsonData = JSON.stringify({
+                'Name': this.Name,
+                'Surname': this.Surname,
+                'City': this.City,
+                'Street': this.Street,
+                'State': this.State,
+                'Phone': this.Phone,
+                'Username': this.Username,
+                'DateOfBirth': this.date,
+                'Password1': this.Password1,
+                'Password2': this.Password2
+            });
+            axios.
+                post('api/register/' + role,
+                    jsonData,
+                    { headers: { 'Content-Type': 'application/json' } })
+                .then(function response(requestResponse) {
+                    if (requestResponse.status === 200) {
+                        alert(requestResponse.data);
+                    }
+                }
+                ).catch(function (err){
+                    if (err.response.status === 400) {
+                        alert(err.response.data);
+                        location.reload();
+                    } else {
+                        alert(err);
+                    }
+                    console.log(err);
+                });
         },
 
         checkPassword() {
-            let pass1 = document.getElementById("password1").value;
-            let pass2 = document.getElementById("password2").value;
+            let pass1 = document.getElementById("Password1").value;
+            let pass2 = document.getElementById("Password2").value;
             if (pass1 !== pass2) {
-                document.getElementById("password2").style.border = "1px solid red";
+                document.getElementById("Password2").style.border = "1px solid red";
             } else {
-                document.getElementById("password2").style.border = "1px solid #64ff33";
-                document.getElementById("password1").style.border = "1px solid #64ff33";
+                document.getElementById("Password2").style.border = "1px solid #64ff33";
+                document.getElementById("Password1").style.border = "1px solid #64ff33";
             }
         }
     }
@@ -204,7 +260,7 @@ function checkDate() {
 }
 function checkPhone() {
     let regExp = /[a-zA-Z]/
-    let phone = document.getElementById('phoneInput').value;
+    let phone = document.getElementById('Phone').value;
     if (regExp.test(phone)) {
         return false; // found letters in phone number
     } else if (phone === "") {

@@ -60,5 +60,10 @@ public class AccountService {
 
         return this.accountRepository.save(u);
     }
+    public Account findAccountByEmail(String username) { return accountRepository.findByUsername(username); }
+
+    public void saveNewAccount(Account acc) {
+        accountRepository.saveAndFlush(acc);
+    }
 
 }

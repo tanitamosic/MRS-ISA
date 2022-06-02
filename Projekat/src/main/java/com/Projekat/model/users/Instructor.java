@@ -10,4 +10,12 @@ public class Instructor extends ServiceProvider {
 
     @Column(name = "biography")
     private String biography;
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
 }

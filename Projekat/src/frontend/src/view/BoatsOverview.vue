@@ -1,21 +1,19 @@
 <template>
-    <div v-if="!this.cottagesLoaded" id="ucitavanje">Učitavanje!</div>
-    <div v-else-if="this.cottagesLoaded && this.CottagesEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
+    <div v-if="!this.boatsLoaded" id="ucitavanje">Učitavanje!</div>
+    <div v-else-if="this.boatsLoaded && this.BoatsEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
     <div v-else class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-md-10 mt-5">
-                <div class="row p-2 bg-white border rounded mt-2" v-for="(cotage, i) in Cottages" :key="i">
+                <div class="row p-2 bg-white border rounded mt-2" v-for="(boat, i) in Boats" :key="i">
                     <div class="col-md-3 col- mt-1">
-                        <!-- <img class="img-fluid img-responsive rounded product-image" :src="cotage.primaryPhoto.assetPath"> -->
-                        <!-- <img class="img-fluid img-responsive rounded product-image" src="/img/cottages/vikendica1.jpg"> -->
 
                         <div :id="generateIdSlider(i)" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img :src="cotage.photos[0].assetPath"
+                                    <img :src="boat.photos[0].assetPath"
                                         class="img-fluid img-responsive rounded product-image" alt="image">
                                 </div>
-                                <div v-for="(photo, i) in cotage.photos.slice(1)" :key="i" class="carousel-item">
+                                <div v-for="(photo, i) in boat.photos.slice(1)" :key="i" class="carousel-item">
                                     <img :src="photo.assetPath" class="img-fluid img-responsive rounded product-image"
                                         alt="image">
                                 </div>
@@ -34,20 +32,20 @@
 
                     </div>
                     <div class="col-md-6 mt-1">
-                        <h5>{{ cotage.name }}</h5>
+                        <h5>{{ boat.name }}</h5>
                         <br />
-                        <p class="text-justify para mb-0">{{ cotage.description }}<br><br></p>
+                        <p class="text-justify para mb-0">{{ boat.description }}<br><br></p>
                         <br />
-                        <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(cotage.address) }}</p>
+                        <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(boat.address) }}</p>
                     </div>
                     <div class="align-items-center align-content-center col-md-3 border-left pb-3">
                         <div class="d-flex flex-row align-items-center">
-                            <h4 class="mr-1">${{ cotage.price }}</h4>
+                            <h4 class="mr-1">${{ boat.price }}</h4>
                         </div>
                         <div class="d-flex flex-column mt-4">
                             <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                             <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                            <router-link class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji
+                            <router-link class="btn btn-primary btn-sm" :to="getNextPath(boat.id)">Detalji
                             </router-link>
                         </div>
                     </div>
@@ -67,60 +65,53 @@ import axios from 'axios';
 import Paginate from "vuejs-paginate-next";
 
 export default {
-    name: 'CardComponent',
+    name: 'BoatsOverview',
     data() {
         return {
-            Cottages: [],
-            CottagesEmpty: true,
+            Boats: [],
+            BoatsEmpty: true,
             page: 1,
             size: 5,
             totalPages: 0,
             responseData: {},
             photosExists: false,
-            cottagesLoaded: false
+            boatsLoaded: false
         }
     },
     mounted() {
-        this.cottagesLoaded = false;
+        this.boatsLoaded = false;
         axios
-            .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + this.page)
+            .get('/api/boats/all/withPagination?size=' + this.size + '&page=' + this.page)
             .then(response => (
                 this.responseData = response.data,
-                this.Cottages = this.responseData.content,
+                this.Boats = this.responseData.content,
                 this.totalPages = this.responseData.totalPages,
-                this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
-                this.cottagesLoaded = true
+                this.BoatsEmpty = this.Boats.length === 0 ? true : false,
+                this.boatsLoaded = true
             ));
         window.scrollTo(0, 0);
-        // this.Cottages = response.data.content
-        // console.log("Pre " + this.CottagesEmpty);
-        // console.log("Posle " + this.CottagesEmpty);
-        // console.log("Duzina this.Cottages.length: " + this.Cottages.length);
     },
     methods: {
         clickCallback(pageNum) {
             //console.log(pageNum);
-            this.cottagesLoaded = false;
+            this.boatsLoaded = false;
             this.page = pageNum
             axios
-                .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + pageNum)
+                .get('/api/boats/all/withPagination?size=' + this.size + '&page=' + pageNum)
                 .then(response => (
                     this.responseData = response.data,
-                    this.Cottages = this.responseData.content,
+                    this.Boats = this.responseData.content,
                     this.totalPages = this.responseData.totalPages,
-                    this.CottagesEmpty = this.Cottages.length === 0 ? true : false
+                    this.BoatsEmpty = this.Boats.length === 0 ? true : false,
+                    this.boatsLoaded = true
                 ));
             window.scrollTo(0, 0);
-            // this.Cottages = response.data.content
-            // console.log("Pre " + this.CottagesEmpty);
-            // console.log("Posle " + this.CottagesEmpty);
-            // console.log("Duzina this.Cottages.length: " + this.Cottages.length);
         },
         transformAddress(address) {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
-            return '/CottageDetails/' + id;
+            return '/BoatDetails/' + id;
         },
         generateIdSlider(id) {
             return 'carouselExampleIndicators' + id;

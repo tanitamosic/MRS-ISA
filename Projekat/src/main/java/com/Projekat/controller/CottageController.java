@@ -1,6 +1,8 @@
 package com.Projekat.controller;
 
+import com.Projekat.dto.ComplexCottageDTO;
 import com.Projekat.dto.CottageDTO;
+import com.Projekat.dto.SimpleCottageDTO;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,13 @@ public class CottageController {
     }
 
     @GetMapping(value = "all/withPagination")
-    public Page<Cottage> getCottagesWithPagination(Pageable page) {
+    public Page<SimpleCottageDTO> getCottagesWithPagination(Pageable page) {
         Page<Cottage> pageCottage = cottageService.findAll(page);
-        //Page<CottageDTO> pageCottageDTO = pageCottage.map(this::convertToCottageDTO);
-        return pageCottage;
+        Page<SimpleCottageDTO> pageCottageDTO = pageCottage.map(this::convertToSimpleCottageDTO);
+        return pageCottageDTO;
+    }
+    private SimpleCottageDTO convertToSimpleCottageDTO(Cottage c) {
+        return new SimpleCottageDTO(c);
     }
 
     /*
@@ -56,6 +61,19 @@ public class CottageController {
         }
 
         return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "getCottage/{id}")
+    public ResponseEntity<ComplexCottageDTO> getComplexCottage(@PathVariable Integer id) {
+
+        Cottage cottage = cottageService.findOne(id);
+
+        // cottage must exist
+        if (cottage == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ComplexCottageDTO(cottage), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")

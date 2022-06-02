@@ -40,6 +40,25 @@ public class Account implements UserDetails {
     public void setUsername(String username) {
         this.username = username;
     }
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", isActivated=" + isActivated +
+                ", isDeleted=" + isDeleted +
+                ", user=" + user +
+                '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -71,12 +90,12 @@ public class Account implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
@@ -125,4 +144,11 @@ public class Account implements UserDetails {
     }
 
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
