@@ -227,10 +227,10 @@ INSERT INTO additionals (service_id, additional_id) VALUES (1, 1);
 INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 11', 'Novi Sad', 'Srbija');
 
-INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
-	VALUES (nextval('service_id_seq'), '2020-06-16 15:46:27',
-                 			'2020-06-05 15:46:27', 'Otkaz', 'Opis', false, 'Avantura 1', 200, 'Pravila pravila', 11, 1, 5, 'Oprema');
+--INSERT INTO public.adventures(
+--	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+--	VALUES (nextval('service_id_seq'), '2020-06-16 15:46:27',
+--                 			'2020-06-05 15:46:27', 'Otkaz', 'Opis', false, 'Avantura 1', 200, 'Pravila pravila', 11, 1, 5, 'Oprema');
 
 -- Jedan Cottage
 INSERT INTO addresses (id, street, city, state)
@@ -301,3 +301,53 @@ INSERT INTO public.boats(
 
 -----------------------------------------------------------------------------------------------------------------------
 
+
+--AVANTURE
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 16', 'Beograd', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure1.jpg', 16);
+
+INSERT INTO public.adventures(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
+			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
+			false, 'Avantura Zivota', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
+			16, 16, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.');
+
+-----------------------------------------------------------------------------------------------------------------------
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 17', 'Beograd', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure2.jpg', 17);
+
+INSERT INTO public.adventures(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
+			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
+			false, 'Avantura na Fruškoj gori', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
+			17, 17, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.');
+
+-----------------------------------------------------------------------------------------------------------------------
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 18', 'Beograd', 'Srbija');
+
+INSERT INTO public.photos(
+	id, asset_path, service_id)
+	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure3.jpg', 18);
+
+INSERT INTO public.adventures(
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
+			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
+			false, 'Avantura na Crvenom Čotu', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
+			18, 18, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.');
+
+-----------------------------------------------------------------------------------------------------------------------
