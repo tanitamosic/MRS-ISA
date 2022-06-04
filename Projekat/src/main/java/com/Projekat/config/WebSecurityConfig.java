@@ -59,6 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								.antMatchers("/index").permitAll() // pocetna strana sa svim ponudama
 								.antMatchers("/admin").hasRole("ADMIN")
 								.antMatchers("/auth/register").permitAll()
+								.antMatchers("/api/cottages/**").permitAll()
+								.antMatchers("/api/boats/**").permitAll()
+								.antMatchers("/api/adventures/**").permitAll()
 								.anyRequest().authenticated().and()
 			.cors().and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
 	}
