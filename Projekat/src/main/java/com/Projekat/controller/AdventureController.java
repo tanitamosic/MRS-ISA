@@ -2,8 +2,11 @@ package com.Projekat.controller;
 
 
 import com.Projekat.dto.AdventureDTO;
+import com.Projekat.dto.ComplexAdventureDTO;
+import com.Projekat.dto.ComplexCottageDTO;
 import com.Projekat.dto.SimpleAdventureDTO;
 import com.Projekat.model.services.Adventure;
+import com.Projekat.model.services.Cottage;
 import com.Projekat.service.AdventureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,5 +66,18 @@ public class AdventureController {
         return new SimpleAdventureDTO(a);
     }
 
+
+    @GetMapping(value = "getAdventure/{id}")
+    public ResponseEntity<ComplexAdventureDTO> getComplexAdventure(@PathVariable Integer id) {
+
+        Adventure adventure = adventureService.findOne(id);
+
+        // cottage must exist
+        if (adventure == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ComplexAdventureDTO(adventure), HttpStatus.OK);
+    }
 
 }
