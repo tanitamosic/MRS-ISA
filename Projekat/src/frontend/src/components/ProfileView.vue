@@ -36,7 +36,7 @@
                     name="Name"
                     type="text"
                     placeholder="Enter your first name"
-                    value="Valerie"
+                    v-model="Name"
                   />
                 </div>
                 <!-- Form Group (last name)-->
@@ -48,22 +48,48 @@
                     name="Surname"
                     type="text"
                     placeholder="Enter your last name"
-                    value="Luna"
+                    v-model="Surname"
                   />
                 </div>
               </div>
               <!-- Form Row        -->
-              <div class="mb-3">
+              <div class="row gx-3 mb-3">
                 <!-- Form Group (location)-->
-                <label class="small mb-1" for="Address">Adresa</label>
-                <input
-                  class="form-control"
-                  id="Address"
-                  name="Address"
-                  type="text"
-                  placeholder="Enter your location"
-                  value="San Francisco, CA"
-                />
+                <div class="col-md-4">
+                  <label class="small mb-1" for="State">Drzava</label>
+                  <input
+                    class="form-control"
+                    id="State"
+                    name="State"
+                    type="text"
+                    placeholder="Enter your location"
+                    v-model="State"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="small mb-1" for="City">Grad</label>
+                  <input
+                    class="form-control"
+                    id="City"
+                    name="City"
+                    type="text"
+                    placeholder="Enter your location"
+                    v-model="City"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="small mb-1" for="Street">Ulica i broj</label>
+                  <input
+                    class="form-control"
+                    id="Street"
+                    name="Street"
+                    type="text"
+                    placeholder="Enter your location"
+                    v-model="Street"
+                  />
+                </div>
+                
+                
               </div>
               <!-- Form Group (email address)-->
               <div class="mb-3">
@@ -74,7 +100,7 @@
                   name="Email"
                   type="email"
                   placeholder="Enter your email address"
-                  value="name@example.com"
+                  v-model="Username"
                 />
               </div>
               <!-- Form Row-->
@@ -88,7 +114,7 @@
                     id="Phone"
                     type="tel"
                     placeholder="Enter your phone number"
-                    value="555-123-4567"
+                    v-model="Phone"
                   />
                 </div>
                 <!-- Form Group (birthday)-->
@@ -112,18 +138,18 @@
                   <h5>Promena lozinke</h5>
                   <!-- Old password -->
                   <div class="col-md-6">
-                    <label for="OldPassword" class="form-label">Stara lozinka</label>
-                    <input type="password" class="form-control" id="OldPassword" name="OldPassword"/>
+                    <label for="OldPasswordInput" class="form-label">Stara lozinka</label>
+                    <input type="password" class="form-control" id="OldPasswordInput" name="OldPasswordInput" v-model="OldPasswordInput" />
                   </div>
                   <!-- New password -->
                   <div class="col-md-6">
                     <label for="NewPassword1" class="form-label">Nova lozinka</label>
-                    <input type="password" class="form-control" id="NewPassword1" name="NewPassword1" />
+                    <input type="password" class="form-control" id="NewPassword1" name="NewPassword1" v-model="NewPassword1" />
                   </div>
                   <!-- Confirm password -->
                   <div class="col-md-12">
                     <label for="NewPassword2" class="form-label">Potvrdite novu lozinku</label>
-                    <input type="password" class="form-control" id="NewPassword2" name="NewPassword2" />
+                    <input type="password" class="form-control" id="NewPassword2" name="NewPassword2" v-model="NewPassword2" />
                   </div>
                 </div>
               </div>
@@ -218,33 +244,86 @@ export default {
     return {
       Name: '',
       Surname: '',
-      Address: '',
+      State: '',
+      City: '',
+      Street: '',
       Phone: '',
-      Email: '',
+      Username: '',
+      OldPasswordInput: '',
       OldPassword: '',
       NewPassword1: '',
       NewPassword2: ''
     }
   },
-  
+  mounted() {
+    this.Name = this.$store.User.name;
+    this.Surname = this.$store.User.surname;
+    this.Phone = this.$store.User.phone;
+    this.Username = this.$store.username;
+    this.State = this.$store.User.address.state;
+    this.City = this.$store.User.address.city;
+    this.Street = this.$store.User.address.street;
+    this.OldPassword = this.$store.currentPassword;
+    //console.log(this.$store.User);
+  },
 
   methods: {
     update_profile: function () {
-      let jsonData = JSON.stringify({
+      
+      let OldPasswordInput = document.getElementById("OldPasswordInput").value;
+      if ((this.OldPassword != OldPasswordInput) && OldPasswordInput != '') {
+        alert("Uneta stara lozinka se ne podudara sa trenutnom lozinkom.");
+        return;
+      } else if (OldPasswordInput != '' && ((this.NewPassword1 != this.NewPassword2) || (this.NewPassword1 === ''))) {
+        alert("Unos nove lozinke je neispravan.");
+        return;
+      }
+      
+      if (this.Name === '' ||
+          this.Surname === '' ||
+          this.Phone === '' ||
+          this.Username === '' ||
+          this.State === '' ||
+          this.City === '' ||
+          this.Street === '') {
+          alert("Polja sa Vašim ličnim podacima ne smeju biti prazna.")
+          return;
+      }
+
+
+      let jsonData = {
+        'Id': this.$store.User.id,
+
         'Name': this.Name,
         'Surname': this.Surname,
-        'Address': this.Address,
+        // 'Address_id': this.$store.User.address.id,
+        'State': this.State,
+        'City': this.City,
+        'Street': this.Street,
         'Phone': this.Phone,
-        'Email': this.Email,
-        'OldPassword': this.OldPassword,
-        'Password1': this.Password1,
-        'Password2': this.Password2
-      });
+        
+        'NewPassword': this.Password1 ? this.Password1 : '',
 
-      axios.post('api/profile/update-profile', jsonData, { headers: { 'Content-Type': 'application/json' } });
+        'NewUsername': this.Username,
+        'OldUsername': this.$store.username,
+
+        'Biography': ''
+      };
+
+      // let self = this;
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+      axios.post('/api/profile/update-profile',
+        jsonData). then(function (requestResponse) {
+          if (requestResponse.status === 200) {
+            alert("Promena podataka je uspesna.")
+          }
+        }).catch(function (err) {
+          alert("Serverska greska");
+        });
     },
     delete_profile: function () {
-
+      
     }
   }
 }

@@ -51,16 +51,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
+		http.csrf()
+			.disable()
+			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class)
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 			.authorizeRequests().antMatchers("/auth/*").permitAll()
 								.antMatchers("/index").permitAll() // pocetna strana sa svim ponudama
 								.antMatchers("/admin").hasRole("ADMIN")
-								.antMatchers("/auth/register").permitAll()
+//								.antMatchers("/auth/register").permitAll()
 								.anyRequest().authenticated().and()
-			.cors().and().addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
+				.cors();
 	}
 
 	@Override

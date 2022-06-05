@@ -12,4 +12,8 @@ public class AddressService {
     private AddressRepository addressRepository;
 
     public void saveNewAddress(Address address) { addressRepository.saveAndFlush(address); }
+
+    public void upsertAddress(String state, String city, String street) { addressRepository.upsertAddress(state, city, street); }
+
+    public Integer getAddressId(String state, String city, String street) { return addressRepository.getAddressId(state, city, street); }
 }

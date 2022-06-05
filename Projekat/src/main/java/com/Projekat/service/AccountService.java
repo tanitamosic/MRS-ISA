@@ -66,4 +66,7 @@ public class AccountService {
         accountRepository.saveAndFlush(acc);
     }
 
+    public void updatePassword(Integer acc_id, String newPassword) { accountRepository.updatePassword(acc_id, newPassword); }
+    public void updateUsername(Integer acc_id, String newUsername) { accountRepository.updateUsername(acc_id, newUsername); }
+
 }

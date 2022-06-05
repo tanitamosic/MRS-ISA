@@ -83,19 +83,23 @@ export default {
       axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json'} })
       .then((loginResponse) => {
         let cookie = loginResponse.data;
-        this.$store.accessToken = cookie.accessToken;
-        this.$store.role = cookie.role;
-        //alert(this.$store.accessToken);
+        self.$store.accessToken = cookie.accessToken;
+        self.$store.role = cookie.role;
+        self.$store.username = username;
+        self.$store.currentPassword = password;
+        console.log(this.$store);
 
         switch (cookie.role) {
-          case 'AD': {
+          case 'ROLE_ADMIN': {
+            self.$store.User = cookie.admin;
+            //console.log(self.$store.User);
             self.$router.push('/admin');
             break;
           }
-          case 'CL': break;
-          case 'IN': break;
-          case 'CO': break;
-          case 'BO': break;
+          case 'ROLE_CLIENT': break;
+          case 'ROLE_INSTRUCTOR': break;
+          case 'ROLE_COTTAGEOWNER': break;
+          case 'ROLE_BOATOWNER': break;
         }
 
       });

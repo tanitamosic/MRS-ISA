@@ -8,7 +8,10 @@ const store = createStore({
     state () {
       return {
         accessToken: '',
-        role: ''
+        role: '',
+        User: {},
+        username: '',
+        currentPassword: ''
       }
     }
   })

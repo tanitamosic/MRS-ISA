@@ -25,7 +25,7 @@ public class TokenUtils {
     private String APP_NAME;
 
     @Value("somesecret")
-    public String SECRET;
+    public String SECRET = "somesecret";
 
     @Value("1800000")
     private int EXPIRES_IN;
@@ -40,11 +40,12 @@ public class TokenUtils {
 
 
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
 
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
+                .claim("role", role)
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())

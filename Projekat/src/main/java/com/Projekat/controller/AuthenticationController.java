@@ -66,12 +66,15 @@ public class AuthenticationController {
 //
 //        Account user = (Account) authentication.getPrincipal();
 
-        String jwt = tokenUtils.generateToken(authenticationRequest.getUsername());
-        int expiresIn = tokenUtils.getExpiredIn();
         String role = userService.getUserRole(authenticationRequest.getUsername());
-        System.out.println(role);
+        String jwt = tokenUtils.generateToken(authenticationRequest.getUsername(), role);
+        int expiresIn = tokenUtils.getExpiredIn();
 
-        return ResponseEntity.ok(new AccountTokenState(jwt, expiresIn, role));
+        System.out.println(role);
+        AccountTokenState token = new AccountTokenState(jwt, expiresIn, role);
+        token.setUser(userService.getUserData(authenticationRequest.getUsername()));
+
+        return ResponseEntity.ok(token);
     }
 
       // Endpoint za registraciju novog korisnika

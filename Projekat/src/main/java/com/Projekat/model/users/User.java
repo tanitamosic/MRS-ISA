@@ -31,6 +31,15 @@ public abstract class User {
     @JoinColumn(name="address_id")
     private Address address;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address=" + address +
+                '}';
+    }
 
     public Integer getId() {
         return id;

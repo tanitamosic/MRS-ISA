@@ -1,42 +1,116 @@
 package com.Projekat.dto;
 
 public class ProfileDetailsDTO {
-    public String Email;
-    public String OldPassword;
-    public String NewPassword1;
-    public String NewPassword2;
+
+    public Integer Id;
+
+    public String OldUsername;
+    public String NewUsername;
+    public String NewPassword;
 
     public String Name;
     public String Surname;
     public String Phone;
-    public String Address;
-    public String Biography;
+    public String State;
+    public String City;
+    public String Street;
 
-    public ProfileDetailsDTO(String email, String oldPassword, String newPassword1, String newPassword2, String name,
-                             String surname, String phone, String address) {
-        Email = email;
-        OldPassword = oldPassword;
-        NewPassword1 = newPassword1;
-        NewPassword2 = newPassword2;
-        Name = name;
-        Surname = surname;
-        Phone = phone;
-        Address = address;
+    private String Biography;
+
+    public Integer getId() {
+        return Id;
     }
 
-    public ProfileDetailsDTO(String email, String oldPassword, String newPassword1, String newPassword2, String name,
-                             String surname, String phone, String address, String biography) {
-        Email = email;
-        OldPassword = oldPassword;
-        NewPassword1 = newPassword1;
-        NewPassword2 = newPassword2;
+    public void setId(Integer id) {
+        Id = id;
+    }
+
+    public String getOldUsername() {
+        return OldUsername;
+    }
+
+    public void setOldUsername(String oldUsername) {
+        OldUsername = oldUsername;
+    }
+
+    public String getNewUsername() {
+        return NewUsername;
+    }
+
+    public void setNewUsername(String newUsername) {
+        NewUsername = newUsername;
+    }
+
+    public String getNewPassword() {
+        return NewPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        NewPassword = newPassword;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
         Name = name;
+    }
+
+    public String getSurname() {
+        return Surname;
+    }
+
+    public void setSurname(String surname) {
         Surname = surname;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
         Phone = phone;
-        Address = address;
+    }
+
+    public String getState() {
+        return State;
+    }
+
+    public void setState(String state) {
+        State = state;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getStreet() {
+        return Street;
+    }
+
+    public void setStreet(String street) {
+        Street = street;
+    }
+
+    public String getBiography() {
+        return Biography;
+    }
+
+    public void setBiography(String biography) {
         Biography = biography;
     }
 
-    public ProfileDetailsDTO() {
+    public boolean DidTryPasswordUpdate() {
+        return !NewPassword.equals("");
     }
+
+    public boolean DidTryUsernameUpdate() {
+        return !OldUsername.equals(NewUsername);
+    }
+
 }

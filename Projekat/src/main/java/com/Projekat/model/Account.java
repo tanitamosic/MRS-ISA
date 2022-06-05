@@ -32,7 +32,7 @@ public class Account implements UserDetails {
     @Column(name = "deleted", nullable = false)
     private Boolean isDeleted;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
 
@@ -151,4 +151,17 @@ public class Account implements UserDetails {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Account(Account a) {
+        this.id = a.id;
+        this.username = a.username;
+        this.password = a.password;
+        this.isActivated = a.isActivated;
+        this.isDeleted = a.isDeleted;
+        this.user = a.user;
+        this.lastPasswordResetDate = a.lastPasswordResetDate;
+        this.roles = a.roles;
+    }
+
+    public Account() {}
 }

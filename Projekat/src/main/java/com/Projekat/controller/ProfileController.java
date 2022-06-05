@@ -4,9 +4,13 @@ package com.Projekat.controller;
 import com.Projekat.model.Account;
 import com.Projekat.service.AccountService;
 import com.Projekat.dto.ProfileDetailsDTO;
+import com.Projekat.service.AddressService;
+import com.Projekat.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,20 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "api/profile")
 public class ProfileController {
 
-    @PostMapping(consumes = "application/json", value = "update-profile")
-    public ResponseEntity<String> updateProfile(ProfileDetailsDTO profile) {
-        String currentPassword = ""; // TODO: Extract current password from Account
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private UserService userService;
 
-        // if 1 of the password input fields has input, user tried to change the password
-        if (!profile.NewPassword1.isEmpty() || !profile.NewPassword2.isEmpty() || !profile.OldPassword.isEmpty()) {
-            if (!profile.NewPassword1.equals(profile.NewPassword2) || !profile.OldPassword.equals(currentPassword)) {
-                return new ResponseEntity<>("Invalid attempt at changing passwords", HttpStatus.BAD_REQUEST);
-            } else {
-                System.out.println("Update password");
-                // TODO: Update password to NewPassword in pgadmin
-            }
+    @Autowired
+    private AddressService addressService;
+
+    @PostMapping(consumes = "application/json", value = "update-profile")
+    public ResponseEntity<String> updateProfile(@RequestBody ProfileDetailsDTO profile) {
+        System.out.println(profile.getId());
+        final Integer acc_id = userService.findUserAccountId(profile.getId());
+        // UPDATE USERNAME
+        if (profile.DidTryPasswordUpdate()) {
+            accountService.updatePassword(acc_id, profile.getNewPassword());
         }
-        // TODO: Extract user ID from token, Update profile with new Details from parameter 'profile'
-        return null;
+        // UPDATE PASSWORD
+        if (profile.DidTryUsernameUpdate()) {
+            accountService.updateUsername(acc_id, profile.getNewUsername());
+        }
+        // UPDATE USER DATA
+        userService.updateUserProfile(profile.getId(), profile.getName(), profile.getSurname(), profile.getPhone());
+
+        // UPDATE USER ADDRESS
+
+        addressService.upsertAddress(profile.getState(), profile.getCity(), profile.getStreet());
+        Integer address_id = addressService.getAddressId(profile.getState(), profile.getCity(), profile.getStreet());
+        userService.updateUserAddress(profile.getId(), address_id);
+
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }

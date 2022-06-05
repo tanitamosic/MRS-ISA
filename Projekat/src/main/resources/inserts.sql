@@ -1,3 +1,23 @@
+INSERT INTO public.roles(
+    id, name)
+VALUES (1, 'ROLE_ADMIN');
+
+INSERT INTO public.roles(
+    id, name)
+VALUES (2, 'ROLE_INSTRUCTOR');
+
+INSERT INTO public.roles(
+    id, name)
+VALUES (3, 'ROLE_CLIENT');
+
+INSERT INTO public.roles(
+    id, name)
+VALUES (4, 'ROLE_COTTAGEOWNER');
+
+INSERT INTO public.roles(
+    id, name)
+VALUES (5, 'ROLE_BOATOWNER');
+
 
 -- ADRESE
 INSERT INTO addresses (id, street, city, state)
@@ -14,13 +34,22 @@ INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 6', 'Novi Sad', 'Srbija');
 INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 7', 'Novi Sad', 'Srbija');
-
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 11', 'Novi Sad', 'Srbija');
 INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 8', 'Novi Sad', 'Srbija');
 INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 9', 'Novi Sad', 'Srbija');
 INSERT INTO addresses (id, street, city, state)
     VALUES (nextval('adr_id'), 'Dunavska 10', 'Novi Sad', 'Srbija');
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 14', 'Novi Sad', 'Srbija');
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 15', 'Beočin', 'Srbija');
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 13', 'Beograd', 'Srbija');
+INSERT INTO addresses (id, street, city, state)
+    VALUES (nextval('adr_id'), 'Dunavska 12', 'Novi Sad', 'Srbija');
 
 -- Client
 INSERT INTO users (id, type, name, surname, phone, address_id, penalties, loyalty_score, biography)
@@ -68,7 +97,22 @@ INSERT INTO accounts (id, email, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'instructor1@gmail.com', 'sifra123', TRUE, FALSE, 7);
 
 
--- Cottages
+-- ACCOUNTS ROLES
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (1, 3);
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (2, 3);
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (3, 3);
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (4, 1);
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (5, 5);
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (6, 4);
+INSERT INTO public.account_role(account_id, role_id)
+    VALUES (7, 2);
+
 
 --AdditionalService
 INSERT INTO additional_services (id, name) VALUES (nextval('as_id_seq'), 'WIFI');
@@ -224,8 +268,7 @@ INSERT INTO public.cottages(
 INSERT INTO additionals (service_id, additional_id) VALUES (1, 1);
 
 -- Jedna avantura
-INSERT INTO addresses (id, street, city, state)
-    VALUES (nextval('adr_id'), 'Dunavska 11', 'Novi Sad', 'Srbija');
+
 
 INSERT INTO public.adventures(
 	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
@@ -233,8 +276,7 @@ INSERT INTO public.adventures(
                  			'2020-06-05 15:46:27', 'Otkaz', 'Opis', false, 'Avantura 1', 200, 'Pravila pravila', 11, 1, 5, 'Oprema');
 
 -- Jedan Cottage
-INSERT INTO addresses (id, street, city, state)
-    VALUES (nextval('adr_id'), 'Dunavska 12', 'Novi Sad', 'Srbija');
+
 
 INSERT INTO public.photos(
 	id, asset_path, service_id)
@@ -250,8 +292,7 @@ INSERT INTO public.cottages(
 			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12);
 
 -- BRODOVI
-INSERT INTO addresses (id, street, city, state)
-    VALUES (nextval('adr_id'), 'Dunavska 13', 'Beograd', 'Srbija');
+
 
 INSERT INTO public.photos(
 	id, asset_path, service_id)
@@ -267,8 +308,7 @@ INSERT INTO public.boats(
 
 -----------------------------------------------------------------------------------------------------------------------
 
-INSERT INTO addresses (id, street, city, state)
-    VALUES (nextval('adr_id'), 'Dunavska 14', 'Novi Sad', 'Srbija');
+
 
 INSERT INTO public.photos(
 	id, asset_path, service_id)
@@ -284,8 +324,7 @@ INSERT INTO public.boats(
 
 -----------------------------------------------------------------------------------------------------------------------
 
-INSERT INTO addresses (id, street, city, state)
-    VALUES (nextval('adr_id'), 'Dunavska 15', 'Beočin', 'Srbija');
+
 
 INSERT INTO public.photos(
 	id, asset_path, service_id)
