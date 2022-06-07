@@ -1,7 +1,109 @@
 <template>
+    <div>
+        <!-- Kartica za formu koja sluzi za pretragu -->
+        <div class="container mt-5 mb-0">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-10 mt-5">
+                    <div class="row p-2 bg-white border rounded mt-2">
+                        <form id="searchForm">
+                            <!-- Form Row-->
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Pretraga)-->
+                                <div class="col-md-12">
+                                    <label class="small mb-1" for="GeneralSearch">Pretraga</label>
+                                    <input class="form-control" id="GeneralSearch" name="GeneralSearch" type="text"
+                                        placeholder="" value="" />
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (DPD i DKD)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="availabilityStartDate">Datum početka
+                                        dostupnosti</label>
+                                    <input class="form-control" id="availabilityStartDate" name="availabilityStartDate"
+                                        type="date" placeholder="" value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="availabilityEndDate">Datum kraja dostupnosti</label>
+                                    <input class="form-control" id="availabilityEndDate" name="availabilityEndDate"
+                                        type="date" placeholder="" value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Drzava, Grad)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="state">Država</label>
+                                    <input class="form-control" id="state" name="state" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="city">Grad</label>
+                                    <input class="form-control" id="city" name="city" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Cena od do)-->
+                                <div class="col-md-3">
+                                    <label class="small mb-1" for="priceFrom">Cena od:</label>
+                                    <input class="form-control" id="priceFrom" name="priceFrom" type="number" step="1"
+                                        placeholder="" value="" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="small mb-1" for="priceTo">Cena do:</label>
+                                    <input class="form-control" id="priceTo" name="priceTo" type="number" step="1"
+                                        placeholder="" value="" />
+                                </div>
+                                <!-- Form Group (Ocena od do)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="review">Ocena:</label>
+                                    <input class="form-control" id="review" name="review" type="number" step="1"
+                                        placeholder="" value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Ime Vikendice)-->
+                                <div class="col-md-12">
+                                    <label class="small mb-1" for="cottageName">Ime Vikendice</label>
+                                    <input class="form-control" id="cottageName" name="cottageName" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (Broj kreveta i soba)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="numberOfRooms">Broj soba:</label>
+                                    <input class="form-control" id="numberOfRooms" name="numberOfRooms" type="number"
+                                        step="1" placeholder="" value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="numberOfBeds">Broj kreveta:</label>
+                                    <input class="form-control" id="numberOfBeds" name="numberOfBeds" type="number"
+                                        step="1" placeholder="" value="" />
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Dugme Pretraži)-->
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6 text-center">
+                                        <button class="btn btn-primary" type="button"
+                                            >Pretraži</button>
+                                            <!-- v-on:click="" treba da se doda u button -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div v-if="!this.cottagesLoaded" id="ucitavanje">Učitavanje!</div>
     <div v-else-if="this.cottagesLoaded && this.CottagesEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
-    <div v-else class="container mt-5 mb-5">
+    <div v-else class="container mt-0 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-md-10 mt-5">
                 <div class="row p-2 bg-white border rounded mt-2" v-for="(cotage, i) in Cottages" :key="i">
@@ -198,6 +300,25 @@ h5 {
     display: flex;
     justify-content: center;
 }
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #69707a;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #c5ccd6;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.35rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
 </style>
 
 
