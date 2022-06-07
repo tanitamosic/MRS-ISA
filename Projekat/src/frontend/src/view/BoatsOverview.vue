@@ -1,4 +1,119 @@
 <template>
+    <div>
+        <!-- Kartica za formu koja sluzi za pretragu -->
+        <div class="container mt-5 mb-0">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-10 mt-5">
+                    <div class="row p-2 bg-white border rounded mt-2">
+                        <form id="searchForm">
+                            <!-- Form Row-->
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Pretraga)-->
+                                <div class="col-md-12">
+                                    <label class="small mb-1" for="GeneralSearch">Pretraga</label>
+                                    <input class="form-control" id="GeneralSearch" name="GeneralSearch" type="text"
+                                        placeholder="" value="" />
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (DPD i DKD)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="availabilityStartDate">Datum početka
+                                        dostupnosti</label>
+                                    <input class="form-control" id="availabilityStartDate" name="availabilityStartDate"
+                                        type="date" placeholder="" value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="availabilityEndDate">Datum kraja dostupnosti</label>
+                                    <input class="form-control" id="availabilityEndDate" name="availabilityEndDate"
+                                        type="date" placeholder="" value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Drzava, Grad)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="state">Država</label>
+                                    <input class="form-control" id="state" name="state" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="city">Grad</label>
+                                    <input class="form-control" id="city" name="city" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Cena od do)-->
+                                <div class="col-md-3">
+                                    <label class="small mb-1" for="priceFrom">Cena od:</label>
+                                    <input class="form-control" id="priceFrom" name="priceFrom" type="number" step="1"
+                                        placeholder="" value="" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="small mb-1" for="priceTo">Cena do:</label>
+                                    <input class="form-control" id="priceTo" name="priceTo" type="number" step="1"
+                                        placeholder="" value="" />
+                                </div>
+                                <!-- Form Group (Ocena od do)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="review">Ocena:</label>
+                                    <input class="form-control" id="review" name="review" type="number" step="1"
+                                        placeholder="" value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Ime Broda)-->
+                                <div class="col-md-12">
+                                    <label class="small mb-1" for="boatName">Ime Broda</label>
+                                    <input class="form-control" id="boatName" name="boatName" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                            </div>
+                            <div class="row gx-4 mb-3">
+                                <!-- Form Group (Tip broda, duzina, broj osoba)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="boatType">Tip broda</label>
+                                    <input class="form-control" id="boatType" name="boatType" type="text" placeholder=""
+                                        value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="numberPersons">Broj osoba:</label>
+                                    <input class="form-control" id="numberPersons" name="numberPersons" type="number"
+                                        step="1" placeholder="" value="" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (Navigaciona oprema, Oprema za pecanje)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="numberOfEngines">Navigaciona oprema</label>
+                                    <input class="form-control" id="numberOfEngines" name="numberOfEngines"
+                                        type="text" placeholder="" value="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="fishingEquipment">Oprema za pecanje</label>
+                                    <input class="form-control" id="fishingEquipment" name="fishingEquipment"
+                                        type="text" placeholder="" value="" />
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-1">
+                                <!-- Form Group (Dugme Pretraži)-->
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <button class="btn btn-primary" type="button">Pretraži</button>
+                                    <!-- v-on:click="" treba da se doda u button -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div v-if="!this.boatsLoaded" id="ucitavanje">Učitavanje!</div>
     <div v-else-if="this.boatsLoaded && this.BoatsEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
     <div v-else class="container mt-5 mb-5">
