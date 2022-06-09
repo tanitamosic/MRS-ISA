@@ -15,7 +15,7 @@ public class CottageSearchDTO {
     private String city;
     private Double priceFrom;
     private Double priceTo;
-    private Double review;
+    private Double rating;
     private String cottageName;
     private Integer numberOfRooms;
     private Integer numberOfBeds;
@@ -78,12 +78,12 @@ public class CottageSearchDTO {
         this.priceTo = priceTo;
     }
 
-    public Double getReview() {
-        return review;
+    public Double getRating() {
+        return rating;
     }
 
-    public void setReview(Double review) {
-        this.review = review;
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public String getCottageName() {

@@ -48,6 +48,9 @@ public class CottageSearchRepository {
     private Predicate getPredicate(Root<Cottage> cottageRoot) {
         Predicate generalSearchPredicate = getGeneralSearchPredicate(cottageRoot);
         Predicate predicate = getPredicateForRemainingFields(cottageRoot);
+        if(null == generalSearchPredicate && null != predicate) {
+            return predicate;
+        }
         return criteriaBuilder.and(predicate, generalSearchPredicate);
     }
 
@@ -97,13 +100,13 @@ public class CottageSearchRepository {
                             searchCriteria.getPriceTo())
             );
         }
-        // NEOPHODNO JE PROSIRITI MODEL TAKO DA SERVICE IMA REVIEW
-//        if(Objects.nonNull(searchCriteria.getReview())) {
-//            predicates.add(
-//                    criteriaBuilder.greaterThanOrEqualTo(cottageRoot.get("review"),
-//                            searchCriteria.getReview())
-//            );
-//        }
+//         NEOPHODNO JE PROSIRITI MODEL TAKO DA SERVICE IMA RATING
+        if(Objects.nonNull(searchCriteria.getRating())) {
+            predicates.add(
+                    criteriaBuilder.greaterThanOrEqualTo(cottageRoot.get("rating"),
+                            searchCriteria.getRating())
+            );
+        }
         if(Objects.nonNull(searchCriteria.getNumberOfRooms())) {
             predicates.add(
                     criteriaBuilder.greaterThanOrEqualTo(cottageRoot.get("numberOfRooms"),
@@ -159,6 +162,10 @@ public class CottageSearchRepository {
             if (isDouble) {
                 predicatesGeneralSearch.add(
                         criteriaBuilder.greaterThanOrEqualTo(cottageRoot.get("price"),      // obratiti paznju na tip
+                                doubleNumber)
+                );
+                predicatesGeneralSearch.add(
+                        criteriaBuilder.greaterThanOrEqualTo(cottageRoot.get("rating"),
                                 doubleNumber)
                 );
             }
