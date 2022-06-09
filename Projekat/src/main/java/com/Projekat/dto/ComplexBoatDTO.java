@@ -6,6 +6,7 @@ import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Boat;
 
 import javax.persistence.Column;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class ComplexBoatDTO {
@@ -17,6 +18,9 @@ public class ComplexBoatDTO {
     private Photo primaryPhoto;
     private Set<Photo> photos;
     private Double price;
+    private Double rating;
+    private LocalDateTime availabilityStart;
+    private LocalDateTime availabilityEnd;
 
     private String rules;
     private String cancellationTerms;
@@ -35,7 +39,8 @@ public class ComplexBoatDTO {
 
     public ComplexBoatDTO(Integer id, String name, Address address,
                           String description, Photo primaryPhoto,
-                          Set<Photo> photos, Double price,
+                          Set<Photo> photos, Double price, Double rating,
+                          LocalDateTime availabilityStart, LocalDateTime availabilityEnd,
                           String rules, String cancellationTerms,
                           Set<AdditionalService> additionalServices,
                           String type, Double length,
@@ -49,6 +54,9 @@ public class ComplexBoatDTO {
         this.primaryPhoto = primaryPhoto;
         this.photos = photos;
         this.price = price;
+        this.rating = rating;
+        this.availabilityStart = availabilityStart;
+        this.availabilityEnd = availabilityEnd;
         this.rules = rules;
         this.cancellationTerms = cancellationTerms;
         this.additionalServices = additionalServices;
@@ -64,7 +72,8 @@ public class ComplexBoatDTO {
 
     public ComplexBoatDTO(Boat b) {
         this(b.getId(), b.getName(), b.getAddress(), b.getDescription(),
-                b.getPrimaryPhoto(), b.getPhotos(), b.getPrice(), b.getRules(),
+                b.getPrimaryPhoto(), b.getPhotos(), b.getPrice(), b.getRating(),
+                b.getAvailabilityStart(), b.getAvailabilityEnd(),b.getRules(),
                 b.getCancellationTerms(), b.getAdditionalServices(), b.getType(), b.getLength(), b.getNumberOfEngines(),
                 b.getEnginePower(), b.getMaxSpeed(), b.getNavigationalEquipment(), b.getCapacity(), b.getFishingEquipment());
     }
@@ -95,6 +104,18 @@ public class ComplexBoatDTO {
 
     public Double getPrice() {
         return price;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public LocalDateTime getAvailabilityStart() {
+        return availabilityStart;
+    }
+
+    public LocalDateTime getAvailabilityEnd() {
+        return availabilityEnd;
     }
 
     public String getRules() {

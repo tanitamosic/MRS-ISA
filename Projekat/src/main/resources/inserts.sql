@@ -48,23 +48,23 @@ INSERT INTO users (id, type,name, surname, phone, address_id, penalties, loyalty
 
 -- Nalozi
 -- 1-3 Client
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'nesto1@gmail.com', 'sifra123', TRUE, FALSE, 1);
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'nesto2@gmail.com', 'sifra123', TRUE, FALSE, 2);
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'nesto3@gmail.com', 'sifra123', TRUE, FALSE, 3);
 -- 4 Admin
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'admin@gmail.com', 'admin123', TRUE, FALSE, 4);
 -- 5 BoatOwner
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'boatowner1@gmail.com', 'sifra123', TRUE, FALSE, 5);
 -- 6 CottageOwner
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'cottageowner1@gmail.com', 'sifra123', TRUE, FALSE, 6);
 -- 7 Instructor
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'instructor1@gmail.com', 'sifra123', TRUE, FALSE, 7);
 
 
@@ -133,93 +133,93 @@ INSERT INTO public.photos(
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 8, 'Uslovi otkaza', 1);
+			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 8, 'Uslovi otkaza', 1, 5);
 
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Najlepsa vikendica na Dunavu, samo nam dodjite', false, 'Vila Dunav', 300, 'Pravila', 9, 'Uslovi otkaza', 2);
+			'Najlepsa vikendica na Dunavu, samo nam dodjite', false, 'Vila Dunav', 300, 'Pravila', 9, 'Uslovi otkaza', 2, 4.1);
 
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Veoma lepa kuća', false, 'Vila Dragulj', 500, 'Pravila', 10, 'Uslovi otkaza', 3);
+			'Veoma lepa kuća', false, 'Vila Dragulj', 500, 'Pravila', 10, 'Uslovi otkaza', 3, 4.3);
 
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 14,
                  			'2020-10-22 18:11:07',
                  			'2020-10-04 18:11:07',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 4', 432, 'Pravila', 6,
-                 'Uslovi otkaza', 4);
+                 'Uslovi otkaza', 4, 5);
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 3, 6,
                  			'2022-12-04 12:42:13',
                  			'2022-11-17 12:42:13',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 5', 552, 'Pravila', 2,
-                 'Uslovi otkaza', 5);
+                 'Uslovi otkaza', 5, 4);
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 11, 13,
                  			'2022-09-12 01:33:12',
                  			'2022-09-06 01:33:12',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 6', 237, 'Pravila', 9,
-                 'Uslovi otkaza', 6);
+                 'Uslovi otkaza', 6, 4.6);
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 5, 6,
                  			'2021-08-19 20:37:17',
                  			'2021-08-14 20:37:17',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 7', 165, 'Pravila', 10,
-                 'Uslovi otkaza', 7);
+                 'Uslovi otkaza', 7, 5);
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 3, 13,
                  			'2021-04-20 05:29:45',
                  			'2021-04-11 05:29:45',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 8', 730, 'Pravila', 9,
-                 'Uslovi otkaza', 8);
+                 'Uslovi otkaza', 8, 2);
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 4, 5,
                  			'2020-07-25 18:37:36',
                  			'2020-07-19 18:37:36',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 9', 497, 'Pravila', 4,
-                 'Uslovi otkaza', 9);
+                 'Uslovi otkaza', 9, 3);
 INSERT INTO public.cottages(
                  	id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
-                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+                 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 9, 7,
                  			'2020-06-16 15:46:27',
                  			'2020-06-05 15:46:27',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 10', 475, 'Pravila', 7,
-                 'Uslovi otkaza', 10);
+                 'Uslovi otkaza', 10, 5);
 
 INSERT INTO additionals (service_id, additional_id) VALUES (1, 1);
 
@@ -243,11 +243,11 @@ INSERT INTO public.photos(
 INSERT INTO public.cottages(
 	id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
-	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
+	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
-			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12);
+			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12, 4);
 
 -- BRODOVI
 INSERT INTO addresses (id, street, city, state)
@@ -258,12 +258,12 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/boats/boat1.jpg', 13);
 
 INSERT INTO public.boats(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type, rating)
 	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
 			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
 			false, 'Brod Sanja1', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
-			13, 13, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser');
+			13, 13, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser', 5);
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -275,12 +275,12 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/boats/boat2.jpg', 14);
 
 INSERT INTO public.boats(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type, rating)
 	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
 			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
 			false, 'Brod Alisa2', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
-			14, 14, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser');
+			14, 14, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser', 4);
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -292,12 +292,12 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/boats/boat3.jpg', 15);
 
 INSERT INTO public.boats(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type, rating)
 	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
 			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
 			false, 'Brod WIEN1', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
-			15, 15, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser');
+			15, 15, 4, 200.0, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 12, 50, 'GPS, WHF, Satelitski telefon', 2, 'Gliser', 5);
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -311,12 +311,12 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure1.jpg', 16);
 
 INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment, rating)
 	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
 			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
 			false, 'Avantura Zivota', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
-			16, 16, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.');
+			16, 16, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 5);
 
 -----------------------------------------------------------------------------------------------------------------------
 INSERT INTO addresses (id, street, city, state)
@@ -327,12 +327,12 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure2.jpg', 17);
 
 INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment, rating)
 	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
 			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
 			false, 'Avantura na Fruškoj gori', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
-			17, 17, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.');
+			17, 17, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 4);
 
 -----------------------------------------------------------------------------------------------------------------------
 INSERT INTO addresses (id, street, city, state)
@@ -343,11 +343,11 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure3.jpg', 18);
 
 INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment, rating)
 	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
 			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
 			false, 'Avantura na Crvenom Čotu', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
-			18, 18, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.');
+			18, 18, 4, 'Štapovi za pecanje, plovci svih gramaža, olova, udice, živi mamci, varalice.', 5);
 
 -----------------------------------------------------------------------------------------------------------------------
