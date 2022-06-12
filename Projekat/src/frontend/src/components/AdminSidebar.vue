@@ -1,10 +1,10 @@
 <template>
   <b-sidebar id="sidebar-border" class="sidebar-bg d-flex flex-column text-white min-vh-100">
     <table>
-      <tr class="fs-5">
+      <tr class="fs-5"  v-on:click="goToProfile">
         <td>Profil</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToUsers">
         <td>Pregled korisnika</td>
       </tr>
       <tr class="fs-5">
@@ -70,6 +70,14 @@ tr:hover {
 export default {
   name: 'AdminSidebar',
 
+  methods: {
+    goToProfile: function() {
+      this.$router.push('/admin/profile');
+    },
+    goToUsers: function() {
+      this.$router.push('/admin/users');
+    }
+  }
 }
 
 </script>

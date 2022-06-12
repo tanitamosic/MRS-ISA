@@ -77,23 +77,23 @@ INSERT INTO users (id, type,name, surname, phone, address_id, penalties, loyalty
 
 -- Nalozi
 -- 1-3 Client
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'nesto1@gmail.com', 'sifra123', TRUE, FALSE, 1);
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'nesto2@gmail.com', 'sifra123', TRUE, FALSE, 2);
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'nesto3@gmail.com', 'sifra123', TRUE, FALSE, 3);
 -- 4 Admin
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'admin@gmail.com', 'admin123', TRUE, FALSE, 4);
 -- 5 BoatOwner
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'boatowner1@gmail.com', 'sifra123', TRUE, FALSE, 5);
 -- 6 CottageOwner
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'cottageowner1@gmail.com', 'sifra123', TRUE, FALSE, 6);
 -- 7 Instructor
-INSERT INTO accounts (id, email, password, activated, deleted, user_id)
+INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'),'instructor1@gmail.com', 'sifra123', TRUE, FALSE, 7);
 
 

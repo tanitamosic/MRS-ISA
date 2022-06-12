@@ -93,7 +93,7 @@ export default {
           case 'ROLE_ADMIN': {
             self.$store.User = cookie.admin;
             //console.log(self.$store.User);
-            self.$router.push('/admin');
+            self.$router.push('/admin/profile');
             break;
           }
           case 'ROLE_CLIENT': break;

@@ -63,14 +63,8 @@
                             </div>
                             <fieldset class="form-group">
                                 <div class="row">
-                                    <div class="col-sm-2 align-items-right">
-                                        <label class="form-label" id="datelbl" for="date">Datum rođenja</label>
-                                    </div>
-                                    <div class="col-sm-2 align-items-left">
-                                        <input class="form-control mb-2" type="date" name="date" id="date" v-model="date"/>
-                                    </div>
                                     <label class="col-sm-1">Uloga:</label>
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-6">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="gridRadios"
                                                 id="gridRadios1" value="Potrosac" checked />
@@ -234,10 +228,6 @@ function getRole() {
 }
 
 function checkInput() {
-    if (!checkDate()) {
-        alert('Morate odabrati ispravan datum');
-        return false;
-    }
     if (!checkPhone()) {
         alert('Nista uneli ispravan broj telefona (ne može sadržati slova)');
         return false;
@@ -245,17 +235,6 @@ function checkInput() {
     if (!checkFullName()) {
         alert('Morate uneti ispravno ime');
         return false;
-    }
-    return true;
-}
-function checkDate() {
-    let date = new Date(document.getElementById('date').value);
-    let today = new Date();
-    if (date == null) {
-        return false; // birthdate isnt chosen 
-    }
-    if (today < date) {
-        return false; // birthdate isnt in the past
     }
     return true;
 }

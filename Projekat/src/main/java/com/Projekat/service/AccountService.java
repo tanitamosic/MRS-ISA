@@ -6,8 +6,10 @@ import java.util.List;
 
 import com.Projekat.dto.AccountDTO;
 import com.Projekat.model.Account;
+import com.Projekat.model.VerificationToken;
 import com.Projekat.model.users.Role;
 import com.Projekat.repository.AccountRepository;
+import com.Projekat.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,12 +22,13 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private TokenRepository tokenRepository;
+
 
     public Account findByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findByUsername(username);
@@ -68,5 +71,10 @@ public class AccountService {
 
     public void updatePassword(Integer acc_id, String newPassword) { accountRepository.updatePassword(acc_id, newPassword); }
     public void updateUsername(Integer acc_id, String newUsername) { accountRepository.updateUsername(acc_id, newUsername); }
+    public void createVerificationToken(Account acc, String token) {
+        VerificationToken myToken = new VerificationToken(token, acc);
+        tokenRepository.save(myToken);
+    }
 
+    public void activateAccount(Account acc) { accountRepository.activateAccount(acc.getId()); }
 }

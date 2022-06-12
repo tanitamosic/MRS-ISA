@@ -27,7 +27,7 @@ const routes = [
     component: Login
   },
   {
-    path: '/admin',
+    path: '/admin/profile',
     name: 'AdminProfileView',
     component: AdminProfileView
   },

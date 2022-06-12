@@ -1,56 +1,54 @@
 package com.Projekat.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.Projekat.dto.AccountDTO;
 import com.Projekat.dto.JwtAuthenticationRequest;
 import com.Projekat.dto.AccountTokenState;
 import com.Projekat.dto.UserDTO;
-import com.Projekat.exception.ResourceConflictException;
+import com.Projekat.events.OnClientRegistrationEvent;
+import com.Projekat.events.OnEmployeeRegistrationEvent;
 import com.Projekat.model.Account;
 import com.Projekat.model.Address;
+import com.Projekat.model.VerificationToken;
 import com.Projekat.model.users.*;
-import com.Projekat.service.AccountService;
-import com.Projekat.service.AddressService;
-import com.Projekat.service.UserService;
+import com.Projekat.service.*;
 import com.Projekat.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Calendar;
 
 
 //Kontroler zaduzen za autentifikaciju korisnika
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
-
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private AddressService addressService;
-
-
     @Autowired
     private TokenUtils tokenUtils;
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private MessageSource messages;
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity<AccountTokenState> createAuthenticationToken(
@@ -66,6 +64,16 @@ public class AuthenticationController {
 //
 //        Account user = (Account) authentication.getPrincipal();
 
+        Account acc = new Account();
+        try {
+            acc = accountService.findByUsername(u);
+            if (null != acc && !acc.getActivated()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } catch (DataAccessException saveException) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         String role = userService.getUserRole(authenticationRequest.getUsername());
         String jwt = tokenUtils.generateToken(authenticationRequest.getUsername(), role);
         int expiresIn = tokenUtils.getExpiredIn();
@@ -77,23 +85,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(token);
     }
 
-      // Endpoint za registraciju novog korisnika
-      @PostMapping("/signup")
-    public ResponseEntity<Account> addAccount(@RequestBody AccountDTO userRequest, UriComponentsBuilder ucBuilder) {
-
-          Account existAccount = this.accountService.findByUsername(userRequest.getUsername());
-
-          if (existAccount != null) {
-              throw new ResourceConflictException(userRequest.getId(), "Username already exists");
-          }
-
-          Account user = this.accountService.save(userRequest);
-
-          return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
-
     @PostMapping(consumes = "application/json", value = "register/client")
-    public ResponseEntity<String> registerClient(@RequestBody UserDTO newUser) {
+    public ResponseEntity<String> registerClient(@RequestBody UserDTO newUser, HttpServletRequest request) {
         Client user = new Client();
         user.setName(newUser.Name);
         user.setPhone(newUser.Phone);
@@ -109,6 +102,11 @@ public class AuthenticationController {
             addressService.saveNewAddress(address);
             accountService.saveNewAccount(acc);
             userService.saveNewUser(user);
+            acc = accountService.findByUsername(acc.getUsername());
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnClientRegistrationEvent(acc,
+                    request.getLocale(), appUrl));
+
         } catch (DataAccessException saveException) {
             return new ResponseEntity<>("Nalog sa ovim mejlom već postoji!", HttpStatus.BAD_REQUEST);
         }
@@ -127,17 +125,7 @@ public class AuthenticationController {
         Address address = new Address(newUser.Street, newUser.City, newUser.State);
         user.setAddress(address);
 
-        Account acc = getAccount(newUser, user);
-        acc.setActivated(false);
-        try {
-            addressService.saveNewAddress(address);
-            accountService.saveNewAccount(acc);
-            userService.saveNewUser(user);
-        } catch (DataAccessException saveException) {
-            return new ResponseEntity<>("Nalog sa ovim mejlom već postoji!", HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>("Registracija uspesna! Cekajte na odobrenje administratora za aktivaciju naloga", HttpStatus.OK);
+        return registerEmployee(newUser, user, address, "vlasnik/vlasnica broda");
     }
 
     @PostMapping(consumes = "application/json", value = "register/cottageowner")
@@ -149,17 +137,7 @@ public class AuthenticationController {
         Address address = new Address(newUser.Street, newUser.City, newUser.State);
         user.setAddress(address);
 
-        Account acc = getAccount(newUser, user);
-        acc.setActivated(false);
-        try {
-            addressService.saveNewAddress(address);
-            accountService.saveNewAccount(acc);
-            userService.saveNewUser(user);
-        } catch (DataAccessException saveException) {
-            return new ResponseEntity<>("Nalog sa ovim mejlom već postoji!", HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>("Registracija uspesna! Cekajte na odobrenje administratora za aktivaciju naloga", HttpStatus.OK);
+        return registerEmployee(newUser, user, address, "vlasnik/vlasnica vikendice");
     }
 
     @PostMapping(consumes = "application/json", value = "register/instructor")
@@ -172,28 +150,59 @@ public class AuthenticationController {
         user.setAddress(address);
         user.setBiography(null);
 
+        return registerEmployee(newUser, user, address, "instruktor pecanja");
+    }
+
+    private ResponseEntity<String> registerEmployee(UserDTO newUser, User user, Address address, String role) {
         Account acc = getAccount(newUser, user);
-        acc.setActivated(false);
+        String username = newUser.Username;
+        String request = "Gospodin/Gospođa " + user.getName() + " " + user.getSurname() + " žele da se prijave kao " +
+                role + ".\nAdresa stanovanja: " + address.toString() + "\nBroj telefona" + user.getSurname();
 
         try {
             addressService.saveNewAddress(address);
             accountService.saveNewAccount(acc);
             userService.saveNewUser(user);
+            eventPublisher.publishEvent(new OnEmployeeRegistrationEvent(acc, request, username));
         } catch (DataAccessException saveException) {
             return new ResponseEntity<>("Nalog sa ovim mejlom već postoji!", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("Registracija uspesna! Cekajte na odobrenje administratora za aktivaciju naloga", HttpStatus.OK);
+        return new ResponseEntity<>("Zahtev za registraciju poslat! Cekajte na odobrenje administratora za aktivaciju naloga", HttpStatus.OK);
     }
 
     private Account getAccount(UserDTO newUser, User user) {
         Account acc = new Account();
-        acc.setActivated(true);
+        acc.setActivated(false);
         acc.setDeleted(false);
         acc.setUsername(newUser.Username);
         acc.setUser(user);
         acc.setPassword(newUser.Password1);
         return acc;
+    }
+
+    @GetMapping(value = "/regitrationConfirm", produces = "text/html")
+    public ResponseEntity<String> confirmRegistration(@RequestParam("token") String token) {
+
+
+        VerificationToken verificationToken = tokenService.getVerificationToken(token);
+        if (verificationToken == null) {
+            return new ResponseEntity<>("<h1>Ne postoji nalog sa ovim aktivacionim linkom</h1>", HttpStatus.OK);
+        }
+
+        Account acc = verificationToken.getAccount();
+        Calendar cal = Calendar.getInstance();
+
+        if (acc.getActivated()) {
+            return new ResponseEntity<>("<h1>Nalog je vec aktiviran.</h1>", HttpStatus.OK);
+        }
+        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            return new ResponseEntity<>("<h1>Aktivacija neuspesna. Istekao rok za aktivaciju.</h1>", HttpStatus.OK);
+        }
+
+        acc.setActivated(true);
+        accountService.activateAccount(acc);
+        return new ResponseEntity<>("<body><h1>Aktivacija uspesna</h1></body>", HttpStatus.OK);
     }
 
 }

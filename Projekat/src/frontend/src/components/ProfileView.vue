@@ -106,7 +106,7 @@
               <!-- Form Row-->
               <div class="row gx-3 mb-3">
                 <!-- Form Group (phone number)-->
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <label class="small mb-1" for="Phone">Broj telefona</label>
                   <input
                     class="form-control"
@@ -117,18 +117,20 @@
                     v-model="Phone"
                   />
                 </div>
-                <!-- Form Group (birthday)-->
-                <div class="col-md-6">
-                  <label class="small mb-1" for="inputBirthday">Datum rođenja</label>
-                  <input
+              </div>
+              <div class="row gx-3 mb-3" v-if="show_biography">
+                <!-- Form Group Biography -->
+                <div class="col-md-12">
+                  <label class="small mb-1" for="Biography">Biografija</label>
+                  <textarea
                     class="form-control"
-                    id="inputBirthday"
-                    type="text"
-                    placeholder="Enter your birthday"
-                    value="06/10/1988"
-                    title="Datum rođenja ne možete izmeniti"
-                    readonly
-                  />
+                    rows="5"
+                    name="Biography"
+                    id="Biography"
+                    type="tel"
+                    placeholder="Unesite Vašu biografiju"
+                    v-model="Biography"
+                  ></textarea>
                 </div>
               </div>
               <hr />
@@ -252,7 +254,11 @@ export default {
       OldPasswordInput: '',
       OldPassword: '',
       NewPassword1: '',
-      NewPassword2: ''
+      NewPassword2: '',
+
+      Biography: '',
+
+      show_biography: false
     }
   },
   mounted() {
@@ -264,6 +270,11 @@ export default {
     this.City = this.$store.User.address.city;
     this.Street = this.$store.User.address.street;
     this.OldPassword = this.$store.currentPassword;
+
+    this.Biography = this.$store.User.biography ? this.$store.User.biography : '';
+    if (this.$store.role === "ROLE_INSTRUCTOR") {
+      this.show_biography = true;
+    }
     //console.log(this.$store.User);
   },
 
@@ -307,7 +318,7 @@ export default {
         'NewUsername': this.Username,
         'OldUsername': this.$store.username,
 
-        'Biography': ''
+        'Biography': this.Biography ? this.Biography : ''
       };
 
       // let self = this;
@@ -319,7 +330,8 @@ export default {
             alert("Promena podataka je uspesna.")
           }
         }).catch(function (err) {
-          alert("Serverska greska");
+          if (err)
+            alert("Serverska greska");
         });
     },
     delete_profile: function () {
