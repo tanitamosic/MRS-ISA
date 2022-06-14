@@ -12,7 +12,8 @@
                                 <div class="col-md-12">
                                     <label class="small mb-1" for="GeneralSearch">Pretraga</label>
                                     <input class="form-control" id="GeneralSearch" name="GeneralSearch" type="text"
-                                        placeholder="" value="" />
+                                        v-model="generalSearchField"
+                                        placeholder="" />
                                 </div>
                             </div>
                             <div class="row gx-3 mb-1">
@@ -21,12 +22,14 @@
                                     <label class="small mb-1" for="availabilityStartDate">Datum početka
                                         dostupnosti</label>
                                     <input class="form-control" id="availabilityStartDate" name="availabilityStartDate"
-                                        type="date" placeholder="" value="" />
+                                        v-model="availabilityStart"
+                                        type="date" placeholder="" />
                                 </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="availabilityEndDate">Datum kraja dostupnosti</label>
                                     <input class="form-control" id="availabilityEndDate" name="availabilityEndDate"
-                                        type="date" placeholder="" value="" />
+                                        v-model="availabilityEnd"
+                                        type="date" placeholder="" />
                                 </div>
                             </div>
                             <hr />
@@ -35,32 +38,37 @@
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="state">Država</label>
                                     <input class="form-control" id="state" name="state" type="text" placeholder=""
-                                        value="" />
+                                        v-model="state"
+                                        />
                                 </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="city">Grad</label>
                                     <input class="form-control" id="city" name="city" type="text" placeholder=""
-                                        value="" />
+                                        v-model="city"
+                                        />
                                 </div>
                             </div>
                             <hr />
                             <div class="row gx-3 mb-1">
-                                <!-- Form Group (Cena od do)-->
+                                <!-- Form Group (Cena)-->
                                 <div class="col-md-3">
                                     <label class="small mb-1" for="priceFrom">Cena od:</label>
                                     <input class="form-control" id="priceFrom" name="priceFrom" type="number" step="1"
-                                        placeholder="" value="" />
+                                        v-model="priceFrom"
+                                        placeholder="" />
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small mb-1" for="priceTo">Cena do:</label>
                                     <input class="form-control" id="priceTo" name="priceTo" type="number" step="1"
-                                        placeholder="" value="" />
+                                        v-model="priceTo"
+                                        placeholder="" />
                                 </div>
-                                <!-- Form Group (Ocena od do)-->
+                                <!-- Form Group (Ocena)-->
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="review">Ocena:</label>
                                     <input class="form-control" id="review" name="review" type="number" step="1"
-                                        placeholder="" value="" />
+                                        v-model="rating"
+                                        placeholder="" />
                                 </div>
                             </div>
                             <hr />
@@ -69,7 +77,8 @@
                                 <div class="col-md-12">
                                     <label class="small mb-1" for="cottageName">Ime Vikendice</label>
                                     <input class="form-control" id="cottageName" name="cottageName" type="text" placeholder=""
-                                        value="" />
+                                        v-model="cottageName"
+                                        />
                                 </div>
                             </div>
                             <div class="row gx-3 mb-3">
@@ -77,12 +86,14 @@
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="numberOfRooms">Broj soba:</label>
                                     <input class="form-control" id="numberOfRooms" name="numberOfRooms" type="number"
-                                        step="1" placeholder="" value="" />
+                                        v-model="numberOfRooms"
+                                        step="1" placeholder="" />
                                 </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="numberOfBeds">Broj kreveta:</label>
                                     <input class="form-control" id="numberOfBeds" name="numberOfBeds" type="number"
-                                        step="1" placeholder="" value="" />
+                                        v-model="numberOfBeds"
+                                        step="1" placeholder="" />
                                 </div>
                             </div>
                             <div class="row gx-3 mb-1">
@@ -91,6 +102,7 @@
                                 </div>
                                 <div class="col-md-6 text-center">
                                         <button class="btn btn-primary" type="button"
+                                            v-on:click="searchCottages"
                                             >Pretraži</button>
                                             <!-- v-on:click="" treba da se doda u button -->
                                 </div>
@@ -103,7 +115,7 @@
     </div>
     <div v-if="!this.cottagesLoaded" id="ucitavanje">Učitavanje!</div>
     <div v-else-if="this.cottagesLoaded && this.CottagesEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
-    <div v-else class="container mt-0 mb-5">
+    <div v-else-if="this.cottagesLoaded && this.CottagesEmpty===false" class="container mt-0 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-md-10 mt-5">
                 <div class="row p-2 bg-white border rounded mt-2" v-for="(cotage, i) in Cottages" :key="i">
@@ -113,7 +125,7 @@
 
                         <div :id="generateIdSlider(i)" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner">
-                                <div class="carousel-item active">
+                                <div class="carousel-item active" v-if="!(cotage.photos[0]===undefined)">
                                     <img :src="cotage.photos[0].assetPath"
                                         class="img-fluid img-responsive rounded product-image" alt="image">
                                 </div>
@@ -179,33 +191,44 @@ export default {
             totalPages: 0,
             responseData: {},
             photosExists: false,
-            cottagesLoaded: false
+            cottagesLoaded: false,
+            
+            generalSearchField: '',
+            availabilityStart: '',
+            availabilityEnd: '',
+            state: '',
+            city: '',
+            priceFrom: '',
+            priceTo: '',
+            rating: '',
+            cottageName: '',
+            numberOfRooms: '',
+            numberOfBeds: ''
         }
     },
     mounted() {
         this.cottagesLoaded = false;
-        axios
-            .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + this.page)
-            .then(response => (
-                this.responseData = response.data,
-                this.Cottages = this.responseData.content,
-                this.totalPages = this.responseData.totalPages,
-                this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
-                this.cottagesLoaded = true
-            ));
+        this.loadCottagesGet();
         window.scrollTo(0, 0);
-        // this.Cottages = response.data.content
-        // console.log("Pre " + this.CottagesEmpty);
-        // console.log("Posle " + this.CottagesEmpty);
-        // console.log("Duzina this.Cottages.length: " + this.Cottages.length);
     },
     methods: {
-        clickCallback(pageNum) {
-            //console.log(pageNum);
+        async clickCallback(pageNum) {
+            console.log(pageNum);
+            this.page = pageNum;
             this.cottagesLoaded = false;
-            this.page = pageNum
-            axios
-                .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + pageNum)
+            
+            if (this.searchFieldsEmpty()) {
+                await this.loadCottagesGet();
+            }
+            else {
+                await this.searchCottages();
+            }
+            window.scrollTo(0, 0);
+        },
+        async loadCottagesGet() {
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            await axios
+                .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + this.page)
                 .then(response => (
                     this.responseData = response.data,
                     this.Cottages = this.responseData.content,
@@ -213,11 +236,6 @@ export default {
                     this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
                     this.cottagesLoaded = true
                 ));
-            window.scrollTo(0, 0);
-            // this.Cottages = response.data.content
-            // console.log("Pre " + this.CottagesEmpty);
-            // console.log("Posle " + this.CottagesEmpty);
-            // console.log("Duzina this.Cottages.length: " + this.Cottages.length);
         },
         transformAddress(address) {
             return address.street + ', ' + address.city + ', ' + address.state;
@@ -230,6 +248,73 @@ export default {
         },
         generateIdSliderWithHashTag(id) {
             return '#carouselExampleIndicators' + id;
+        },
+        async searchCottages() {
+            // provera da li je korisnik uneo nesto
+            if(this.searchFieldsEmpty()) {
+                alert('Neophodno je da popunite neka polja!')
+            }
+            else {
+                this.cottagesLoaded = false;
+
+                let jsonData = JSON.stringify({
+                    "generalSearchField": this.generalSearchField,
+                    "availabilityStart": this.availabilityStart,
+                    "availabilityEnd": this.availabilityEnd,
+                    "state": this.state,
+                    "city": this.city,
+                    "priceFrom": this.priceFrom,
+                    "priceTo": this.priceTo,
+                    "rating": this.rating,
+                    "cottageName": this.cottageName,
+                    "numberOfRooms": this.numberOfRooms,
+                    "numberOfBeds": this.numberOfBeds
+                });
+                await axios
+                    .post('api/search/cottages?size=' + this.size + '&page=' + this.page,
+                        jsonData,
+                        { headers: { 'Content-Type': 'application/json'} })
+                    .then(response => (
+                        this.responseData = response.data,
+                        this.Cottages = this.responseData.content,
+                        this.totalPages = this.responseData.totalPages,
+                        this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
+                        this.cottagesLoaded = true
+                    ))
+                    .catch(function (err){
+                        if (err.response.status === 400) {
+                            alert(err.response.data);
+                            location.reload();
+                        } 
+                        else {
+                            alert(err);
+                        }
+                        console.log(err);
+                        }
+                    );
+                    
+                    // )
+
+                window.scrollTo(0, 0);
+            }
+        },
+        searchFieldsEmpty() {
+            if (this.generalSearchField == '' &&
+            this.availabilityStart == '' &&
+            this.availabilityEnd == '' &&
+            this.state == '' &&
+            this.city == '' &&
+            this.priceFrom == '' &&
+            this.priceTo == '' &&
+            this.rating == '' &&
+            this.cottageName == '' &&
+            this.numberOfRooms == '' &&
+            this.numberOfBeds == '') {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     },
     components: {
