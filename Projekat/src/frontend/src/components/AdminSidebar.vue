@@ -25,10 +25,10 @@
       <tr class="fs-5">
         <td>Loyalty program</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToPendingRegistrations">
         <td>Registracije na čekanju</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToDeletionRequests">
         <td>Zahtevi za brisanje naloga</td>
       </tr>
     </table>
@@ -76,6 +76,12 @@ export default {
     },
     goToUsers: function() {
       this.$router.push('/admin/users');
+    },
+    goToPendingRegistrations: function() {
+      this.$router.push('/admin/pendingreg');
+    },
+    goToDeletionRequests: function() {
+      this.$router.push('/admin/delreq');
     }
   }
 }

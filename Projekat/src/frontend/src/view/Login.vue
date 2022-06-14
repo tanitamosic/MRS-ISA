@@ -80,9 +80,13 @@ export default {
 
       let self = this; // OVO JE KLJUC ZA REDIREKCIJU
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-      axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json'} })
+      let {data} = axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json'}, withCredentials: true })
       .then((loginResponse) => {
         let cookie = loginResponse.data;
+        // localStorage.setItem('accessToken', cookie.accessToken);
+        // localStorage.setItem('role', cookie.role);
+        // localStorage.setItem('username', username);
+        // localStorage.setItem('currentPassword', password);
         self.$store.accessToken = cookie.accessToken;
         self.$store.role = cookie.role;
         self.$store.username = username;
@@ -91,6 +95,7 @@ export default {
 
         switch (cookie.role) {
           case 'ROLE_ADMIN': {
+            // localStorage.setItem('User', cookie.admin)
             self.$store.User = cookie.admin;
             //console.log(self.$store.User);
             self.$router.push('/admin/profile');
@@ -101,8 +106,11 @@ export default {
           case 'ROLE_COTTAGEOWNER': break;
           case 'ROLE_BOATOWNER': break;
         }
-
-      });
+        return cookie;
+      }).catch((err) => {
+        console.log(err);
+        alert("Email ili lozinka su pogrešni");});
+      console.log(data);
     }
   }
 }

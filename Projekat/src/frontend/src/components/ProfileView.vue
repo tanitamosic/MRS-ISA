@@ -166,6 +166,7 @@
                 id="account-deletion"
                 class="btn btn-danger"
                 type="button"
+                v-if="show_delete_btn"
                 v-on:click="delete_profile"
               >Izbriši profil</button>
             </form>
@@ -258,7 +259,8 @@ export default {
 
       Biography: '',
 
-      show_biography: false
+      show_biography: false,
+      show_delete_btn: true
     }
   },
   mounted() {
@@ -274,6 +276,9 @@ export default {
     this.Biography = this.$store.User.biography ? this.$store.User.biography : '';
     if (this.$store.role === "ROLE_INSTRUCTOR") {
       this.show_biography = true;
+    }
+    if (this.$store.role === "ROLE_ADMIN") {
+      this.show_delete_btn = false;
     }
     //console.log(this.$store.User);
   },
@@ -335,7 +340,19 @@ export default {
         });
     },
     delete_profile: function () {
-      
+      let usr = {
+        'id': this.$store.User.id
+      };
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+      axios.post('/api/profile/make-delete-profile-request', usr)
+      .then((response) => {
+        if (response.status === 200) {
+          alert(response.data);
+        }
+      }).catch((err) => {
+        alert(err.data);
+      });
     }
   }
 }

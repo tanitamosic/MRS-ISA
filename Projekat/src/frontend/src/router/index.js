@@ -8,6 +8,8 @@ import BoatsOverview from '@/view/BoatsOverview.vue'
 import BoatDetails from '@/view/BoatDetails.vue'
 import AdventureOverview from '@/view/AdventureOverview.vue'
 import AdventureDetails from '@/view/AdventureDetails.vue'
+import AdminPendingRegs from '@/view/AdminPendingRegs.vue'
+import AdminDelRequests from '@/view/AdminDelRequests.vue'
 
 
 const routes = [
@@ -55,6 +57,16 @@ const routes = [
     path: '/AdventureDetails/:id?',
     name: 'AdventureDetails',
     component: AdventureDetails
+  },
+  {
+    path: '/admin/pendingreg',
+    name: 'AdminPendingRegs',
+    component: AdminPendingRegs
+  },
+  {
+    path: '/admin/delreq',
+    name: 'AdminDelRequests',
+    component: AdminDelRequests
   }
 ]
 
