@@ -33,4 +33,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Modifying
     @Query(nativeQuery = true, value="UPDATE ACCOUNTS SET activated = true WHERE ACCOUNTS.id=?1")
     void activateAccount(Integer acc_id);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value="UPDATE ACCOUNTS SET deleted = true WHERE ACCOUNTS.id=?1")
+    void deleteAcc(Integer id);
 }

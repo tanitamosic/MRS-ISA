@@ -20,6 +20,6 @@ public class UserService {
     public Integer findUserAccountId(Integer user_id) { return userRepository.findUserAccountId(user_id); }
 
     public void updateUserProfile(Integer user_id, String name, String surname, String phone) { userRepository.updateUserProfile(user_id, name, surname, phone); }
-
     public void updateUserAddress(Integer user_id, Integer address_id) { userRepository.updateUserAddress(user_id, address_id); }
+    public User findUserById(Integer id) { return userRepository.findOneById(id); }
 }

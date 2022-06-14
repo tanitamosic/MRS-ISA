@@ -69,6 +69,10 @@ public class AuthenticationController {
             acc = accountService.findByUsername(u);
             if (null != acc && !acc.getActivated()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else if (null != acc && acc.getDeleted()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else if (acc == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } catch (DataAccessException saveException) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -157,7 +161,7 @@ public class AuthenticationController {
         Account acc = getAccount(newUser, user);
         String username = newUser.Username;
         String request = "Gospodin/Gospođa " + user.getName() + " " + user.getSurname() + " žele da se prijave kao " +
-                role + ".\nAdresa stanovanja: " + address.toString() + "\nBroj telefona" + user.getSurname();
+                role + ".\nAdresa stanovanja: " + address.toString() + "\nBroj telefona: " + user.getPhone();
 
         try {
             addressService.saveNewAddress(address);
@@ -201,7 +205,7 @@ public class AuthenticationController {
         }
 
         acc.setActivated(true);
-        accountService.activateAccount(acc);
+        accountService.activateAccount(acc.getId());
         return new ResponseEntity<>("<body><h1>Aktivacija uspesna</h1></body>", HttpStatus.OK);
     }
 

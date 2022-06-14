@@ -1,10 +1,14 @@
 package com.Projekat.controller;
 
 
+import com.Projekat.dto.SimpleUserDTO;
 import com.Projekat.model.Account;
+import com.Projekat.model.AccountDeletionRequest;
+import com.Projekat.model.users.User;
 import com.Projekat.service.AccountService;
 import com.Projekat.dto.ProfileDetailsDTO;
 import com.Projekat.service.AddressService;
+import com.Projekat.service.DeletionService;
 import com.Projekat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +26,10 @@ public class ProfileController {
     private AccountService accountService;
     @Autowired
     private UserService userService;
-
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private DeletionService deletionService;
 
     @PostMapping(consumes = "application/json", value = "update-profile")
     public ResponseEntity<String> updateProfile(@RequestBody ProfileDetailsDTO profile) {
@@ -49,5 +54,16 @@ public class ProfileController {
 
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @PostMapping(value="make-delete-profile-request")
+    public ResponseEntity<String> postDeletionRequest(SimpleUserDTO simple_dto) {
+        final Integer acc_id = userService.findUserAccountId(simple_dto.getId());
+        User u = userService.findUserById(simple_dto.getId());
+        Account acc = accountService.findById(acc_id);
+        AccountDeletionRequest adr = new AccountDeletionRequest(acc, u);
+        deletionService.makeDelRequest(adr);
+
+        return new ResponseEntity<>("Uspešno ste poslali zahtev za brisanje naloga.", HttpStatus.OK);
     }
 }

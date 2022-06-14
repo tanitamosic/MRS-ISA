@@ -76,5 +76,7 @@ public class AccountService {
         tokenRepository.save(myToken);
     }
 
-    public void activateAccount(Account acc) { accountRepository.activateAccount(acc.getId()); }
+    public void activateAccount(Integer acc_id) { accountRepository.activateAccount(acc_id); }
+
+    public void delete(Integer id) { accountRepository.deleteAcc(id); }
 }
