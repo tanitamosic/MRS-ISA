@@ -46,7 +46,12 @@ public class AdventureSearchRepository {
 
 
     private Predicate getPredicate(Root<Adventure> adventureRoot) {
-        return getPredicateForRemainingFields(adventureRoot);
+        Predicate generalSearchPredicate = getGeneralSearchPredicate(adventureRoot);
+        Predicate predicate = getPredicateForRemainingFields(adventureRoot);
+        if(null == generalSearchPredicate && null != predicate) {
+            return predicate;
+        }
+        return criteriaBuilder.and(predicate, generalSearchPredicate);
     }
 
     private Predicate getPredicateForRemainingFields(Root<Adventure> adventureRoot) {
@@ -118,7 +123,67 @@ public class AdventureSearchRepository {
     }
 
     private Predicate getGeneralSearchPredicate(Root<Adventure> adventureRoot) {
-        return null;
+        List<Predicate> predicatesGeneralSearch = new ArrayList<>();
+        Predicate generalSearchPredicate = null;
+        if(Objects.nonNull(searchCriteria.getGeneralSearchField())) {
+            boolean isDouble;
+            double doubleNumber = -1.0;
+            try {
+                doubleNumber = Double.parseDouble(searchCriteria.getGeneralSearchField());
+                isDouble = true;
+            }
+            catch (Exception e) {
+                isDouble = false;
+            }
+
+            boolean isInteger;
+            int integerNumber = -1;
+            try {
+                integerNumber = Integer.parseInt(searchCriteria.getGeneralSearchField());
+                isInteger = true;
+            }
+            catch (Exception e) {
+                isInteger = false;
+            }
+
+            adventureRoot.join("address", JoinType.INNER);
+            predicatesGeneralSearch.add(
+                    criteriaBuilder.like(adventureRoot.get("address").get("state"),
+                            "%" + searchCriteria.getGeneralSearchField() + "%")
+            );
+            predicatesGeneralSearch.add(
+                    criteriaBuilder.like(adventureRoot.get("address").get("city"),
+                            "%" + searchCriteria.getGeneralSearchField() + "%")
+            );
+            predicatesGeneralSearch.add(
+                    criteriaBuilder.like(adventureRoot.get("name"),
+                            "%" + searchCriteria.getGeneralSearchField() + "%")
+            );
+
+            predicatesGeneralSearch.add(
+                    criteriaBuilder.like(adventureRoot.get("fishingEquipment"),
+                            "%" + searchCriteria.getGeneralSearchField() + "%")
+            );
+
+            if (isDouble) {
+                predicatesGeneralSearch.add(
+                        criteriaBuilder.greaterThanOrEqualTo(adventureRoot.get("price"),      // obratiti paznju na tip
+                                doubleNumber)
+                );
+                predicatesGeneralSearch.add(
+                        criteriaBuilder.greaterThanOrEqualTo(adventureRoot.get("rating"),
+                                doubleNumber)
+                );
+            }
+            if (isInteger) {
+                predicatesGeneralSearch.add(
+                        criteriaBuilder.greaterThanOrEqualTo(adventureRoot.get("capacity"),
+                                integerNumber)
+                );
+            }
+            generalSearchPredicate = criteriaBuilder.or(predicatesGeneralSearch.toArray(new Predicate[0]));
+        }
+        return generalSearchPredicate;
     }
 
     private long getAdventuresCount(Predicate predicate) {
