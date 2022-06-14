@@ -1,8 +1,10 @@
 package com.Projekat.controller;
 
 import com.Projekat.dto.AdventureSearchDTO;
+import com.Projekat.dto.BoatSearchDTO;
 import com.Projekat.dto.CottageSearchDTO;
 import com.Projekat.model.services.Adventure;
+import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,12 @@ public class SearchController {
     @PostMapping(value = "/adventures")
     public ResponseEntity<Page<Adventure>> searchAdventures(Pageable page, @RequestBody AdventureSearchDTO adventureSearchDTO) {
         return new ResponseEntity<>(searchService.getAdventures(page, adventureSearchDTO),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/boats")
+    public ResponseEntity<Page<Boat>> searchBoats(Pageable page, @RequestBody BoatSearchDTO boatSearchDTO) {
+        return new ResponseEntity<>(searchService.getBoats(page, boatSearchDTO),
                 HttpStatus.OK);
     }
 
