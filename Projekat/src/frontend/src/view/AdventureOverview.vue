@@ -294,7 +294,10 @@ export default {
                         console.log(err);
                         }
                     );
-                    
+                
+                this.availabilityStartStr = '';
+                this.availabilityEndStr = '';
+
                 window.scrollTo(0, 0);
 
             }

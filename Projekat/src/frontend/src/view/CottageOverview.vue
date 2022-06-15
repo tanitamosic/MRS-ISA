@@ -203,7 +203,10 @@ export default {
             rating: '',
             cottageName: '',
             numberOfRooms: '',
-            numberOfBeds: ''
+            numberOfBeds: '',
+
+            availabilityStartStr: '',
+            availabilityEndStr: ''
         }
     },
     mounted() {
@@ -256,11 +259,11 @@ export default {
             }
             else {
                 this.cottagesLoaded = false;
-
+                await this.formatForSendingDates();
                 let jsonData = JSON.stringify({
                     "generalSearchField": this.generalSearchField,
-                    "availabilityStart": this.availabilityStart,
-                    "availabilityEnd": this.availabilityEnd,
+                    "availabilityStart": this.availabilityStartStr,
+                    "availabilityEnd": this.availabilityEndStr,
                     "state": this.state,
                     "city": this.city,
                     "priceFrom": this.priceFrom,
@@ -293,7 +296,9 @@ export default {
                         }
                     );
                     
-                    // )
+
+                this.availabilityStartStr = '';
+                this.availabilityEndStr = '';
 
                 window.scrollTo(0, 0);
             }
@@ -315,6 +320,16 @@ export default {
             else {
                 return false;
             }
+        },
+        async formatForSendingDates() {
+                if(this.availabilityStart != '') {
+                    if(!this.availabilityStartStr.includes('T'))
+                        this.availabilityStartStr = this.availabilityStart.toString() + 'T00:00:00';
+                }
+                if(this.availabilityEnd != '') {
+                    if(!this.availabilityEndStr.includes('T'))
+                        this.availabilityEndStr = this.availabilityEnd.toString() + 'T00:00:00';
+                }
         }
     },
     components: {
