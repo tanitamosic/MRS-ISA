@@ -1,8 +1,6 @@
 package com.Projekat.controller;
 
-import com.Projekat.dto.AdventureSearchDTO;
-import com.Projekat.dto.BoatSearchDTO;
-import com.Projekat.dto.CottageSearchDTO;
+import com.Projekat.dto.*;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
@@ -27,31 +25,35 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-//    @GetMapping(value = "/cottages")
-//    @PostMapping(value = "/cottages/{page}/{size}")
+
     @PostMapping(value = "/cottages")
-    public ResponseEntity<Page<Cottage>> searchCottages(Pageable page, @RequestBody CottageSearchDTO cottageSearchDTO) {
-//        Pageable pag = PageRequest.of(page, size);
-        return new ResponseEntity<>(searchService.getCottages(page, cottageSearchDTO),
-                HttpStatus.OK);
+    public ResponseEntity<Page<SimpleCottageDTO>> searchCottages(Pageable page, @RequestBody CottageSearchDTO cottageSearchDTO) {
+        Page<Cottage> cottages = searchService.getCottages(page, cottageSearchDTO);
+        Page<SimpleCottageDTO> pageCottageDTO = cottages.map(this::convertToSimpleCottageDTO);
+        return new ResponseEntity<>(pageCottageDTO, HttpStatus.OK);
+    }
+    private SimpleCottageDTO convertToSimpleCottageDTO(Cottage c) {
+        return new SimpleCottageDTO(c);
     }
 
-//    @PostMapping(consumes = "application/json", value = "/cottages/proba")
-//    public ResponseEntity<CottageSearchDTO> searchCottagesProba(@RequestBody CottageSearchDTO cottageSearchDTO) {
-//        return new ResponseEntity<>(new CottageSearchDTO(),
-//                HttpStatus.OK);
-//    }
-
     @PostMapping(value = "/adventures")
-    public ResponseEntity<Page<Adventure>> searchAdventures(Pageable page, @RequestBody AdventureSearchDTO adventureSearchDTO) {
-        return new ResponseEntity<>(searchService.getAdventures(page, adventureSearchDTO),
-                HttpStatus.OK);
+    public ResponseEntity<Page<SimpleAdventureDTO>> searchAdventures(Pageable page, @RequestBody AdventureSearchDTO adventureSearchDTO) {
+        Page<Adventure> adventures = searchService.getAdventures(page, adventureSearchDTO);
+        Page<SimpleAdventureDTO> pageAdventureDTO = adventures.map(this::convertToSimpleAdventureDTO);
+        return new ResponseEntity<>(pageAdventureDTO, HttpStatus.OK);
+    }
+    private SimpleAdventureDTO convertToSimpleAdventureDTO(Adventure a) {
+        return new SimpleAdventureDTO(a);
     }
 
     @PostMapping(value = "/boats")
-    public ResponseEntity<Page<Boat>> searchBoats(Pageable page, @RequestBody BoatSearchDTO boatSearchDTO) {
-        return new ResponseEntity<>(searchService.getBoats(page, boatSearchDTO),
-                HttpStatus.OK);
+    public ResponseEntity<Page<SimpleBoatDTO>> searchBoats(Pageable page, @RequestBody BoatSearchDTO boatSearchDTO) {
+        Page<Boat> boats = searchService.getBoats(page, boatSearchDTO);
+        Page<SimpleBoatDTO> pageBoatDTO = boats.map(this::convertToSimpleBoatDTO);
+        return new ResponseEntity<>(pageBoatDTO, HttpStatus.OK);
+    }
+    private SimpleBoatDTO convertToSimpleBoatDTO(Boat b) {
+        return new SimpleBoatDTO(b);
     }
 
 }
