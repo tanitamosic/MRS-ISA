@@ -106,10 +106,10 @@ public class BoatSearchRepository {
                             searchCriteria.getRating())
             );
         }
-        if(Objects.nonNull(searchCriteria.getFishingEquipment())) {
+        if(Objects.nonNull(searchCriteria.getBoatType())) {
             predicates.add(
-                    criteriaBuilder.like(boatRoot.get("boatType"),
-                            "%" + searchCriteria.getFishingEquipment() + "%")
+                    criteriaBuilder.like(boatRoot.get("type"),
+                            "%" + searchCriteria.getBoatType() + "%")
             );
         }
         if(Objects.nonNull(searchCriteria.getCapacity())) {
@@ -118,10 +118,10 @@ public class BoatSearchRepository {
                             searchCriteria.getCapacity())
             );
         }
-        if(Objects.nonNull(searchCriteria.getFishingEquipment())) {
+        if(Objects.nonNull(searchCriteria.getNavigationalEquipment())) {
             predicates.add(
                     criteriaBuilder.like(boatRoot.get("navigationalEquipment"),
-                            "%" + searchCriteria.getFishingEquipment() + "%")
+                            "%" + searchCriteria.getNavigationalEquipment() + "%")
             );
         }
         if(Objects.nonNull(searchCriteria.getFishingEquipment())) {
