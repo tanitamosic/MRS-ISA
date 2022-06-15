@@ -102,59 +102,61 @@
     </div>
     <div v-if="!this.adventuresLoaded" id="ucitavanje">Učitavanje!</div>
     <div v-else-if="this.adventuresLoaded && this.AdventuresEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
-    <div v-else-if="this.adventuresLoaded && this.AdventuresEmpty === false" class="container mt-5 mb-5">
-        <div class="d-flex justify-content-center row">
-            <div class="col-md-10 mt-5">
-                <div class="row p-2 bg-white border rounded mt-2" v-for="(adventure, i) in Adventures" :key="i">
-                    <div class="col-md-3 col- mt-1">
+    <div v-else-if="this.adventuresLoaded && this.AdventuresEmpty === false" pb-5>
+        <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-10 mt-5">
+                    <div class="row p-2 bg-white border rounded mt-2" v-for="(adventure, i) in Adventures" :key="i">
+                        <div class="col-md-3 col- mt-1">
 
-                        <div :id="generateIdSlider(i)" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active" v-if="!(adventure.photos[0] === undefined)">
-                                    <img :src="adventure.photos[0].assetPath"
-                                        class="img-fluid img-responsive rounded product-image" alt="image">
+                            <div :id="generateIdSlider(i)" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" v-if="!(adventure.photos[0] === undefined)">
+                                        <img :src="adventure.photos[0].assetPath"
+                                            class="img-fluid img-responsive rounded product-image" alt="image">
+                                    </div>
+                                    <div v-for="(photo, i) in adventure.photos.slice(1)" :key="i" class="carousel-item">
+                                        <img :src="photo.assetPath"
+                                            class="img-fluid img-responsive rounded product-image" alt="image">
+                                    </div>
                                 </div>
-                                <div v-for="(photo, i) in adventure.photos.slice(1)" :key="i" class="carousel-item">
-                                    <img :src="photo.assetPath" class="img-fluid img-responsive rounded product-image"
-                                        alt="image">
-                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                    :data-bs-target="generateIdSliderWithHashTag(i)" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    :data-bs-target="generateIdSliderWithHashTag(i)" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                            <button class="carousel-control-prev" type="button"
-                                :data-bs-target="generateIdSliderWithHashTag(i)" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                :data-bs-target="generateIdSliderWithHashTag(i)" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
 
-                    </div>
-                    <div class="col-md-6 mt-1">
-                        <h5>{{ adventure.name }}</h5>
-                        <br />
-                        <p class="text-justify para mb-0">{{ adventure.description }}<br><br></p>
-                        <br />
-                        <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(adventure.address) }}</p>
-                    </div>
-                    <div class="align-items-center align-content-center col-md-3 border-left pb-3">
-                        <div class="d-flex flex-row align-items-center">
-                            <h4 class="mr-1">${{ adventure.price }}</h4>
                         </div>
-                        <div class="d-flex flex-column mt-4">
-                            <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
-                            <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                            <router-link class="btn btn-primary btn-sm" :to="getNextPath(adventure.id)">Detalji
-                            </router-link>
+                        <div class="col-md-6 mt-1">
+                            <h5>{{ adventure.name }}</h5>
+                            <br />
+                            <p class="text-justify para mb-0">{{ adventure.description }}<br><br></p>
+                            <br />
+                            <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(adventure.address) }}</p>
+                        </div>
+                        <div class="align-items-center align-content-center col-md-3 border-left pb-3">
+                            <div class="d-flex flex-row align-items-center">
+                                <h4 class="mr-1">${{ adventure.price }}</h4>
+                            </div>
+                            <div class="d-flex flex-column mt-4">
+                                <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
+                                <!-- <a href="#/novaKomponenta">Detalji</a> -->
+                                <router-link class="btn btn-primary btn-sm" :to="getNextPath(adventure.id)">Detalji
+                                </router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Komponenta za paginaciju -->
-        <div v-if="this.totalPages > 1">
+        <div v-if="this.totalPages > 1" mt-5 mb-0>
             <paginate v-model="page" :page-count=totalPages :page-range="3" :margin-pages="2"
                 :click-handler="clickCallback" :prev-text="'Nazad'" :next-text="'Napred'"
                 :container-class="'pagination'" :page-class="'page-item'">
