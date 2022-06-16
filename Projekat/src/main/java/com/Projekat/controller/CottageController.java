@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
@@ -16,13 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/cottages")
+@RequestMapping(value = "api")
 public class CottageController {
 
     @Autowired
     private CottageService cottageService;
 
-    @GetMapping(value = "all")
+    @GetMapping(value = "/cottages/all")
     public ResponseEntity<List<CottageDTO>> getAllCottages(){
         List<Cottage> cottages = cottageService.findAll();
         List<CottageDTO> cottagesDTO = new ArrayList<>();
@@ -32,7 +33,7 @@ public class CottageController {
         return new ResponseEntity<>(cottagesDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "all/withPagination")
+    @GetMapping(value = "/cottages/all/withPagination")
     public Page<SimpleCottageDTO> getCottagesWithPagination(Pageable page) {
         Page<Cottage> pageCottage = cottageService.findAll(page);
         Page<SimpleCottageDTO> pageCottageDTO = pageCottage.map(this::convertToSimpleCottageDTO);
@@ -50,7 +51,7 @@ public class CottageController {
     */
 
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/cottages/{id}")
     public ResponseEntity<CottageDTO> getCottage(@PathVariable Integer id) {
 
         Cottage cottage = cottageService.findOne(id);
@@ -63,7 +64,7 @@ public class CottageController {
         return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.OK);
     }
 
-    @GetMapping(value = "getCottage/{id}")
+    @GetMapping(value = "/cottages/getCottage/{id}")
     public ResponseEntity<ComplexCottageDTO> getComplexCottage(@PathVariable Integer id) {
 
         Cottage cottage = cottageService.findOne(id);
@@ -76,7 +77,7 @@ public class CottageController {
         return new ResponseEntity<>(new ComplexCottageDTO(cottage), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(value="/cottages", consumes = "application/json")
     public ResponseEntity<CottageDTO> saveCottage(@RequestBody CottageDTO cottageDTO) {
 
         Cottage cottage = new Cottage();
@@ -96,7 +97,7 @@ public class CottageController {
         return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.CREATED);
     }
 
-    @PutMapping(consumes = "application/json")
+    @PutMapping(value="/cottages", consumes = "application/json")
     public ResponseEntity<CottageDTO> updateCottage(@RequestBody CottageDTO cottageDTO) {
 
         // a cottage must exist
@@ -122,16 +123,17 @@ public class CottageController {
         return new ResponseEntity<>(new CottageDTO(cottage), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteCottage(@PathVariable Integer id) {
+    @DeleteMapping(value = "/admin/delete-cottage/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteCottage(@PathVariable Integer id) {
 
         Cottage cottage = cottageService.findOne(id);
 
         if (cottage != null) {
             cottageService.remove(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Uspešno ste obrisali vikendicu.",HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Vikendica ne postoji", HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -161,8 +161,9 @@
                             <div class="d-flex flex-column mt-4">
                                 <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                                 <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                                <router-link class="btn btn-primary btn-sm" :to="getNextPath(boat.id)">Detalji
+                                <router-link v-if="!isAdmin" class="btn btn-primary btn-sm" :to="getNextPath(boat.id)">Detalji
                                 </router-link>
+                                <button v-if="isAdmin" class="btn btn-danger btn-sm mt-1" v-on:click="deleteBoat(boat.id)">Obriši</button>
                             </div>
                         </div>
                     </div>
@@ -213,7 +214,9 @@ export default {
             fishingEquipment: '',
 
             availabilityStartStr: '',
-            availabilityEndStr: ''
+            availabilityEndStr: '',
+
+            isAdmin: false
 
         }
     },
@@ -221,8 +224,33 @@ export default {
         this.boatsLoaded = false;
         this.loadBoatsGet();
         window.scrollTo(0, 0);
+
+        if(this.$store.role === "ROLE_ADMIN") {
+            this.isAdmin = true;
+        }
     },
     methods: {
+        async deleteBoat(id) {
+            let self = this;
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            axios.delete('/api/admin/delete-boat/' + id)
+            .then((response) => {
+                if (response.status === 200) {
+                    alert(response.data)
+                    // RE-GET BOATS
+                    self.boatsLoaded = false;
+                    self.loadBoatsGet();
+                    window.scrollTo(0, 0);
+                }
+            }).catch((err) => {
+                console.log(err);
+                alert(err);
+            });
+
+         
+        
+        },
         async clickCallback(pageNum) {
             //console.log(pageNum);
             this.boatsLoaded = false;

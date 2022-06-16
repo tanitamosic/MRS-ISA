@@ -33,4 +33,6 @@ public class AdventureService {
         return adventureRepository.findAll();
     }
 
+    public void delete(Integer id) { adventureRepository.deleteAdventure(id); }
+
 }

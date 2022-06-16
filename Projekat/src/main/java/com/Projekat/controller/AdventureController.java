@@ -9,23 +9,27 @@ import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.service.AdventureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 @RestController
-@RequestMapping(value = "api/adventures")
+@RequestMapping(value = "/api")
 public class AdventureController {
 
     @Autowired
     private AdventureService adventureService;
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(value="/adventures", consumes = "application/json")
     public ResponseEntity<AdventureDTO> saveAdventure(@RequestBody AdventureDTO adventureDTO) {
 
         Adventure adventure = new Adventure();
@@ -46,7 +50,7 @@ public class AdventureController {
         return new ResponseEntity<>(new AdventureDTO(adventure), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "all")
+    @GetMapping(value = "/adventures/all")
     public ResponseEntity<List<SimpleAdventureDTO>> getAllAdventures(){
         List<Adventure> adventures = adventureService.findAll();
         List<SimpleAdventureDTO> adventureDTO = new ArrayList<>();
@@ -56,9 +60,17 @@ public class AdventureController {
         return new ResponseEntity<>(adventureDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "all/withPagination")
+    @GetMapping(value = "/adventures/all/withPagination")
     public Page<SimpleAdventureDTO> getAdventuresWithPagination(Pageable page) {
         Page<Adventure> pageAdventure = adventureService.findAll(page);
+        pageAdventure.forEach(new Consumer<Adventure>() {
+            @Override
+            public void accept(Adventure adventure) {
+                if (adventure.getDeleted()) {
+
+                }
+            }
+        });
         Page<SimpleAdventureDTO> pageAdventureDTO = pageAdventure.map(this::convertToSimpleAdventureDTO);
         return pageAdventureDTO;
     }
@@ -67,7 +79,7 @@ public class AdventureController {
     }
 
 
-    @GetMapping(value = "getAdventure/{id}")
+    @GetMapping(value = "/adventures/getAdventure/{id}")
     public ResponseEntity<ComplexAdventureDTO> getComplexAdventure(@PathVariable Integer id) {
 
         Adventure adventure = adventureService.findOne(id);
@@ -79,5 +91,17 @@ public class AdventureController {
 
         return new ResponseEntity<>(new ComplexAdventureDTO(adventure), HttpStatus.OK);
     }
+
+    @DeleteMapping(value="/admin/delete-adventure/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteAdventure(@PathVariable Integer id) {
+        try {
+            adventureService.delete(id);
+            return new ResponseEntity<>("Uspešno ste obrisali avanturu", HttpStatus.OK);
+        } catch (DataAccessException err) {
+            return new ResponseEntity<>("Avantura ne postoji", HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

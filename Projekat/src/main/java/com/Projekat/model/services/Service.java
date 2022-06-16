@@ -3,6 +3,7 @@ package com.Projekat.model.services;
 import com.Projekat.model.Address;
 import com.Projekat.model.Photo;
 import com.Projekat.model.users.ServiceProvider;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Entity
 @Inheritance(strategy=TABLE_PER_CLASS)
+@Where(clause="is_deleted = false")
 public abstract class Service {
 
     @Id

@@ -7,13 +7,13 @@
       <tr class="fs-5" v-on:click="goToUsers">
         <td>Pregled korisnika</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToCottages">
         <td>Pregled vikendica</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToBoats">
         <td>Pregled brodova</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToAdventures">
         <td>Pregled časova pecanja</td>
       </tr>
       <tr class="fs-5">
@@ -85,6 +85,15 @@ export default {
     },
     goToComplaints: function() {
       this.$router.push('/admin/complaints');
+    },
+    goToCottages: function() {
+      this.$router.push('/admin/cottage-overview')
+    },
+    goToBoats: function() {
+      this.$router.push('/admin/boat-overview')
+    },
+    goToAdventures: function() {
+      this.$router.push('/admin/adventure-overview')
     }
   }
 }

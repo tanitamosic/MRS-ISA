@@ -38,6 +38,6 @@ public class CottageService {
     }
 
     public void remove(Integer id) {
-        cottageRepository.deleteById(id);
+        cottageRepository.deleteCottage(id);
     }
 }

@@ -150,8 +150,9 @@
                             <div class="d-flex flex-column mt-4">
                                 <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                                 <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                                <router-link class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji
+                                <router-link v-if="!isAdmin" class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji
                                 </router-link>
+                                <button v-if="isAdmin" class="btn btn-danger btn-sm mt-1" v-on:click="deleteCottage(cotage.id)">Obriši</button>
                             </div>
                         </div>
                     </div>
@@ -199,15 +200,42 @@ export default {
             numberOfBeds: '',
 
             availabilityStartStr: '',
-            availabilityEndStr: ''
+            availabilityEndStr: '',
+
+            isAdmin: false
         }
     },
     mounted() {
         this.cottagesLoaded = false;
         this.loadCottagesGet();
         window.scrollTo(0, 0);
+
+        if(this.$store.role === "ROLE_ADMIN") {
+            this.isAdmin = true;
+        }
     },
     methods: {
+        async deleteCottage(id) {
+            let self = this;
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            axios.delete('/api/admin/delete-cottage/' + id)
+            .then((response) => {
+                if (response.status === 200) {
+                    alert(response.data)
+                    // RE-GET COTTAGES
+                    self.cottagesLoaded = false;
+                    self.loadCottagesGet();
+                    window.scrollTo(0, 0);
+                }
+            }).catch((err) => {
+                console.log(err);
+                alert(err);
+            });
+
+            
+        
+        },
         async clickCallback(pageNum) {
             console.log(pageNum);
             this.page = pageNum;

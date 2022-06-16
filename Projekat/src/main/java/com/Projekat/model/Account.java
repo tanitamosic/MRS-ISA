@@ -2,6 +2,7 @@ package com.Projekat.model;
 import com.Projekat.model.users.Role;
 import com.Projekat.model.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "accounts")
+@Where(clause="deleted = false")
 public class Account implements UserDetails {
 
     @Id

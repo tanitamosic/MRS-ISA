@@ -11,6 +11,9 @@ import AdventureDetails from '@/view/AdventureDetails.vue'
 import AdminPendingRegs from '@/view/AdminPendingRegs.vue'
 import AdminDelRequests from '@/view/AdminDelRequests.vue'
 import AdminComplaints from '@/view/AdminComplaints.vue'
+import AdminCottages from '@/view/AdminCotOverview.vue'
+import AdminBoats from '@/view/AdminBoatOverview.vue'
+import AdminAdventures from '@/view/AdminAdvOverview.vue'
 
 
 const routes = [
@@ -73,6 +76,21 @@ const routes = [
     path: '/admin/complaints',
     name: 'AdminComplaints',
     component: AdminComplaints
+  },
+  {
+    path: '/admin/cottage-overview',
+    name: 'AdminCottages',
+    component: AdminCottages
+  },
+  {
+    path: '/admin/boat-overview',
+    name: 'AdminBoats',
+    component: AdminBoats
+  },
+  {
+    path: '/admin/adventure-overview',
+    name: 'AdminAdventures',
+    component: AdminAdventures
   }
 ]
 

@@ -28,4 +28,6 @@ public class BoatService {
     public Page<Boat> findAll(Pageable page) {
         return boatRepository.findAll(page);
     }
+
+    public void delete(Integer id) { boatRepository.deleteBoat(id); }
 }
