@@ -52,19 +52,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf()
-			.disable()
-			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class)
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+				.disable()
+				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class)
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
-			.authorizeRequests().antMatchers("/auth/*").permitAll()
-								.antMatchers("/index").permitAll() // pocetna strana sa svim ponudama
-								.antMatchers("/admin").hasRole("ADMIN")
-								.antMatchers("/auth/register").permitAll()
-								.antMatchers("/api/cottages/**").permitAll()
-								.antMatchers("/api/boats/**").permitAll()
-								.antMatchers("/api/adventures/**").permitAll()
-								.anyRequest().authenticated().and()
+				.authorizeRequests().antMatchers("/auth/*").permitAll()
+				.antMatchers("/index").permitAll() // pocetna strana sa svim ponudama
+				.antMatchers("/admin").hasRole("ADMIN")
+//				.antMatchers("/auth/register").permitAll()
+				.antMatchers("/api/cottages/**").permitAll()
+				.antMatchers("/api/boats/**").permitAll()
+				.antMatchers("/api/adventures/**").permitAll()
+				.antMatchers("/api/search/**").permitAll()
+				.anyRequest().authenticated().and()
 				.cors();
 	}
 
@@ -72,6 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		 web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
 		 web.ignoring().antMatchers(HttpMethod.POST, "/auth/register/*");
+		 web.ignoring().antMatchers(HttpMethod.POST, "/api/search/cottages");
+		 web.ignoring().antMatchers(HttpMethod.POST, "/api/search/adventures");
+		 web.ignoring().antMatchers(HttpMethod.POST, "/api/search/boats");
 		 web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico", "/**/*.html",
 				"/**/*.css", "/**/*.js");
 	}

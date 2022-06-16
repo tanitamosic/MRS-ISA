@@ -6,6 +6,7 @@ import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 
 import javax.persistence.Column;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class ComplexAdventureDTO {
@@ -17,6 +18,9 @@ public class ComplexAdventureDTO {
     private Photo primaryPhoto;
     private Set<Photo> photos;
     private Double price;
+    private Double rating;
+    private LocalDateTime availabilityStart;
+    private LocalDateTime availabilityEnd;
 
     private String rules;
     private String cancellationTerms;
@@ -30,7 +34,10 @@ public class ComplexAdventureDTO {
     public ComplexAdventureDTO(Integer id, String name,
                                Address address, String description,
                                Photo primaryPhoto, Set<Photo> photos,
-                               Double price, String rules, String cancellationTerms,
+                               Double price, Double rating,
+                               LocalDateTime availabilityStart,
+                               LocalDateTime availabilityEnd,
+                               String rules, String cancellationTerms,
                                Set<AdditionalService> additionalServices,
                                Integer capacity, String fishingEquipment) {
         this.id = id;
@@ -40,6 +47,9 @@ public class ComplexAdventureDTO {
         this.primaryPhoto = primaryPhoto;
         this.photos = photos;
         this.price = price;
+        this.rating = rating;
+        this.availabilityStart = availabilityStart;
+        this.availabilityEnd = availabilityEnd;
         this.rules = rules;
         this.cancellationTerms = cancellationTerms;
         this.additionalServices = additionalServices;
@@ -50,7 +60,8 @@ public class ComplexAdventureDTO {
     public ComplexAdventureDTO(Adventure a){
         this(a.getId(), a.getName(), a.getAddress(),
                 a.getDescription(), a.getPrimaryPhoto(),
-                a.getPhotos(), a.getPrice(), a.getRules(),
+                a.getPhotos(), a.getPrice(), a.getRating(),
+                a.getAvailabilityStart(), a.getAvailabilityEnd(),a.getRules(),
                 a.getCancellationTerms(), a.getAdditionalServices(),
                 a.getCapacity(), a.getFishingEquipment());
     }
@@ -81,6 +92,18 @@ public class ComplexAdventureDTO {
 
     public Double getPrice() {
         return price;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public LocalDateTime getAvailabilityStart() {
+        return availabilityStart;
+    }
+
+    public LocalDateTime getAvailabilityEnd() {
+        return availabilityEnd;
     }
 
     public String getRules() {

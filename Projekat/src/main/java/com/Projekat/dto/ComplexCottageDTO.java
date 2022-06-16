@@ -16,6 +16,9 @@ public class ComplexCottageDTO {
     private String description;
     private String rules;
     private Double price;
+    private Double rating;
+    private LocalDateTime availabilityStart;
+    private LocalDateTime availabilityEnd;
     private String cancellationTerms;
     private Integer numberOfRooms;
     private Integer numberOfBeds;
@@ -27,16 +30,22 @@ public class ComplexCottageDTO {
 
     public ComplexCottageDTO(Integer id, String name,
                              Address address, String description,
-                             String rules, Double price,
+                             String rules, Double price, Double rating,
+                             LocalDateTime availabilityStart,
+                             LocalDateTime availabilityEnd,
                              String cancellationTerms,
                              Integer numberOfRooms, Integer numberOfBeds,
-                             Set<AdditionalService> additionalServices,Photo primaryPhoto, Set<Photo> photos) {
+                             Set<AdditionalService> additionalServices,
+                             Photo primaryPhoto, Set<Photo> photos) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.description = description;
         this.rules = rules;
         this.price = price;
+        this.rating = rating;
+        this.availabilityStart = availabilityStart;
+        this.availabilityEnd = availabilityEnd;
         this.cancellationTerms = cancellationTerms;
         this.numberOfRooms = numberOfRooms;
         this.numberOfBeds = numberOfBeds;
@@ -48,8 +57,12 @@ public class ComplexCottageDTO {
     public ComplexCottageDTO(Cottage c){
         this(c.getId(), c.getName(), c.getAddress(),
                 c.getDescription(), c.getRules(),
-                c.getPrice(), c.getCancellationTerms(),
-                c.getNumberOfRooms(), c.getNumberOfBeds(), c.getAdditionalServices(),c.getPrimaryPhoto(), c.getPhotos());
+                c.getPrice(), c.getRating(),
+                c.getAvailabilityStart(),
+                c.getAvailabilityEnd(),
+                c.getCancellationTerms(),
+                c.getNumberOfRooms(), c.getNumberOfBeds(),
+                c.getAdditionalServices(),c.getPrimaryPhoto(), c.getPhotos());
     }
 
     public Integer getId() {
@@ -74,6 +87,18 @@ public class ComplexCottageDTO {
 
     public Double getPrice() {
         return price;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public LocalDateTime getAvailabilityStart() {
+        return availabilityStart;
+    }
+
+    public LocalDateTime getAvailabilityEnd() {
+        return availabilityEnd;
     }
 
     public String getCancellationTerms() {

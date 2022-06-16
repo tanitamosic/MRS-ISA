@@ -52,6 +52,8 @@ public abstract class Service {
     @Column(name="price", unique=false, nullable=false)
     private Double price;
 
+    @Column(name="rating", unique = false, nullable = true)
+    private Double rating;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "additionals",
@@ -135,6 +137,14 @@ public abstract class Service {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public Set<AdditionalService> getAdditionalServices() {
