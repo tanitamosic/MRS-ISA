@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="navbar-nav me-auto order-0 nav-title navtxt">
-                   Turizam
+                   <i><b>TurboJavaSpringbootTurizamExpo</b></i>
                 </div>
                 <div class="d-flex ms-auto order-5">
                     <router-link class="me-2 navtxt" to="/" >Pregled Vikendica</router-link>

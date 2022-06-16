@@ -19,7 +19,7 @@
       <tr class="fs-5">
         <td>Ocene na čekanju</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToComplaints">
         <td>Žalbe</td>
       </tr>
       <tr class="fs-5">
@@ -82,6 +82,9 @@ export default {
     },
     goToDeletionRequests: function() {
       this.$router.push('/admin/delreq');
+    },
+    goToComplaints: function() {
+      this.$router.push('/admin/complaints');
     }
   }
 }

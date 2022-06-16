@@ -2,6 +2,7 @@ package com.Projekat.model.services;
 
 import com.Projekat.model.Address;
 import com.Projekat.model.Photo;
+import com.Projekat.model.users.ServiceProvider;
 
 import javax.persistence.*;
 
@@ -20,6 +21,10 @@ public abstract class Service {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "serviceIdSeqGen")
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="owner_id")
+    private ServiceProvider owner;
 
     @Column(name="name", unique=false, nullable=false)
     private String name;
@@ -172,5 +177,11 @@ public abstract class Service {
         isDeleted = deleted;
     }
 
+    public ServiceProvider getOwner() {
+        return owner;
+    }
 
+    public void setOwner(ServiceProvider owner) {
+        this.owner = owner;
+    }
 }

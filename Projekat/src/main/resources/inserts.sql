@@ -175,91 +175,91 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica11.jpg', 1);
 
 INSERT INTO public.cottages(
-	id, number_of_beds, number_of_rooms, availability_end,
+	id, owner_id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-	VALUES (nextval('service_id_seq'), 10, 15,
+	VALUES (nextval('service_id_seq'), 6, 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
 			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 8, 'Uslovi otkaza', 1);
 
 INSERT INTO public.cottages(
-	id, number_of_beds, number_of_rooms, availability_end,
+	id, owner_id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-	VALUES (nextval('service_id_seq'), 10, 15,
+	VALUES (nextval('service_id_seq'), 6, 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
 			'Najlepsa vikendica na Dunavu, samo nam dodjite', false, 'Vila Dunav', 300, 'Pravila', 9, 'Uslovi otkaza', 2);
 
 INSERT INTO public.cottages(
-	id, number_of_beds, number_of_rooms, availability_end,
+	id, owner_id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-	VALUES (nextval('service_id_seq'), 10, 15,
+	VALUES (nextval('service_id_seq'), 6, 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
 			'Veoma lepa kuća', false, 'Vila Dragulj', 500, 'Pravila', 10, 'Uslovi otkaza', 3);
 
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 6, 14,
+                 	VALUES (nextval('service_id_seq'), 6, 6, 14,
                  			'2020-10-22 18:11:07',
                  			'2020-10-04 18:11:07',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 4', 432, 'Pravila', 6,
                  'Uslovi otkaza', 4);
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 3, 6,
+                 	VALUES (nextval('service_id_seq'), 6, 3, 6,
                  			'2022-12-04 12:42:13',
                  			'2022-11-17 12:42:13',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 5', 552, 'Pravila', 2,
                  'Uslovi otkaza', 5);
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 11, 13,
+                 	VALUES (nextval('service_id_seq'), 6, 11, 13,
                  			'2022-09-12 01:33:12',
                  			'2022-09-06 01:33:12',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 6', 237, 'Pravila', 9,
                  'Uslovi otkaza', 6);
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 5, 6,
+                 	VALUES (nextval('service_id_seq'), 6, 5, 6,
                  			'2021-08-19 20:37:17',
                  			'2021-08-14 20:37:17',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 7', 165, 'Pravila', 10,
                  'Uslovi otkaza', 7);
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 3, 13,
+                 	VALUES (nextval('service_id_seq'), 6, 3, 13,
                  			'2021-04-20 05:29:45',
                  			'2021-04-11 05:29:45',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 8', 730, 'Pravila', 9,
                  'Uslovi otkaza', 8);
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 4, 5,
+                 	VALUES (nextval('service_id_seq'), 6, 4, 5,
                  			'2020-07-25 18:37:36',
                  			'2020-07-19 18:37:36',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 9', 497, 'Pravila', 4,
                  'Uslovi otkaza', 9);
 INSERT INTO public.cottages(
-                 	id, number_of_beds, number_of_rooms, availability_end,
+                 	id, owner_id, number_of_beds, number_of_rooms, availability_end,
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-                 	VALUES (nextval('service_id_seq'), 9, 7,
+                 	VALUES (nextval('service_id_seq'), 6, 9, 7,
                  			'2020-06-16 15:46:27',
                  			'2020-06-05 15:46:27',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 10', 475, 'Pravila', 7,
@@ -283,10 +283,10 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/cottages/vikendica12.jpg', 12);
 
 INSERT INTO public.cottages(
-	id, number_of_beds, number_of_rooms, availability_end,
+	id, owner_id, number_of_beds, number_of_rooms, availability_end,
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id)
-	VALUES (nextval('service_id_seq'), 10, 15,
+	VALUES (nextval('service_id_seq'), 6, 10, 15,
 			'2016-06-22 19:10:25-07',
 			'2016-06-22 19:10:25-07',
 			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12);
@@ -299,8 +299,8 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/boats/boat1.jpg', 13);
 
 INSERT INTO public.boats(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
-	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+	id, owner_id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	VALUES (nextval('service_id_seq'), 5, '2023-06-20 19:10:25-07',
 			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
 			false, 'Brod Sanja1', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
@@ -315,8 +315,8 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/boats/boat2.jpg', 14);
 
 INSERT INTO public.boats(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
-	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+	id, owner_id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	VALUES (nextval('service_id_seq'), 5, '2023-06-20 19:10:25-07',
 			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
 			false, 'Brod Alisa2', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
@@ -331,8 +331,8 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/boats/boat3.jpg', 15);
 
 INSERT INTO public.boats(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
-	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+	id, owner_id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, engine_power, fishing_equipment, length, max_speed, navigational_equipment, number_of_engines, type)
+	VALUES (nextval('service_id_seq'), 5, '2023-06-20 19:10:25-07',
 			'2023-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Brod je veoma lep i prostran sa dosta mesta za sve koji su avanturisti i žele da dožive pravo životno iskustvo',
 			false, 'Brod WIEN1', 100, 'Nije dozvoljeno uskakanje u vodu bez prethodne konsultacije sa glavnom i odgovornom osobom na brodu.',
@@ -350,8 +350,8 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure1.jpg', 16);
 
 INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
-	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+	id, owner_id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), 7, '2023-06-20 19:10:25-07',
 			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
 			false, 'Avantura Zivota', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
@@ -366,8 +366,8 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure2.jpg', 17);
 
 INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
-	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+	id, owner_id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), 7, '2023-06-20 19:10:25-07',
 			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
 			false, 'Avantura na Fruškoj gori', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',
@@ -382,8 +382,8 @@ INSERT INTO public.photos(
 	VALUES (nextval('photo_id_seq'), 'img/adventures/adventure3.jpg', 18);
 
 INSERT INTO public.adventures(
-	id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
-	VALUES (nextval('service_id_seq'), '2023-06-20 19:10:25-07',
+	id, owner_id, availability_end, availability_start, cancellation_terms, description, is_deleted, name, price, rules, address_id, photo_id, capacity, fishing_equipment)
+	VALUES (nextval('service_id_seq'), 7, '2023-06-20 19:10:25-07',
 			'2020-06-25 19:10:25-07', 'Ukoliko se klijenti ponašaju neodgovorno, ili postoje problemi sa vremenom moguće je otkazivanje.',
 			'Avantura je veoma lepa i zanimljiva za sve koji su avanturisti i žele da dožive pravo životno iskustvo.',
 			false, 'Avantura na Crvenom Čotu', 50, 'Pravila pravila, da bi me udavila. Neophodno je da klijenti u svakom momentu slušaju instruktora.',

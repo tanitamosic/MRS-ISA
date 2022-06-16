@@ -10,6 +10,7 @@ import AdventureOverview from '@/view/AdventureOverview.vue'
 import AdventureDetails from '@/view/AdventureDetails.vue'
 import AdminPendingRegs from '@/view/AdminPendingRegs.vue'
 import AdminDelRequests from '@/view/AdminDelRequests.vue'
+import AdminComplaints from '@/view/AdminComplaints.vue'
 
 
 const routes = [
@@ -67,6 +68,11 @@ const routes = [
     path: '/admin/delreq',
     name: 'AdminDelRequests',
     component: AdminDelRequests
+  },
+  {
+    path: '/admin/complaints',
+    name: 'AdminComplaints',
+    component: AdminComplaints
   }
 ]
 

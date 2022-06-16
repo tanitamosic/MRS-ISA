@@ -45,4 +45,13 @@ public class MyMailSender {
         mailSender.send(email);
     }
 
+    public void sendComplaintAnswer(String target, String answer) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(target);
+        email.setSubject("Obaveštenje o žalbi na TurboJavaSpringbootTurizamExpo");
+        email.setText(answer);
+        mailSender.send(email);
+    }
+
+
 }
