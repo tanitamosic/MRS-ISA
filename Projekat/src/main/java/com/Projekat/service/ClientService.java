@@ -2,6 +2,7 @@ package com.Projekat.service;
 
 import com.Projekat.dto.ClientDTO;
 import com.Projekat.model.users.Client;
+import com.Projekat.model.users.User;
 import com.Projekat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,7 @@ public class ClientService {
     public List<Client> getAllClients(){
         return userRepository.findAllClients();
     }
+
+    public List<Client> getAllActiveClients() { return userRepository.getAllActiveClients(); }
 
 }

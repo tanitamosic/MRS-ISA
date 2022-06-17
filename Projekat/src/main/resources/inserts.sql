@@ -84,8 +84,8 @@ INSERT INTO accounts (id, username, password, activated, deleted, user_id)
 INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'nesto3@gmail.com', 'sifra123', TRUE, FALSE, 3);
 -- 4 Admin
-INSERT INTO accounts (id, username, password, activated, deleted, user_id)
-    VALUES (nextval('acc_id'), 'admin@gmail.com', 'admin123', TRUE, FALSE, 4);
+INSERT INTO public.accounts(id, activated, deleted, last_password_reset_date, password, username, user_id)
+    VALUES (nextval('acc_id'), TRUE, FALSE, '2022-06-06 07:00:00', 'admin123', 'admin@gmail.com', 4);
 -- 5 BoatOwner
 INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'boatowner1@gmail.com', 'sifra123', TRUE, FALSE, 5);

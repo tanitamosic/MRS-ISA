@@ -16,6 +16,8 @@ import AdminBoats from '@/view/AdminBoatOverview.vue'
 import AdminAdventures from '@/view/AdminAdvOverview.vue'
 import AdminRegForm from '@/view/AdminRegistrationForm.vue'
 import NewAdminPasswordReset from '@/view/NewAdminPasswordReset.vue'
+import AdminUserOverview from '@/view/AdminUserOverview.vue'
+
 
 const routes = [
   {
@@ -102,6 +104,11 @@ const routes = [
     path: '/admin/new-admin-pass-reset',
     name: 'NewAdminPasswordReset',
     component: NewAdminPasswordReset
+  },
+  {
+    path: '/admin/users',
+    name: 'AdminUserOverview',
+    component: AdminUserOverview
   }
 ]
 
