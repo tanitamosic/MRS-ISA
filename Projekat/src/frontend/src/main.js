@@ -15,6 +15,7 @@ const store = createStore({
         User: localStorage.getItem('User'),
         username: localStorage.getItem('username'),
         currentPassword: localStorage.getItem('currentPassword'),
+        lastPasswordResetDate: null
       }
     },
     

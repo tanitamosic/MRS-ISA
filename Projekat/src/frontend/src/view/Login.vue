@@ -54,8 +54,8 @@
 
 <style scoped>
 .card {
-  background-color: #659dbd!important;
-  top:50px;
+  background-color: #659dbd !important;
+  top: 50px;
 }
 </style>
 
@@ -66,50 +66,55 @@ export default {
   name: "LoginView",
   methods: {
     login: function () {
-      
-      
-      
+
+
+
       let username = document.getElementById('emailInput').value;
       let password = document.getElementById('passwordInput').value;
       if (username === '' || password === '') {
         alert('Email i sifra ne mogu biti prazni');
         return;
       }
-      let loginData = {'username': username, 'password': password};
+      let loginData = { 'username': username, 'password': password };
       let jsonData = JSON.stringify(loginData);
 
       let self = this; // OVO JE KLJUC ZA REDIREKCIJU
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-      let {data} = axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json'}, withCredentials: true })
-      .then((loginResponse) => {
-        let cookie = loginResponse.data;
-        // localStorage.setItem('accessToken', cookie.accessToken);
-        // localStorage.setItem('role', cookie.role);
-        // localStorage.setItem('username', username);
-        // localStorage.setItem('currentPassword', password);
-        self.$store.accessToken = cookie.accessToken;
-        self.$store.role = cookie.role;
-        self.$store.username = username;
-        self.$store.currentPassword = password;
-        console.log(this.$store);
+      let { data } = axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json' }, withCredentials: true })
+        .then((loginResponse) => {
+          let cookie = loginResponse.data;
+          // localStorage.setItem('accessToken', cookie.accessToken);
+          // localStorage.setItem('role', cookie.role);
+          // localStorage.setItem('username', username);
+          // localStorage.setItem('currentPassword', password);
+          self.$store.accessToken = cookie.accessToken;
+          self.$store.role = cookie.role;
+          self.$store.username = username;
+          self.$store.currentPassword = password;
+          self.$store.lastPasswordResetDate = cookie.lastPasswordResetDate;
+          console.log(self.$store);
 
-        switch (cookie.role) {
-          case 'ROLE_ADMIN': {
-            // localStorage.setItem('User', cookie.admin)
-            self.$store.User = cookie.admin;
-            //console.log(self.$store.User);
-            self.$router.push('/admin/profile');
-            break;
+          switch (cookie.role) {
+            case 'ROLE_ADMIN': {
+              self.$store.User = cookie.admin;
+              if (null == self.$store.lastPasswordResetDate) {
+                self.$router.push('/admin/new-admin-pass-reset');
+              } else {
+                self.$router.push('/admin/profile');
+              }
+
+              break;
+            }
+            case 'ROLE_CLIENT': break;
+            case 'ROLE_INSTRUCTOR': break;
+            case 'ROLE_COTTAGEOWNER': break;
+            case 'ROLE_BOATOWNER': break;
           }
-          case 'ROLE_CLIENT': break;
-          case 'ROLE_INSTRUCTOR': break;
-          case 'ROLE_COTTAGEOWNER': break;
-          case 'ROLE_BOATOWNER': break;
-        }
-        return cookie;
-      }).catch((err) => {
-        console.log(err);
-        alert("Email ili lozinka su pogrešni");});
+          return cookie;
+        }).catch((err) => {
+          console.log(err);
+          alert("Email ili lozinka su pogrešni");
+        });
       console.log(data);
     }
   }

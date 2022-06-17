@@ -14,7 +14,8 @@ import AdminComplaints from '@/view/AdminComplaints.vue'
 import AdminCottages from '@/view/AdminCotOverview.vue'
 import AdminBoats from '@/view/AdminBoatOverview.vue'
 import AdminAdventures from '@/view/AdminAdvOverview.vue'
-
+import AdminRegForm from '@/view/AdminRegistrationForm.vue'
+import NewAdminPasswordReset from '@/view/NewAdminPasswordReset.vue'
 
 const routes = [
   {
@@ -91,6 +92,16 @@ const routes = [
     path: '/admin/adventure-overview',
     name: 'AdminAdventures',
     component: AdminAdventures
+  },
+  {
+    path: '/admin/admin-registration',
+    name: 'AdminRegForm',
+    component: AdminRegForm
+  },
+  {
+    path: '/admin/new-admin-pass-reset',
+    name: 'NewAdminPasswordReset',
+    component: NewAdminPasswordReset
   }
 ]
 

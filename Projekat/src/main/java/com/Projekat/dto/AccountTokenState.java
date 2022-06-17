@@ -7,7 +7,7 @@ public class AccountTokenState {
     private String accessToken;
     private Long expiresIn;
     private String role;
-
+    private String lastPasswordResetDate;
     private Admin admin;
     private Instructor instructor;
     private CottageOwner cottageOwner;
@@ -92,5 +92,13 @@ public class AccountTokenState {
 
     public Client getClient() {
         return client;
+    }
+
+    public String getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(String last_password_reset_date) {
+        this.lastPasswordResetDate = last_password_reset_date;
     }
 }

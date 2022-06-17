@@ -16,7 +16,6 @@ import com.Projekat.service.*;
 import com.Projekat.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,8 +44,6 @@ public class AuthenticationController {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
-    @Autowired
-    private MessageSource messages;
     @Autowired
     private TokenService tokenService;
 
@@ -85,6 +82,7 @@ public class AuthenticationController {
         System.out.println(role);
         AccountTokenState token = new AccountTokenState(jwt, expiresIn, role);
         token.setUser(userService.getUserData(authenticationRequest.getUsername()));
+        token.setLastPasswordResetDate(acc.getLastPasswordResetDate() != null ? acc.getLastPasswordResetDate().toString() : null);
 
         return ResponseEntity.ok(token);
     }
@@ -107,6 +105,7 @@ public class AuthenticationController {
             accountService.saveNewAccount(acc);
             userService.saveNewUser(user);
             acc = accountService.findByUsername(acc.getUsername());
+            accountService.insertAccountRole(acc.getId(), acc.getRoleId("ROLE_CLIENT"));
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnClientRegistrationEvent(acc,
                     request.getLocale(), appUrl));
@@ -129,7 +128,7 @@ public class AuthenticationController {
         Address address = new Address(newUser.Street, newUser.City, newUser.State);
         user.setAddress(address);
 
-        return registerEmployee(newUser, user, address, "vlasnik/vlasnica broda");
+        return registerEmployee(newUser, user, address, "vlasnik/vlasnica broda", "ROLE_BOATOWNER");
     }
 
     @PostMapping(consumes = "application/json", value = "register/cottageowner")
@@ -141,7 +140,7 @@ public class AuthenticationController {
         Address address = new Address(newUser.Street, newUser.City, newUser.State);
         user.setAddress(address);
 
-        return registerEmployee(newUser, user, address, "vlasnik/vlasnica vikendice");
+        return registerEmployee(newUser, user, address, "vlasnik/vlasnica vikendice", "ROLE_COTTAGEOWNER");
     }
 
     @PostMapping(consumes = "application/json", value = "register/instructor")
@@ -154,10 +153,11 @@ public class AuthenticationController {
         user.setAddress(address);
         user.setBiography(null);
 
-        return registerEmployee(newUser, user, address, "instruktor pecanja");
+        return registerEmployee(newUser, user, address, "instruktor pecanja", "ROLE_INSTRUCTOR");
     }
 
-    private ResponseEntity<String> registerEmployee(UserDTO newUser, User user, Address address, String role) {
+    private ResponseEntity<String> registerEmployee(UserDTO newUser, User user, Address address,
+                                                    String role, String role_name) {
         Account acc = getAccount(newUser, user);
         String username = newUser.Username;
         String request = "Gospodin/Gospođa " + user.getName() + " " + user.getSurname() + " žele da se prijave kao " +
@@ -165,7 +165,13 @@ public class AuthenticationController {
 
         try {
             addressService.saveNewAddress(address);
+        } catch (DataAccessException saveException) {
+            System.out.println("=================================Uneta adresa vec postoji============================");
+        }
+        try {
             accountService.saveNewAccount(acc);
+            acc = accountService.findByUsername(acc.getUsername());
+            accountService.insertAccountRole(acc.getId(), acc.getRoleId(role_name));
             userService.saveNewUser(user);
             eventPublisher.publishEvent(new OnEmployeeRegistrationEvent(acc, request, username));
         } catch (DataAccessException saveException) {
@@ -208,5 +214,33 @@ public class AuthenticationController {
         accountService.activateAccount(acc.getId());
         return new ResponseEntity<>("<body><h1>Aktivacija uspesna</h1></body>", HttpStatus.OK);
     }
+
+    @PostMapping(value="/admin/register-new-admin")
+    public ResponseEntity<String> registerNewAdmin(@RequestBody UserDTO newAdmin) {
+        Admin admin = new Admin();
+        admin.setName(newAdmin.Name);
+        admin.setSurname(newAdmin.Surname);
+        admin.setPhone(newAdmin.Phone);
+        Address address = new Address(newAdmin.Street, newAdmin.City, newAdmin.State);
+        admin.setAddress(address);
+        Account newAdminAcc = getAccount(newAdmin, admin);
+        newAdminAcc.setActivated(true);
+
+        try {
+            addressService.saveNewAddress(address);
+        } catch (DataAccessException saveException) {
+            System.out.println("=================================Uneta adresa vec postoji============================");
+        }
+        try {
+            accountService.saveNewAccount(newAdminAcc);
+            newAdminAcc = accountService.findByUsername(newAdminAcc.getUsername());
+            accountService.insertAccountRole(newAdminAcc.getId(), newAdminAcc.getRoleId("ROLE_ADMIN"));
+            userService.saveNewUser(admin);
+        } catch (DataAccessException saveException) {
+            return new ResponseEntity<>("Nalog sa ovim mejlom već postoji!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Uspešno ste registrovali novog administratora!", HttpStatus.OK);
+    }
+
 
 }
