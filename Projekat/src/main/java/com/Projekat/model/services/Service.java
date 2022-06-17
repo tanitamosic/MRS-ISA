@@ -18,6 +18,19 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Where(clause="is_deleted = false")
 public abstract class Service {
 
+    private static Integer cut = 10; // between 0 and 100
+    public static Integer getCut() {
+        return cut;
+    }
+
+    public static boolean setCut(Integer newCut) {
+        if (newCut > 100 || newCut < 0) {
+            return false;
+        }
+        cut = newCut;
+        return true;
+    }
+
     @Id
     @SequenceGenerator(name = "serviceIdSeqGen", sequenceName = "serviceIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "serviceIdSeqGen")

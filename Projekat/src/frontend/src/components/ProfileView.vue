@@ -18,6 +18,18 @@
             <button class="btn btn-primary" type="button">Zameni sliku</button>
           </div>
         </div>
+        <div class="card" v-if="show_cut">
+          <div class="card-header">%Cut</div>
+          <div class="card-body text-center">
+            <label for="cut" id="cutlbl">Procenat koji uzimate za svaku rezervaciju</label>
+            <input type="number" id="cut" max="100" min="0" onkeydown="return false" v-model="cut"/>
+            <!-- Profile picture help block-->
+            <div class="small font-italic text-muted mb-2"></div>
+            <!-- Profile picture upload button-->
+            <button class="btn btn-primary" type="button" v-on:click="changeCut" >Potvrdi</button>
+          </div>
+          
+        </div>
       </div>
       <div class="col-xl-8">
         <!-- Account details card-->
@@ -262,7 +274,10 @@ export default {
       Biography: '',
 
       show_biography: false,
-      show_delete_btn: true
+      show_delete_btn: true,
+      show_cut: false,
+
+      cut: 10
     }
   },
   mounted() {
@@ -280,12 +295,33 @@ export default {
       this.show_biography = true;
     }
     if (this.$store.role === "ROLE_ADMIN") {
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+      let self = this;
+      axios.get('/api/admin/get-cut').then((response) => {
+        self.cut = response.data;
+      })
       this.show_delete_btn = false;
+      this.show_cut = true;
     }
     //console.log(this.$store.User);
   },
 
   methods: {
+    changeCut: function() {
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+      let data = {
+        'cut': this.cut
+      };
+      axios.post('/api/admin/change-cut', data)
+      .then((response) => {
+        alert(response.data);
+      }).catch((err) => {
+        console.log(err);
+        alert("Došlo je do greške");
+      });
+    },
     update_profile: function () {
       
       let OldPasswordInput = document.getElementById("OldPasswordInput").value;
