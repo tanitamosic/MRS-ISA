@@ -44,6 +44,9 @@ public class Reservation {
     @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     private Review review;
 
+
+    public Reservation() {}
+
     public Integer getId() {
         return id;
     }

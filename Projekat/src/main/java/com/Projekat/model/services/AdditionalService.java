@@ -15,6 +15,9 @@ public class AdditionalService {
     @Column(name="name", unique=false, nullable=false)
     private String name;
 
+    @Column(name="price", unique = false, nullable = false)
+    private Double price;
+
     public Integer getId() {
         return id;
     }
@@ -29,5 +32,13 @@ public class AdditionalService {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
