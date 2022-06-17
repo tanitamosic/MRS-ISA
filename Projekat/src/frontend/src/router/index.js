@@ -17,6 +17,7 @@ import AdminAdventures from '@/view/AdminAdvOverview.vue'
 import AdminRegForm from '@/view/AdminRegistrationForm.vue'
 import NewAdminPasswordReset from '@/view/NewAdminPasswordReset.vue'
 import AdminUserOverview from '@/view/AdminUserOverview.vue'
+import ProfitsView from '@/view/ProfitsView.vue'
 
 
 const routes = [
@@ -109,6 +110,11 @@ const routes = [
     path: '/admin/users',
     name: 'AdminUserOverview',
     component: AdminUserOverview
+  },
+  {
+    path: '/admin/profits',
+    name: 'ProfitsView',
+    component: ProfitsView
   }
 ]
 
