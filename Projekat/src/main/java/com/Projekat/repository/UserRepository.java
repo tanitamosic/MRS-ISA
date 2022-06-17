@@ -46,6 +46,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(nativeQuery = true, value="SELECT ACCOUNTS.username FROM USERS INNER JOIN ACCOUNTS ON ACCOUNTS.user_id=USERS.id WHERE ACCOUNTS.user_id=?1")
     String findUsernameById(Integer user_id);
 
-    @Query(nativeQuery = true, value="SELECT * FROM USERS INNER JOIN ACCOUNTS ON ACCOUNTS.user_id=USERS.id INNER JOIN ACCOUNT_ROLE ON ACCOUNTS.id = ACCOUNT_ROLE.account_id WHERE ACCOUNTS.activated=true AND ACCOUNTS.deleted=false AND ACCOUNT_ROLE.role_id=3")
-    List<Client> getAllActiveClients();
+    // Extract all users except admins
+    @Query(nativeQuery = true, value="SELECT * FROM USERS INNER JOIN ACCOUNTS ON ACCOUNTS.user_id=USERS.id INNER JOIN ACCOUNT_ROLE ON ACCOUNTS.id = ACCOUNT_ROLE.account_id WHERE ACCOUNTS.activated=true AND ACCOUNTS.deleted=false AND ACCOUNT_ROLE.role_id!=1")
+    List<User> getAllActiveClients();
 }

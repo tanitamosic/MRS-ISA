@@ -14,8 +14,8 @@
                 <li
                     class="list-group-item"
                 >{{ user.address.state }} {{ user.address.city }} {{ user.address.street }}</li>
-                <li class="list-group-item">Loyalty score: {{ user.loyaltyScore }}</li>
-                <li class="list-group-item">Penali: {{ user.penalties }}</li>
+                <li v-if="user.loyaltyScore != null" class="list-group-item">Loyalty score: {{ user.loyaltyScore }}</li>
+                <li v-if="user.penalties != null" class="list-group-item">Penali: {{ user.penalties }}</li>
             </ul>
             <div class="card-body">
                 <button class="btn btn-danger" v-on:click="deleteUser(user.id)">Obriši</button>

@@ -19,6 +19,6 @@ public class ClientService {
         return userRepository.findAllClients();
     }
 
-    public List<Client> getAllActiveClients() { return userRepository.getAllActiveClients(); }
+    public List<User> getAllActiveClients() { return userRepository.getAllActiveClients(); }
 
 }

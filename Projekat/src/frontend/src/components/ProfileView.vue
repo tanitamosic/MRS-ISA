@@ -101,6 +101,8 @@
                   type="email"
                   placeholder="Enter your email address"
                   v-model="Username"
+                  title="Ne možete menjati email adresu"
+                  readonly
                 />
               </div>
               <!-- Form Row-->

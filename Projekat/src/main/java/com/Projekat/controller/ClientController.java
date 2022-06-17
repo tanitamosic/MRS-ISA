@@ -1,7 +1,6 @@
 package com.Projekat.controller;
 
 import com.Projekat.dto.ClientDTO;
-import com.Projekat.dto.CottageDTO;
 import com.Projekat.mail.MyMailSender;
 import com.Projekat.model.Account;
 import com.Projekat.model.users.Client;
@@ -15,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -41,9 +39,9 @@ public class ClientController {
 
     @GetMapping(value="/admin/get-active-clients")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Client>> getAllActiveClients() {
-        List<Client> clients = clientService.getAllActiveClients();
-        return new ResponseEntity<>(clients, HttpStatus.OK);
+    public ResponseEntity<List<User>> getAllActiveUsers() {
+        List<User> users = clientService.getAllActiveClients();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @DeleteMapping(value="/admin/delete-client/{id}")
