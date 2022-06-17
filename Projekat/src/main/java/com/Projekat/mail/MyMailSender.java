@@ -1,5 +1,6 @@
 package com.Projekat.mail;
 
+import com.Projekat.model.reservations.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -52,6 +53,15 @@ public class MyMailSender {
         email.setText(answer);
         mailSender.send(email);
     }
+
+    public void sendSucessfulCottageReservation(String target, String mail_body) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(target);
+        email.setSubject("Obaveštenje o izvršenoj rezervaciji na TurboJavaSpringbootTurizamExpo");
+        email.setText(mail_body);
+        mailSender.send(email);
+    }
+
 
 
 }
