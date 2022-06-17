@@ -57,10 +57,10 @@ public class ProfileController {
     }
 
     @PostMapping(value="make-delete-profile-request")
-    public ResponseEntity<String> postDeletionRequest(SimpleUserDTO simple_dto) {
-        final Integer acc_id = userService.findUserAccountId(simple_dto.getId());
+    public ResponseEntity<String> postDeletionRequest(@RequestBody SimpleUserDTO simple_dto) {
+        //final Integer acc_id = userService.findUserAccountId(simple_dto.getId());
         User u = userService.findUserById(simple_dto.getId());
-        Account acc = accountService.findById(acc_id);
+        Account acc = accountService.findById(u.getId());
         AccountDeletionRequest adr = new AccountDeletionRequest(acc, u);
         deletionService.makeDelRequest(adr);
 

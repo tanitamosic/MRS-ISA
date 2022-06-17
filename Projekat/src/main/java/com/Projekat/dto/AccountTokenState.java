@@ -29,11 +29,11 @@ public class AccountTokenState {
                 this.instructor = (Instructor) loggedUser;
                 break;
             }
-            case "ROLE_COTTAGEOWNER": {
+            case "ROLE_COTTAGE_OWNER": {
                 this.cottageOwner = (CottageOwner) loggedUser;
                 break;
             }
-            case "ROLE_BOATOWNER": {
+            case "ROLE_BOAT_OWNER": {
                 this.boatOwner = (BoatOwner) loggedUser;
                 break;
             }
