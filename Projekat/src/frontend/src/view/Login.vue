@@ -103,7 +103,11 @@ export default {
           }
           case 'ROLE_CLIENT': break;
           case 'ROLE_INSTRUCTOR': break;
-          case 'ROLE_COTTAGEOWNER': break;
+          case 'ROLE_COTTAGE_OWNER': {
+            self.$store.User=cookie.cottageOwner;
+            self.$router.push('/co/profile')
+            break;
+          }
           case 'ROLE_BOATOWNER': break;
         }
         return cookie;
