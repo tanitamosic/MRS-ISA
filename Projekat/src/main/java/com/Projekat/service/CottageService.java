@@ -24,6 +24,9 @@ public class CottageService {
         return cottageRepository.findAll();
     }
 
+    public Page<Cottage> findAllByOwner(Pageable page, Integer owner) {
+        return cottageRepository.findAllByOwner(page, owner);}
+
     public Page<Cottage> getCottagesWithPagination(int pageNumber, int pageSize) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         return findAll(page);

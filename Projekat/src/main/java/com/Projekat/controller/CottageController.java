@@ -4,6 +4,7 @@ import com.Projekat.dto.ComplexCottageDTO;
 import com.Projekat.dto.CottageDTO;
 import com.Projekat.dto.SimpleCottageDTO;
 import com.Projekat.model.services.Cottage;
+import com.Projekat.service.AccountService;
 import com.Projekat.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class CottageController {
 
     @Autowired
     private CottageService cottageService;
+    @Autowired
+    private AccountService accountService;
 
     @GetMapping(value = "/cottages/all")
     public ResponseEntity<List<CottageDTO>> getAllCottages(){
@@ -39,6 +43,15 @@ public class CottageController {
         Page<SimpleCottageDTO> pageCottageDTO = pageCottage.map(this::convertToSimpleCottageDTO);
         return pageCottageDTO;
     }
+
+    @GetMapping(value = "/cottages/{owner}/withPagination")
+    public Page<SimpleCottageDTO> getOwnedCottagesWithPagination(Pageable page, @PathVariable String owner) {
+        Integer ownerId = accountService.findByUsername(owner).getId();
+        Page<Cottage> pageCottage = cottageService.findAllByOwner(page,ownerId);
+        Page<SimpleCottageDTO> pageCottageDTO = pageCottage.map(this::convertToSimpleCottageDTO);
+        return pageCottageDTO;
+    }
+
     private SimpleCottageDTO convertToSimpleCottageDTO(Cottage c) {
         return new SimpleCottageDTO(c);
     }

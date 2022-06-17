@@ -202,17 +202,23 @@ export default {
             availabilityStartStr: '',
             availabilityEndStr: '',
 
-            isAdmin: false
+            isAdmin: false,
+            isOwner: false
         }
     },
     mounted() {
         this.cottagesLoaded = false;
-        this.loadCottagesGet();
         window.scrollTo(0, 0);
 
         if(this.$store.role === "ROLE_ADMIN") {
             this.isAdmin = true;
         }
+
+        if(this.$store.role === "ROLE_COTTAGE_OWNER"){
+            this.isOwner = true;
+            this.owner = this.$store.username;
+        }
+        this.loadCottagesGet();
     },
     methods: {
         async deleteCottage(id) {
@@ -251,6 +257,17 @@ export default {
         },
         async loadCottagesGet() {
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            if(this.isOwner){
+                await axios
+                .get('/api/cottages/' + this.owner + '/withPagination?size=' + this.size + '&page=' + this.page)
+                .then(response => (
+                    this.responseData = response.data,
+                    this.Cottages = this.responseData.content,
+                    this.totalPages = this.responseData.totalPages,
+                    this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
+                    this.cottagesLoaded = true
+                ));
+            } else{
             await axios
                 .get('/api/cottages/all/withPagination?size=' + this.size + '&page=' + this.page)
                 .then(response => (
@@ -260,12 +277,16 @@ export default {
                     this.CottagesEmpty = this.Cottages.length === 0 ? true : false,
                     this.cottagesLoaded = true
                 ));
+            }
         },
         transformAddress(address) {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
-            return '/CottageDetails/' + id;
+            if(this.isOwner) 
+                return '/CottageProfile/' + id;
+            else
+                return '/CottageDetails/' + id;
         },
         generateIdSlider(id) {
             return 'carouselExampleIndicators' + id;
