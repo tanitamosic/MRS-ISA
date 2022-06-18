@@ -5,11 +5,9 @@ import com.Projekat.exception.RequestNotValidException;
 import com.Projekat.exception.ServiceNotAvailableException;
 import com.Projekat.mail.MyMailSender;
 import com.Projekat.model.Account;
-import com.Projekat.model.reservations.BoatReservation;
-import com.Projekat.model.reservations.CottageReservation;
-import com.Projekat.model.reservations.Reservation;
-import com.Projekat.model.reservations.ReservationStatus;
+import com.Projekat.model.reservations.*;
 import com.Projekat.model.services.AdditionalService;
+import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
 //import com.Projekat.model.services.Service;
@@ -88,7 +86,26 @@ public class ReservationService {
     }
 
 
+    public void reservateAdventure(ReservationDTO reservationRequest, Client client, Account account, Adventure adventure) {
+        this.reservationRequest = reservationRequest;
+        this.client = client;
+        this.account = account;
+        this.service = adventure;
 
+        // provere
+        checkDates();
+
+        checkIfDatesAreInGoodRangeForService();
+        checkForPossibleConflictInReservationDates();
+        checkCapacityForAdventure(adventure.getCapacity());
+        checkAdditionalServices();
+        Double price = calculatePrice();
+
+        saveNewAdventureReservation(price);
+
+        // slanje na mejl klijenta
+        sendConfirmationMail(createSucessfulReservationText());
+    }
 
 
 
@@ -165,6 +182,24 @@ public class ReservationService {
         createdReservation = reservation;
     }
 
+    private void saveNewAdventureReservation(Double calculatedPrice) {
+        ReservationStatus status = ReservationStatus.BOOKED;        // ovo je uvek ovako
+
+        // pravljenje nove rezervacije
+        AdventureReservation reservation = new AdventureReservation();
+        reservation.setStartDate(reservationRequest.getStartDate());
+        reservation.setEndDate(reservationRequest.getEndDate());
+        reservation.setCapacity(reservationRequest.getCapacity());
+        reservation.setPrice(calculatedPrice);
+        reservation.setStatus(status);
+        reservation.setClient(client);
+        reservation.setService(service);
+
+        // ubacivanje u Bazu podataka
+        reservationRepository.save(reservation);
+
+        createdReservation = reservation;
+    }
 
     private void checkAdditionalServices() {
         if (null == reservationRequest.getAdditionalServices())
@@ -202,6 +237,15 @@ public class ReservationService {
         if (!(reservationRequest.getCapacity() <= serviceCapacity))
             throw new RequestNotValidException("Broj osoba ne moze da bude veći od kapaciteta Broda!");
     }
+
+    private void checkCapacityForAdventure(Integer serviceCapacity) {
+        // capacity mora da bude manji ili jednak onom iz Servisa
+        if (null == reservationRequest.getCapacity())
+            throw new RequestNotValidException("Kapacitet rezervacije nije unet!");
+        if (!(reservationRequest.getCapacity() <= serviceCapacity))
+            throw new RequestNotValidException("Broj osoba ne moze da bude veći od kapaciteta Avanture!");
+    }
+
 
     private void checkDates() {
         // startDate < end Date
