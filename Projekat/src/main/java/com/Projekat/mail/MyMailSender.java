@@ -1,6 +1,7 @@
 package com.Projekat.mail;
 
 import net.bytebuddy.build.Plugin;
+import com.Projekat.model.reservations.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -61,5 +62,15 @@ public class MyMailSender {
         email.setText("Poštovani,\r\nAdministrator sistema je odlučio da vam obriše acc, cuz duhhh.\r\nCya Never Loserrr,\r\nPoz");
         mailSender.send(email);
     }
+    
+    public void sendSucessfulCottageReservation(String target, String mail_body) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(target);
+        email.setSubject("Obaveštenje o izvršenoj rezervaciji na TurboJavaSpringbootTurizamExpo");
+        email.setText(mail_body);
+        mailSender.send(email);
+    }
+
+
 
 }

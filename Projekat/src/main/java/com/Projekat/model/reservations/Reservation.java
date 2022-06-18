@@ -1,11 +1,13 @@
 package com.Projekat.model.reservations;
 
+import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Service;
 import com.Projekat.model.reservations.submitions.Review;
 import com.Projekat.model.users.Client;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -41,8 +43,18 @@ public class Reservation {
     private Service service;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+//    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+    @JoinColumn(name = "review_id", referencedColumnName = "id")
     private Review review;
+
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "reservation_additional_services",
+            joinColumns = {@JoinColumn(name = "reservation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "additional_service_id")}
+    )
+    Set<AdditionalService> additionalServices;
+
+    public Reservation() {}
 
     public Integer getId() {
         return id;
@@ -114,5 +126,13 @@ public class Reservation {
 
     public void setReview(Review review) {
         this.review = review;
+    }
+
+    public Set<AdditionalService> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(Set<AdditionalService> additionalServices) {
+        this.additionalServices = additionalServices;
     }
 }
