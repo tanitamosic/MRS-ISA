@@ -1,18 +1,11 @@
 package com.Projekat.dto;
 
-import com.Projekat.model.reservations.ReservationStatus;
-import com.Projekat.model.reservations.submitions.Review;
-import com.Projekat.model.services.AdditionalService;
-import com.Projekat.model.services.Cottage;
-import com.Projekat.model.services.Service;
-import com.Projekat.model.users.Client;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class ReservationCottageDTO {
+public class ReservationDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime startDate;
@@ -23,7 +16,7 @@ public class ReservationCottageDTO {
 
     private Set<Integer> additionalServices;
 
-    public ReservationCottageDTO() {}
+    public ReservationDTO() {}
 
     public LocalDateTime getStartDate() {
         return startDate;

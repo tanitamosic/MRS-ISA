@@ -1,23 +1,24 @@
 package com.Projekat.service;
 
-import com.Projekat.dto.ReservationCottageDTO;
+import com.Projekat.dto.ReservationDTO;
 import com.Projekat.exception.RequestNotValidException;
 import com.Projekat.exception.ServiceNotAvailableException;
 import com.Projekat.mail.MyMailSender;
 import com.Projekat.model.Account;
+import com.Projekat.model.reservations.BoatReservation;
 import com.Projekat.model.reservations.CottageReservation;
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.reservations.ReservationStatus;
 import com.Projekat.model.services.AdditionalService;
+import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
+//import com.Projekat.model.services.Service;
 import com.Projekat.model.users.Client;
 import com.Projekat.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,47 +35,73 @@ public class ReservationService {
     @Autowired
     MyMailSender mailSender;
 
-    private ReservationCottageDTO reservationRequest;
+    private ReservationDTO reservationRequest;
     private Client client;
     private Account account;
-    private Cottage cottage;
+    private com.Projekat.model.services.Service service;
     private Set<AdditionalService> selectedAdditionalServices = new HashSet<AdditionalService>();
     private Reservation createdReservation;
 
-    public Reservation getById(Integer id) { return reservationRepository.getById(id); }
 
-    public void reservateCottage(ReservationCottageDTO reservationRequest, Client client, Account account, Cottage cottage) {
+    public void reservateCottage(ReservationDTO reservationRequest, Client client, Account account, Cottage cottage) {
         this.reservationRequest = reservationRequest;
         this.client = client;
         this.account = account;
-        this.cottage = cottage;
+        this.service = cottage;
 
         // provere
         checkDates();
 
         checkIfDatesAreInGoodRangeForService();
         checkForPossibleConflictInReservationDates();
-        checkCapacity();
+        checkCapacityForCottage(cottage.getNumberOfBeds());
         checkAdditionalServices();
         Double price = calculatePrice();
 
-        saveNewReservation(price);
+        saveNewCottageReservation(price);
 
         // slanje na mejl klijenta
-        sendConfirmationMail();
+        sendConfirmationMail(createSucessfulReservationText());
 
     }
 
-    private void sendConfirmationMail() {
-        mailSender.sendSucessfulCottageReservation(account.getUsername(), createSucessfulCottageReservationText());
+
+    public void reservateBoat(ReservationDTO reservationRequest, Client client, Account account, Boat boat) {
+        this.reservationRequest = reservationRequest;
+        this.client = client;
+        this.account = account;
+        this.service = boat;
+
+        // provere
+        checkDates();
+
+        checkIfDatesAreInGoodRangeForService();
+        checkForPossibleConflictInReservationDates();
+        checkCapacityForBoat(boat.getCapacity());
+        checkAdditionalServices();
+        Double price = calculatePrice();
+
+        saveNewBoatReservation(price);
+
+        // slanje na mejl klijenta
+        sendConfirmationMail(createSucessfulReservationText());
     }
-    private String createSucessfulCottageReservationText() {
+
+
+
+
+
+
+    private void sendConfirmationMail(String text) {
+        mailSender.sendSucessfulCottageReservation(account.getUsername(), text);
+    }
+    private String createSucessfulReservationText() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
         String start_date = createdReservation.getStartDate().format(formatter);
         String end_date = createdReservation.getEndDate().format(formatter);
 
         String text = "Pozdrav\n" +
-                "\tUspešno ste rezervisali: " + cottage.getName() + "." +
+                "\tUspešno ste rezervisali: " + service.getName() + "." +
                 "\n\tRezervacija je od: " + start_date +
                 " do: " + end_date + "" +
                 "\nŽelimo Vam lep provod!";
@@ -82,24 +109,25 @@ public class ReservationService {
         return text;
     }
 
+
     private void checkForPossibleConflictInReservationDates() {
         // provera da ne postoji druga rezervacija u sistemu koja se poklapa sa ovom
         List<Reservation> conflicts = reservationRepository
-                .getReservationsForServiceBetweenDates(cottage.getId(),
+                .getReservationsForServiceBetweenDates(service.getId(),
                         reservationRequest.getStartDate(), reservationRequest.getEndDate());
         if(!(0==conflicts.size()))
             throw new ServiceNotAvailableException("Izabrani termin je već zauzet!");
     }
 
     private void checkIfDatesAreInGoodRangeForService() {
-        // provera da su datumi u dozvoljenom opsegu za tu vikendicu
-        if (!(cottage.getAvailabilityStart().isBefore(reservationRequest.getStartDate())))
-            throw new ServiceNotAvailableException("Vikendica nije dostupna u odabranom terminu.");
-        if (!(cottage.getAvailabilityEnd().isAfter(reservationRequest.getEndDate())))
-            throw new ServiceNotAvailableException("Vikendica nije dostupna u odabranom terminu.");
+        // provera da su datumi u dozvoljenom opsegu za taj servis
+        if (!(service.getAvailabilityStart().isBefore(reservationRequest.getStartDate())))
+            throw new ServiceNotAvailableException("Servis nije dostupan u odabranom terminu.");
+        if (!(service.getAvailabilityEnd().isAfter(reservationRequest.getEndDate())))
+            throw new ServiceNotAvailableException("Servis nije dostupan u odabranom terminu.");
     }
 
-    private void saveNewReservation(Double calculatedPrice) {
+    private void saveNewCottageReservation(Double calculatedPrice) {
         ReservationStatus status = ReservationStatus.BOOKED;        // ovo je uvek ovako
 
         // pravljenje nove rezervacije
@@ -110,13 +138,33 @@ public class ReservationService {
         reservation.setPrice(calculatedPrice);
         reservation.setStatus(status);
         reservation.setClient(client);
-        reservation.setService(cottage);
+        reservation.setService(service);
 
         // ubacivanje u Bazu podataka
         reservationRepository.save(reservation);
 
         createdReservation = reservation;
     }
+
+    private void saveNewBoatReservation(Double calculatedPrice) {
+        ReservationStatus status = ReservationStatus.BOOKED;        // ovo je uvek ovako
+
+        // pravljenje nove rezervacije
+        BoatReservation reservation = new BoatReservation();
+        reservation.setStartDate(reservationRequest.getStartDate());
+        reservation.setEndDate(reservationRequest.getEndDate());
+        reservation.setCapacity(reservationRequest.getCapacity());
+        reservation.setPrice(calculatedPrice);
+        reservation.setStatus(status);
+        reservation.setClient(client);
+        reservation.setService(service);
+
+        // ubacivanje u Bazu podataka
+        reservationRepository.save(reservation);
+
+        createdReservation = reservation;
+    }
+
 
     private void checkAdditionalServices() {
         if (null == reservationRequest.getAdditionalServices())
@@ -130,21 +178,29 @@ public class ReservationService {
         }
     }
 
-    private Double calculatePrice() {
+    private double calculatePrice() {
         // price is calculated by adding basic price and price of each selectedAdditionalServices
-        Double calculatedPrice = cottage.getPrice();
+        Double calculatedPrice = service.getPrice();
         for(AdditionalService as : selectedAdditionalServices) {
             calculatedPrice += as.getPrice();
         }
         return calculatedPrice;
     }
 
-    private void checkCapacity() {
+    private void checkCapacityForCottage(Integer numberOfBeds) {
         // capacity mora da bude manji ili jednak onom iz Servisa
         if (null == reservationRequest.getCapacity())
             throw new RequestNotValidException("Kapacitet rezervacije nije unet!");
-        if (!(reservationRequest.getCapacity() <= cottage.getNumberOfBeds()))
+        if (!(reservationRequest.getCapacity() <= numberOfBeds))
             throw new RequestNotValidException("Broj osoba ne moze da bude veći od broja kreveta!");
+    }
+
+    private void checkCapacityForBoat(Integer serviceCapacity) {
+        // capacity mora da bude manji ili jednak onom iz Servisa
+        if (null == reservationRequest.getCapacity())
+            throw new RequestNotValidException("Kapacitet rezervacije nije unet!");
+        if (!(reservationRequest.getCapacity() <= serviceCapacity))
+            throw new RequestNotValidException("Broj osoba ne moze da bude veći od kapaciteta Broda!");
     }
 
     private void checkDates() {
