@@ -156,6 +156,7 @@ public class ReservationService {
         reservation.setStatus(status);
         reservation.setClient(client);
         reservation.setService(service);
+        reservation.setAdditionalServices(selectedAdditionalServices);
 
         // ubacivanje u Bazu podataka
         reservationRepository.save(reservation);
@@ -175,6 +176,7 @@ public class ReservationService {
         reservation.setStatus(status);
         reservation.setClient(client);
         reservation.setService(service);
+        reservation.setAdditionalServices(selectedAdditionalServices);
 
         // ubacivanje u Bazu podataka
         reservationRepository.save(reservation);
@@ -194,6 +196,7 @@ public class ReservationService {
         reservation.setStatus(status);
         reservation.setClient(client);
         reservation.setService(service);
+        reservation.setAdditionalServices(selectedAdditionalServices);
 
         // ubacivanje u Bazu podataka
         reservationRepository.save(reservation);
