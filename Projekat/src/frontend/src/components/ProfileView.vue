@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-4 mt-4 content-right">
+  <div class="container-fluid px-4 mt-4">
     <div class="row">
       <div class="col-xl-4">
         <!-- Profile picture card-->
@@ -192,12 +192,6 @@
 </template>
 
 <style scoped>
-.content-right {
-  top: 50px;
-  z-index: -1;
-  float: right;
-  width: 85%;
-}
 body {
   /* margin-top:50px; */
   background-color: #f2f6fc;

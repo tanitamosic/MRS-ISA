@@ -2,44 +2,44 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Registration from '../view/Registration-Component.vue'
 import CottageOverview from '../view/CottageOverview.vue'
 import Login from '../view/Login.vue'
-import AdminProfileView from '../view/AdminProfileView.vue'
 import CottageDetails from '@/view/CottageDetails.vue'
 import BoatsOverview from '@/view/BoatsOverview.vue'
 import BoatDetails from '@/view/BoatDetails.vue'
 import AdventureOverview from '@/view/AdventureOverview.vue'
 import AdventureDetails from '@/view/AdventureDetails.vue'
-import AdminPendingRegs from '@/view/AdminPendingRegs.vue'
-import AdminDelRequests from '@/view/AdminDelRequests.vue'
-import AdminComplaints from '@/view/AdminComplaints.vue'
-import AdminCottages from '@/view/AdminCotOverview.vue'
-import AdminBoats from '@/view/AdminBoatOverview.vue'
-import AdminAdventures from '@/view/AdminAdvOverview.vue'
-import AdminRegForm from '@/view/AdminRegistrationForm.vue'
-import NewAdminPasswordReset from '@/view/NewAdminPasswordReset.vue'
-import AdminUserOverview from '@/view/AdminUserOverview.vue'
-import ProfitsView from '@/view/ProfitsView.vue'
+
+import ProfileView from '@/components/ProfileView.vue';
+
+import AdminSidebar from "@/components/AdminSidebar.vue";
+import PendingRegistrations from '@/components/PendingRegistrations.vue'
+import AccountDelRequests from '@/components/AccountDelRequests.vue'
+import AdminRegistration from '@/components/AdminRegistration.vue'
+import ComplaintResponse from '@/components/ComplaintResponse.vue'
+import ProfitsComponent from '@/components/ProfitsComponent.vue'
+import UserOverview from '@/components/UserOverview.vue'
 
 
 const routes = [
   {
     path: '/',
     name: 'CottageOverview',
-    component: CottageOverview
+    components: {
+      UnloggedContent: CottageOverview
+    }
   },
   {
     path: '/register',
     name: 'Registration',
-    component: Registration
+    components: {
+      UnloggedContent: Registration
+    }
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
-  },
-  {
-    path: '/admin/profile',
-    name: 'AdminProfileView',
-    component: AdminProfileView
+    components: {
+      UnloggedContent: Login
+    }
   },
   {
     path: '/CottageDetails/:id?',
@@ -67,54 +67,80 @@ const routes = [
     component: AdventureDetails
   },
   {
+    path: '/admin/profile',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ProfileView
+    } // DONE
+  },
+  {
     path: '/admin/pendingreg',
-    name: 'AdminPendingRegs',
-    component: AdminPendingRegs
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: PendingRegistrations
+    } // DONE
   },
   {
     path: '/admin/delreq',
-    name: 'AdminDelRequests',
-    component: AdminDelRequests
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AccountDelRequests
+    } // DONE 
   },
   {
     path: '/admin/complaints',
-    name: 'AdminComplaints',
-    component: AdminComplaints
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ComplaintResponse
+    } // Done
   },
   {
     path: '/admin/cottage-overview',
-    name: 'AdminCottages',
-    component: AdminCottages
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: CottageOverview
+    } // DONE
   },
   {
     path: '/admin/boat-overview',
-    name: 'AdminBoats',
-    component: AdminBoats
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: BoatsOverview
+    } // DONE
   },
   {
     path: '/admin/adventure-overview',
-    name: 'AdminAdventures',
-    component: AdminAdventures
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AdventureOverview
+    } // DONE
   },
   {
     path: '/admin/admin-registration',
-    name: 'AdminRegForm',
-    component: AdminRegForm
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AdminRegistration
+    } // DONE
   },
   {
     path: '/admin/new-admin-pass-reset',
-    name: 'NewAdminPasswordReset',
-    component: NewAdminPasswordReset
+    components: {
+      UnloggedContent: AccountDelRequests
+    } // DONE
   },
   {
     path: '/admin/users',
-    name: 'AdminUserOverview',
-    component: AdminUserOverview
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: UserOverview
+    } // DONE
   },
   {
     path: '/admin/profits',
-    name: 'ProfitsView',
-    component: ProfitsView
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ProfitsComponent
+    } // DONE
   }
 ]
 
