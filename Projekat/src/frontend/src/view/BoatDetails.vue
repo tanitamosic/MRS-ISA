@@ -40,6 +40,9 @@
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0">{{this.boat.name}}</p>
                                 </div>
+                                <div class="col-lg-12 col-sm-12 mt-2 mb-2">
+                                    <star-rating v-model:rating="this.boat.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                                </div>
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0 price-pro">${{this.boat.price}}</p>
                                     <hr class="p-0 m-0 mt-2">
@@ -142,6 +145,7 @@
 <script>
 import axios from 'axios';
 import BoatReservationModalVue from '@/components/BoatReservationModal.vue';
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'BoatDetails',
@@ -183,16 +187,17 @@ export default {
         async fillOptions() {
             // if(null == this.serviceProp.additionalServices)
             //     return;
-            for (let i = 0; i < this.cotage.additionalServices?.length; i++) {
-                let newD = {text: this.cotage.additionalServices[i].name + '    ' +  '$' + this.cotage.additionalServices[i].price, 
-                            value: this.cotage.additionalServices[i], 
+            for (let i = 0; i < this.boat.additionalServices?.length; i++) {
+                let newD = {text: this.boat.additionalServices[i].name + '    ' +  '$' + this.boat.additionalServices[i].price, 
+                            value: this.boat.additionalServices[i], 
                             disabled: false};
                 this.options.push(newD);
             }
          }
     },
     components: {
-        'Modal': BoatReservationModalVue
+        'Modal': BoatReservationModalVue,
+        StarRating: StarRating
      }
 
 }

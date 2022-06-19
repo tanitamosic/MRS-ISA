@@ -43,6 +43,9 @@
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0">{{this.adventure.name}}</p>
                                 </div>
+                                <div class="col-lg-12 col-sm-12 mt-2 mb-2">
+                                    <star-rating v-model:rating="this.adventure.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                                </div>
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0 price-pro">${{this.adventure.price}}</p>
                                     <hr class="p-0 m-0 mt-2">
@@ -117,6 +120,7 @@
 <script>
 import axios from 'axios';
 import AdventureReservationModalVue from '@/components/AdventureReservationModal.vue';
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'AdventureDetails',
@@ -158,16 +162,17 @@ export default {
         async fillOptions() {
             // if(null == this.serviceProp.additionalServices)
             //     return;
-            for (let i = 0; i < this.cotage.additionalServices?.length; i++) {
-                let newD = {text: this.cotage.additionalServices[i].name + '    ' +  '$' + this.cotage.additionalServices[i].price, 
-                            value: this.cotage.additionalServices[i], 
+            for (let i = 0; i < this.adventure.additionalServices?.length; i++) {
+                let newD = {text: this.adventure.additionalServices[i].name + '    ' +  '$' + this.adventure.additionalServices[i].price, 
+                            value: this.adventure.additionalServices[i], 
                             disabled: false};
                 this.options.push(newD);
             }
          }
     },
     components: {
-        'Modal': AdventureReservationModalVue
+        'Modal': AdventureReservationModalVue,
+        StarRating: StarRating
     }
 
 }

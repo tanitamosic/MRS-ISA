@@ -56,6 +56,9 @@
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0">{{ this.cotage.name }}</p>
                                 </div>
+                                <div class="col-lg-12 col-sm-12 mt-2 mb-2">
+                                    <star-rating v-model:rating="this.cotage.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                                </div>
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0 price-pro">${{ this.cotage.price }}</p>
                                     <hr class="p-0 m-0 mt-2">
@@ -134,7 +137,8 @@
 
 <script>
 import axios from 'axios';
-import CReservationModal from '@/components/CottageReservationModal.vue'
+import CReservationModal from '@/components/CottageReservationModal.vue';
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'CottageDetails',
@@ -185,7 +189,8 @@ export default {
         }
     },
     components: {
-        'Modal': CReservationModal
+        'Modal': CReservationModal,
+        StarRating: StarRating
     }
 
 }
