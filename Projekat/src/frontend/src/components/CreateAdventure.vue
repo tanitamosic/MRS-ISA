@@ -3,7 +3,15 @@
         <div class="card-body py-5 px-md-5">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
-                    <h2 class="fw-bold mb-5">Nova avantura</h2>
+                    <h2 class="fw-bold mb-1">Nova avantura</h2>
+                    <hr>
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-12">
+                            <input placeholder="Naziv" v-model="name" type="text" class="form-control"
+                                style="font-size: 24px;">
+                        </div>
+
+                    </div>
                     <div class="row gx-3 mb-3" id="customDays">
                         <div class="col-md-6">
                             <label class="small mb-1" for="fromDate">Odaberite od kada pocinje termin (datum)</label>
@@ -28,43 +36,53 @@
                         <div class="col-md-4 mb-4">
                             <div class="form-outline">
                                 <label for="addressInput">Država</label>
-                                <input type="text" name="Address" class="form-control" id="addressInputState"
-                                    v-model="State" required />
+                                <input type="text" class="form-control" v-model="state" />
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="form-outline">
                                 <label for="addressInput">Grad</label>
-                                <input type="text" name="Address" class="form-control" id="addressInputCity"
-                                    v-model="City" required />
+                                <input type="text" class="form-control" v-model="city" />
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="form-outline">
                                 <label for="addressInput">Ulica i broj</label>
-                                <input type="text" name="Address" class="form-control" id="addressInputStreet"
-                                    v-model="Street" required />
+                                <input type="text" class="form-control" v-model="street" />
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <input placeholder="Cena($)" type="number" id="cut" max="999999" min="0"
+                                onkeydown="return /^[0-9]$/i.test(event.key)" maxlength="6" class="form-control"
+                                v-model="price" />
+                        </div>
+                        <div class="col-md-4">
+                            <textarea rows="1" class="form-control" placeholder="Pravila" v-model="rules"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <textarea rows="1" class="form-control" placeholder="Uslovi otkazivanja"
+                                v-model="cancelTerms"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <input placeholder="Kapacitet" type="number" id="cut" max="30" min="0" v-model="capacity"
                                 onkeydown="return /^[0-9]$/i.test(event.key)" maxlength="6" class="form-control" />
                         </div>
-                        <div class="col-md-4">
-                            <textarea rows="1" class="form-control" placeholder="Pravila"></textarea>
-                        </div>
-                        <div class="col-md-4">
-                            <textarea rows="1" class="form-control" placeholder="Uslovi otkazivanja"></textarea>
+                        <div class="col-md-8">
+                            <textarea rows="1" class="form-control" placeholder="Oprema za pecanje"
+                                v-model="fishingEq"></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <input type="number" min="0" max="100" v-model="addedServicePrice" placeholder="Cena dodatne usluge ($)"
-                                onkeydown="return false" id="addedServicePrice" class="form-control mb-1">
+                            <input type="number" min="0" max="100" v-model="addedServicePrice"
+                                placeholder="Cena dodatne usluge ($)" onkeydown="return false" id="addedServicePrice"
+                                class="form-control mb-1" />
                             <input type="text" v-model="addedService" id="addedServiceName" maxlength="20"
-                                placeholder="Dodatna usluga" class="form-control mb-1">
+                                placeholder="Dodatna usluga" class="form-control mb-1" />
                             <button v-on:click="addService" class="btn btn-primary">Dodaj uslugu</button>
                         </div>
                         <div class="col-md-6 mb-4">
@@ -74,7 +92,7 @@
                                 <option value="Jaguar"> Jaguar </option>
                                 <option value="Lamborghini"> Lamborghini </option>
                                 <option value="Ferrari"> Ferrari </option>
-                                <option value="Ford"> Ford </option> -->
+                                <option value="Ford"> Ford </option>-->
                             </select>
                         </div>
                     </div>
@@ -109,7 +127,8 @@
                             </div>
                         </div>
                         <div class="col-lg-7 col-sm-12">
-                            <textarea placeholder="Opisite sta ce se raditi na avanturi" class="form-control"></textarea>
+                            <textarea placeholder="Opisite sta ce se raditi na avanturi" class="form-control"
+                                v-model="description"></textarea>
                         </div>
                     </div>
                     <div class="row mt-1">
@@ -151,19 +170,29 @@ export default {
             previewImage: null,
             dateFrom: null,
             dateTo: null,
-            
+
             timeFrom: null,
             timeTo: null,
+
+            fishingEq: null,
+            cancelTerms: null,
+            capacity: null,
+            rules: null,
+            description: null,
+            price: null,
+
+            name: null,
+            // ADDRESS
+            state: null,
+            city: null,
+            street: null,
+
 
             // ADDITIONAL SERVICES
             addedService: null,
             addedServicePrice: null,
             services: [],
 
-            // ADDRESS
-            State: '',
-            City: '',
-            Street: '',
 
             images: [],
             imageFiles: []
@@ -204,23 +233,23 @@ export default {
             if (!this.addedService) {
                 return;
             }
-            let newService = this.addedService + ' - $' + this.addedServicePrice 
+            let newService = this.addedService + ' - $' + this.addedServicePrice
             this.services.push(newService);
 
             let newOption = new Option(newService, newService);
             let listbox = document.getElementById('services');
-            listbox.options[this.services.length-1] = newOption;
+            listbox.options[this.services.length - 1] = newOption;
             if (listbox.size < 5) {
                 listbox.size = this.services.length
             }
-            
+
             this.addedServicePrice = null;
             this.addedService = null;
-            
+
         },
 
 
-        uploadImages() {
+        uploadImages(adventure_id) {
 
             let config = { header: { 'Content-Type': 'multipart/form-data' } }
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -228,6 +257,7 @@ export default {
 
             for (let i = 0; i < this.imageFiles.length; i++) {
                 let data = new FormData();
+                data.append('adventureId', adventure_id);
                 data.append('file', this.imageFiles[i]);
                 axios.post(
                     '/api/instructor/post-adventure-image',
@@ -235,15 +265,55 @@ export default {
                     config
                 ).then(
                     (response) => {
-                        console.log('image upload response > ', response)
+                        console.log(response);
+                        alert("Uspesno kreiranje casa pecanja");
                     }
                 );
             }
         },
 
         createAdventure() {
-            this.uploadImages();
-            // TODO: UPLOADUJ OSTALE PODATKE TERMINA
+            let newAdventure = {
+                'owner_id': this.$store.User.id,
+                'availabilityStart': this.dateFrom + 'T' + this.timeFrom,
+                'availabilityEnd': this.dateTo + 'T' + this.timeTo,
+                'fishingEq': this.fishingEq,
+                'cancelTerms': this.cancelTerms,
+                'capacity': this.capacity,
+                'rules': this.rules,
+                'price': this.price,
+                'name': this.name,
+                'description': this.description,
+                'state': this.state,
+                'city': this.city,
+                'street': this.street
+            }
+            if (this.checkProperties(newAdventure)) {
+                alert("Morate popuniti sva polja.");
+                return;
+            }
+            newAdventure['additionalServices'] = this.services;
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            axios.post('/api/instructor/create-new-adventure', newAdventure)
+                .then((response) => {
+                    console.log(response);
+                    this.uploadImages(response.data);
+
+                }).catch((err) => {
+                    alert(err.response.data.error);
+                    console.log(err);
+                })
+
+
+        },
+        checkProperties(obj) {
+            for (var key in obj) {
+                if (obj[key] === null || obj[key] == "") {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

@@ -14,4 +14,11 @@ public interface AdventureRepository extends JpaRepository<Adventure, Integer> {
     @Modifying
     @Query(nativeQuery = true, value="UPDATE ADVENTURES SET is_deleted=true WHERE id=?1")
     void deleteAdventure(Integer id);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value="UPDATE ADVENTURES SET photo_id=?2 WHERE id=?1")
+    void setAdventurePrimaryPhoto(Integer id, Integer photo_id);
+
+
 }

@@ -12,7 +12,7 @@ public class Photo {
     @Column(name = "id", nullable = false, unique = true)
     private int id;
 
-    @Column(name = "assetPath")
+    @Column(name = "asset_path")
     private String assetPath;
 
     public Photo() {}

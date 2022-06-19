@@ -5,9 +5,14 @@ import com.Projekat.dto.AdventureDTO;
 import com.Projekat.dto.ComplexAdventureDTO;
 import com.Projekat.dto.ComplexCottageDTO;
 import com.Projekat.dto.SimpleAdventureDTO;
+import com.Projekat.model.Address;
+import com.Projekat.model.Photo;
+import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
-import com.Projekat.service.AdventureService;
+import com.Projekat.model.users.Instructor;
+import com.Projekat.service.*;
+import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -18,8 +23,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.function.Consumer;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,26 +39,44 @@ public class AdventureController {
 
     @Autowired
     private AdventureService adventureService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AdditionalServicesService additionalServicesService;
+    @Autowired
+    private PhotoService photoService;
 
-    @PostMapping(value="/adventures", consumes = "application/json")
-    public ResponseEntity<AdventureDTO> saveAdventure(@RequestBody AdventureDTO adventureDTO) {
+    @PostMapping(value="/instructor/create-new-adventure", consumes = "application/json")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<Integer> saveAdventure(@RequestBody AdventureDTO adventureDTO) {
+        Instructor owner = (Instructor) userService.findUserById(adventureDTO.getOwner_id());
 
-        Adventure adventure = new Adventure();
-        // set attributes
-        adventure.setName(adventureDTO.getName());
-        //adventure.setAddress(adventureDTO.getAddress());
-        adventure.setDescription(adventureDTO.getDescription());
-        adventure.setRules(adventureDTO.getRules());
-        adventure.setPrice(adventureDTO.getPrice());
-        adventure.setCancellationTerms(adventureDTO.getCancellationTerms());
-        adventure.setAvailabilityStart(adventureDTO.getAvailabilityStart());
-        adventure.setAvailabilityEnd(adventureDTO.getAvailabilityEnd());
-        adventure.setDeleted(adventureDTO.getDeleted());
-        adventure.setCapacity(adventureDTO.getCapacity());
-        adventure.setFishingEquipment(adventureDTO.getFishingEquipment());
+        addressService.upsertAddress(adventureDTO.getState(), adventureDTO.getCity(), adventureDTO.getStreet());
 
-        adventure = adventureService.save(adventure);
-        return new ResponseEntity<>(new AdventureDTO(adventure), HttpStatus.CREATED);
+        Address address = addressService.getAddress(adventureDTO.getState(), adventureDTO.getCity(), adventureDTO.getStreet());
+
+        Set<AdditionalService> additionalServices = getAdditionalServices(adventureDTO);
+
+        additionalServicesService.addServices(additionalServices);
+
+        Adventure a = new Adventure(adventureDTO, address, owner, additionalServices);
+        a = adventureService.saveAdventure(a);
+        return new ResponseEntity<>(a.getId(), HttpStatus.OK);
+    }
+
+    private Set<AdditionalService> getAdditionalServices(AdventureDTO adventureDTO) {
+        Set<AdditionalService> additionalServices = new HashSet<>(adventureDTO.getAdditionalServices().length);
+        for (String service: adventureDTO.getAdditionalServices()) {
+            AdditionalService addedService = new AdditionalService();
+            String name = service.split(" - \\$")[0];
+            Double price = Double.parseDouble(service.split(" - \\$")[1]);
+            addedService.setName(name);
+            addedService.setPrice(price);
+            additionalServices.add(addedService);
+        }
+        return additionalServices;
     }
 
     @GetMapping(value = "/adventures/all")
@@ -106,9 +134,47 @@ public class AdventureController {
 
     @PostMapping(value="/instructor/post-adventure-image", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('INSTRUCTOR')")
-    public ResponseEntity<String> createAdventure(@RequestParam("file") MultipartFile multipartFile) {
-        System.out.println("radi");
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+    public ResponseEntity<String> createAdventure(@RequestParam("file") MultipartFile multipartFile,
+                                                  @RequestParam("adventureId") Integer id) {
+        try {
+            String fileName = generateRandomFileName();
+
+            String folder = "src/frontend/public/img/adventures/";
+            byte[] file = multipartFile.getBytes();
+            Path path = Paths.get(folder + fileName);
+            Files.createFile(path);
+            Files.write(path, file);
+
+            String filepathForDB = "img/adventures/";
+            Photo newPhoto = new Photo();
+            newPhoto.setAssetPath(filepathForDB + fileName);
+            photoService.saveNewPhoto(newPhoto.getAssetPath(), id);
+            Integer photoId = photoService.getPhotoId(newPhoto.getAssetPath());
+            Adventure a = adventureService.findOne(id);
+
+            if (null == a.getPrimaryPhoto()) {
+                adventureService.setAdventurePrimaryPhoto(id, photoId);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Greska pri ubacivanju slika", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>("Slike uspesno dodate", HttpStatus.OK);
+    }
+
+    private String generateRandomFileName() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 18;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        return buffer.toString() + ".jpg";
     }
 
 }

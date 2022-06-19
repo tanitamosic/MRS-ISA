@@ -17,8 +17,8 @@ public class AdventureService {
     @Autowired
     private AdventureRepository adventureRepository;
 
-    public Adventure save(Adventure adventure) {
-        return adventureRepository.save(adventure);
+    public Adventure saveAdventure(Adventure adventure) {
+        return adventureRepository.saveAndFlush(adventure);
     }
 
     public Page<Adventure> findAll(Pageable page) {
@@ -34,5 +34,8 @@ public class AdventureService {
     }
 
     public void delete(Integer id) { adventureRepository.deleteAdventure(id); }
+
+    public void setAdventurePrimaryPhoto(Integer serviceId, Integer photoId) { adventureRepository.setAdventurePrimaryPhoto(serviceId, photoId); }
+
 
 }
