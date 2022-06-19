@@ -249,5 +249,43 @@ public class ReservationController {
         return new ReservationSimpleDTO(r);
     }
 
+    @PostMapping(value = "/client/historicalreservations")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Page<ReservationSimpleDTO>> getAllHistoricalUserReservations(Pageable page,
+                                                                             @RequestBody SortParametersReservationsDTO parameters) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Pageable page2 = null;
+            if(parameters.getSortByDateAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+            else if (parameters.getSortByDateDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").descending());
+            }
+            else if (parameters.getSortByPriceAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").ascending());
+            }
+            else if (parameters.getSortByPrisceDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").descending());
+            }
+            else {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+
+            Client client = (Client) user;      //ClassCastException e
+            Page<Reservation> queryPage = reservationService.getAllHistoricalUserReservations(user.getId(), page2);
+            Page<ReservationSimpleDTO> returnPage = queryPage.map(this::convertToReservationSimpleDTO);
+            return new ResponseEntity<>(returnPage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 
 }

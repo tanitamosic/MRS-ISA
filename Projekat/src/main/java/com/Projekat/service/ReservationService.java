@@ -283,4 +283,7 @@ public class ReservationService {
         return reservationRepository.getAllActiveUserReservations(id, page);
     }
 
+    public Page<Reservation> getAllHistoricalUserReservations(int id, Pageable page) {
+        return reservationRepository.getAllHistoricalUserReservations(id, page);
+    }
 }

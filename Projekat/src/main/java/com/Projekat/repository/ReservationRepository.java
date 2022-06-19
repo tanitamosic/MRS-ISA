@@ -58,4 +58,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE client_id=?1 AND status=0")
     Page<Reservation> getAllActiveUserReservations(int clientId, Pageable page);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE client_id=?1 AND status=2")
+    Page<Reservation> getAllHistoricalUserReservations(int clientId, Pageable page);
 }
