@@ -11,6 +11,7 @@ import AdventureDetails from '@/view/AdventureDetails.vue'
 import ProfileView from '@/components/ProfileView.vue';
 
 import AdminSidebar from "@/components/AdminSidebar.vue";
+import ClientSidebar from '@/components/ClientSidebar.vue'
 import PendingRegistrations from '@/components/PendingRegistrations.vue'
 import AccountDelRequests from '@/components/AccountDelRequests.vue'
 import AdminRegistration from '@/components/AdminRegistration.vue'
@@ -44,27 +45,37 @@ const routes = [
   {
     path: '/CottageDetails/:id?',
     name: 'CottageDetails',
-    component: CottageDetails
+    components: {
+      UnloggedContent: CottageDetails
+    }
   },
   {
     path: '/BoatsOverview',
     name: 'BoatsOverview',
-    component: BoatsOverview
+    components: {
+      UnloggedContent: BoatsOverview
+    }
   },
   {
     path: '/BoatDetails/:id?',
     name: 'BoatDetails',
-    component: BoatDetails
+    components: {
+      UnloggedContent: BoatDetails
+    }
   },
   {
     path: '/AdventureOverview',
     name: 'AdventureOverview',
-    component: AdventureOverview
+    components: {
+      UnloggedContent: AdventureOverview
+    }
   },
   {
     path: '/AdventureDetails/:id?',
     name: 'AdventureDetails',
-    component: AdventureDetails
+    components: {
+      UnloggedContent: AdventureDetails
+    } 
   },
   {
     path: '/admin/profile',
@@ -141,6 +152,41 @@ const routes = [
       LeftSidebar: AdminSidebar,
       MainContent: ProfitsComponent
     } // DONE
+  },
+  {
+    path: '/client/profile',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: ProfileView
+    }
+  },
+  {
+    path: '/client/cottages',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: CottageOverview
+    }
+  },
+  {
+    path: '/client/boats',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: BoatsOverview
+    }
+  },
+  {
+    path: '/client/adventures',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: AdventureOverview
+    }
+  },
+  {
+    path: '/client/CottageDetails/:id?',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: CottageDetails
+    }
   }
 ]
 
