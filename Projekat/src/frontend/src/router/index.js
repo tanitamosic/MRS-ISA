@@ -19,6 +19,7 @@ import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
 import ReservationsOverview from '@/view/ReservationsOverview.vue'
+import HistoricalReservationsOverview from '@/view/HistoricalReservationsOverview.vue'
 
 
 const routes = [
@@ -208,6 +209,13 @@ const routes = [
     components: {
       LeftSidebar: ClientSidebar,
       MainContent: ReservationsOverview
+    }
+  },
+  {
+    path: '/client/historicalReservations',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: HistoricalReservationsOverview
     }
   }
 ]

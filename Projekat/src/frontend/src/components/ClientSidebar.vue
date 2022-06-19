@@ -16,7 +16,7 @@
             <tr class="fs-5" v-on:click="goToReservationsOverview">
                 <td>Pregled rezervacija</td>
             </tr>
-            <tr class="fs-5">
+            <tr class="fs-5" v-on:click="goToReservationsHistoryOverview">
                 <td>Istorija rezervacija</td>
             </tr>
             <tr class="fs-5">
@@ -79,6 +79,10 @@ export default {
         },
         goToReservationsOverview: function () {
             this.$router.push('/client/activeReservations');
+        },
+        goToReservationsHistoryOverview: function () {
+            //historicalReservations
+            this.$router.push('/client/historicalReservations');
         }
     }
 }
