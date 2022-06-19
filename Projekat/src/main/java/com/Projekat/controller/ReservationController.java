@@ -2,7 +2,14 @@ package com.Projekat.controller;
 
 
 import com.Projekat.dto.CutDTO;
+import com.Projekat.dto.ReservationSimpleDTO;
+import com.Projekat.dto.SortParametersReservationsDTO;
+import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -199,5 +207,47 @@ public class ReservationController {
             return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping(value = "/client/reservations")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Page<ReservationSimpleDTO>> getAllUserReservations(Pageable page,
+                                                                             @RequestBody SortParametersReservationsDTO parameters) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Pageable page2 = null;
+            if(parameters.getSortByDateAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+            else if (parameters.getSortByDateDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").descending());
+            }
+            else if (parameters.getSortByPriceAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").ascending());
+            }
+            else if (parameters.getSortByPrisceDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").descending());
+            }
+            else {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+
+            Client client = (Client) user;      //ClassCastException e
+            Page<Reservation> queryPage = reservationService.getAllActiveUserReservations(user.getId(), page2);
+            Page<ReservationSimpleDTO> returnPage = queryPage.map(this::convertToReservationSimpleDTO);
+            return new ResponseEntity<>(returnPage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    private ReservationSimpleDTO convertToReservationSimpleDTO(Reservation r) {
+        return new ReservationSimpleDTO(r);
+    }
+
 
 }

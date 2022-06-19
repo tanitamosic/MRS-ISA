@@ -14,6 +14,8 @@ import com.Projekat.model.services.Cottage;
 import com.Projekat.model.users.Client;
 import com.Projekat.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -270,6 +272,15 @@ public class ReservationService {
             throw new RequestNotValidException("Datum kraja rezervacije nije unet!");
         if(!(reservationRequest.getStartDate().isBefore(reservationRequest.getEndDate())))
             throw new RequestNotValidException("Datum pocetka rezervacije mora biti pre datuma kraja!");
+    }
+
+
+    public Page<Reservation> getAllUserReservations(int id, Pageable page){
+        return reservationRepository.getAllUserReservations(id, page);
+    }
+
+    public Page<Reservation> getAllActiveUserReservations(int id, Pageable page){
+        return reservationRepository.getAllActiveUserReservations(id, page);
     }
 
 }
