@@ -1,7 +1,7 @@
 <template>
   <b-sidebar id="sidebar-border" class="sidebar-bg d-flex flex-column text-white min-vh-100">
     <table>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToProfile">
         <td>Profil</td>
       </tr>
       <tr class="fs-5">
@@ -10,10 +10,10 @@
       <tr class="fs-5">
         <td>Pregled zauzeća</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToProfits">
         <td>Izveštaji</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToAdvCreator">
         <td>Kreiraj termine</td>
       </tr>
     </table>
@@ -52,6 +52,18 @@ tr:hover {
 <script>
 
 export default {
-    name: 'InstructorSidebar'
+  name: 'InstructorSidebar',
+
+  methods: {
+    goToProfile: function () {
+      this.$router.push('/instructor/profile');
+    },
+    goToProfits: function() {
+      this.$router.push('/instructor/profits');
+    },
+    goToAdvCreator: function() {
+      this.$router.push('/instructor/create-adventure')
+    }
+  }
 }
 </script>

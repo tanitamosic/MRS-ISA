@@ -204,15 +204,15 @@ public class AuthenticationController {
         Calendar cal = Calendar.getInstance();
 
         if (acc.getActivated()) {
-            return new ResponseEntity<>("<h1>Nalog je vec aktiviran.</h1>", HttpStatus.OK);
+            return new ResponseEntity<>("<h1>Nalog je već aktiviran.</h1>", HttpStatus.OK);
         }
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            return new ResponseEntity<>("<h1>Aktivacija neuspesna. Istekao rok za aktivaciju.</h1>", HttpStatus.OK);
+            return new ResponseEntity<>("<h1>Aktivacija neuspešna. Istekao rok za aktivaciju.</h1>", HttpStatus.OK);
         }
 
         acc.setActivated(true);
         accountService.activateAccount(acc.getId());
-        return new ResponseEntity<>("<body><h1>Aktivacija uspesna</h1></body>", HttpStatus.OK);
+        return new ResponseEntity<>("<body><h1>Aktivacija uspešna</h1></body>", HttpStatus.OK);
     }
 
     @PostMapping(value="/admin/register-new-admin")

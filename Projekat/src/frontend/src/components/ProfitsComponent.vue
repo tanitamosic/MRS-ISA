@@ -133,7 +133,7 @@ export default {
         // FUNKCIJE ZA ADMINA
         calcAdventureProfits: function () {
             let self = this;
-            axios.get('/admin/adventure-profits/'+ this.dateFrom + '/' + this.dateTo)
+            axios.get('/api/admin/adventure-profits/'+ this.dateFrom + '/' + this.dateTo)
             .then((response) => {
                 self.adventureProfits += response.data;
                 console.log(response);
@@ -169,7 +169,16 @@ export default {
 
         // FUNKCIJE ZA ZAPOSLENE
         calcMyAdventureProfits: function () {
-
+            let self = this;
+            axios.get('/api/instructor/adventure-profits/'+ this.dateFrom + '/' + this.dateTo + '/' + this.$store.User.id)
+            .then((response) => {
+                self.adventureProfits += response.data;
+                console.log(response.data)
+                console.log(response);
+            }).catch((err) => {
+                console.log(err);
+                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+            });
         },
         calcMyCottageProfits: function () {
 

@@ -41,6 +41,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> getCottageReservationsBetweenDates(Timestamp from, Timestamp to);
 
 
+    @Query(nativeQuery = true,
+            value="SELECT * FROM RESERVATION AS r INNER JOIN ADVENTURES AS ad ON r.service_id=ad.id " +
+                    "WHERE ((?1>=r.start_date AND ?1<=r.end_date) " +
+                    "OR (?2>=r.start_date AND ?2<=r.end_date) " +
+                    "OR (?1<r.start_date AND ?2>r.end_date)) AND ad.owner_id=?3")
+    List<Reservation> getInstructorsReservationsBetweenDates(Timestamp from, Timestamp to, Integer id);
+
     @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE service_id=?1 AND (" +
             "((start_date <= ?2 AND ?2 <= end_date) AND " +
             "(start_date <= ?3 AND  ?3 <= end_date))" +
@@ -49,5 +56,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             "OR" +
             "(?2 <= end_date AND end_date <= ?3))")
     List<Reservation> getReservationsForServiceBetweenDates(Integer serviceId, LocalDateTime startDate, LocalDateTime endDate);
+
 
 }

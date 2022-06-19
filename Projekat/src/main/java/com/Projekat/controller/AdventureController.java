@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -103,5 +104,11 @@ public class AdventureController {
         }
     }
 
+    @PostMapping(value="/instructor/post-adventure-image", consumes = "multipart/form-data")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<String> createAdventure(@RequestParam("file") MultipartFile multipartFile) {
+        System.out.println("radi");
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
 
 }

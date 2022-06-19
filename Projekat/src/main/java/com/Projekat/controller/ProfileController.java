@@ -40,13 +40,17 @@ public class ProfileController {
     public ResponseEntity<String> updateProfile(@RequestBody ProfileDetailsDTO profile) {
         System.out.println(profile.getId());
         final Integer acc_id = userService.findUserAccountId(profile.getId());
-        // UPDATE USERNAME
+        // UPDATE PASSWORD
         if (profile.DidTryPasswordUpdate()) {
             accountService.updatePassword(acc_id, profile.getNewPassword());
         }
-        // UPDATE PASSWORD
+        // UPDATE USERNAME
         if (profile.DidTryUsernameUpdate()) {
             accountService.updateUsername(acc_id, profile.getNewUsername());
+        }
+        // UPDATE BIOGRAPHY
+        if (!profile.getBiography().isEmpty()) {
+            userService.updateBiography(profile.getId(), profile.getBiography());
         }
         // UPDATE USER DATA
         userService.updateUserProfile(profile.getId(), profile.getName(), profile.getSurname(), profile.getPhone());

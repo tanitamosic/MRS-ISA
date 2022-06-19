@@ -73,7 +73,6 @@ public class ProfitController {
             return new ResponseEntity<>(-1, HttpStatus.BAD_REQUEST);
         }
     }
-
     @GetMapping(value="/admin/cottage-profits/{date_from}/{date_to}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Integer> getAllCottageProfits(@PathVariable String date_from, @PathVariable String date_to) {
@@ -89,6 +88,24 @@ public class ProfitController {
             return new ResponseEntity<>(profit, HttpStatus.OK);
 
         } catch (ParseException | DataAccessException e)  {
+            return new ResponseEntity<>(-1, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(value="/instructor/adventure-profits/{dateFrom}/{dateTo}/{id}")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<Integer> getInstructorProfit(@PathVariable String dateFrom, @PathVariable String dateTo,
+                                                       @PathVariable String id) {
+        try {
+            Timestamp from = convertToTimestamp(dateFrom);
+            Timestamp to = convertToTimestamp(dateTo);
+            List<Reservation> reservations = reservationService.getInstructorsReservationsBetweenDates(from, to, Integer.parseInt(id));
+            Integer profit = 0;
+            for (Reservation r: reservations) {
+                profit += profitService.getCalculatedPriceCut(r.getId());
+            }
+            return new ResponseEntity<>(profit, HttpStatus.OK);
+
+        } catch (ParseException e) {
             return new ResponseEntity<>(-1, HttpStatus.BAD_REQUEST);
         }
     }

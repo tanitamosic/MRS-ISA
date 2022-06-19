@@ -16,6 +16,7 @@ import com.Projekat.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +30,7 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
     public Reservation getById(Integer id) { return reservationRepository.getById(id); }
 
+    // FOR ADMIN
     public List<Reservation> getAdventureReservationsBetweenDates(Timestamp from, Timestamp to) {
         return reservationRepository.getAdventureReservationsBetweenDates(from, to);
     }
@@ -37,6 +39,11 @@ public class ReservationService {
     }
     public List<Reservation> getCottageReservationsBetweenDates(Timestamp from, Timestamp to) {
         return reservationRepository.getCottageReservationsBetweenDates(from, to);
+    }
+
+    // FOR INSTRUCTOR
+    public List<Reservation> getInstructorsReservationsBetweenDates(Timestamp from, Timestamp to, Integer id){
+        return reservationRepository.getInstructorsReservationsBetweenDates(from, to, id);
     }
 
     @Autowired

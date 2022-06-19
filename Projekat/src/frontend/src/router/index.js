@@ -18,6 +18,8 @@ import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
 
+import InstructorSidebar from '@/components/InstructorSidebar.vue'
+import AdventureCreator from '@/components/CreateAdventure.vue'
 
 const routes = [
   {
@@ -44,7 +46,7 @@ const routes = [
   {
     path: '/CottageDetails/:id?',
     name: 'CottageDetails',
-    component: CottageDetails
+    components: {UnloggedContent: CottageDetails}
   },
   {
     path: '/BoatsOverview',
@@ -141,6 +143,27 @@ const routes = [
       LeftSidebar: AdminSidebar,
       MainContent: ProfitsComponent
     } // DONE
+  },
+  {
+    path: '/instructor/profile',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfileView
+    }
+  },
+  {
+    path: '/instructor/profits',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
+    path: '/instructor/create-adventure',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: AdventureCreator
+    }
   }
 ]
 
