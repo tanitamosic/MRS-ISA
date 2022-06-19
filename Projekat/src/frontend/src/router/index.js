@@ -187,6 +187,20 @@ const routes = [
       LeftSidebar: ClientSidebar,
       MainContent: CottageDetails
     }
+  },
+  {
+    path: '/client/AdventureDetails/:id?',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: AdventureDetails
+    }
+  },
+  {
+    path: '/client/BoatDetails/:id?',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: BoatDetails
+    }
   }
 ]
 

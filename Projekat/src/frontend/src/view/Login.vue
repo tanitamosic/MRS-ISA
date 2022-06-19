@@ -105,7 +105,11 @@ export default {
 
               break;
             }
-            case 'ROLE_CLIENT': break;
+            case 'ROLE_CLIENT': {
+              self.$store.User = cookie.client;
+              self.$router.push('/client/profile');
+              break;
+            }
             case 'ROLE_INSTRUCTOR': break;
             case 'ROLE_COTTAGEOWNER': break;
             case 'ROLE_BOATOWNER': break;
