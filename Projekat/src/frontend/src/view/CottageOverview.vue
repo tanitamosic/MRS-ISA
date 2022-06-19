@@ -265,7 +265,10 @@ export default {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
-            return '/CottageDetails/' + id;
+            if(!(this.$store.accessToken==null))
+                return '/client/CottageDetails/' + id;
+            else
+                return '/CottageDetails/' + id;
         },
         generateIdSlider(id) {
             return 'carouselExampleIndicators' + id;

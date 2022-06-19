@@ -262,7 +262,10 @@ export default {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
-            return '/AdventureDetails/' + id;
+            if(!(this.$store.accessToken==null))
+                return '/client/AdventureDetails/' + id;
+            else
+                return '/AdventureDetails/' + id;
         },
         generateIdSlider(id) {
             return 'carouselExampleIndicators' + id;

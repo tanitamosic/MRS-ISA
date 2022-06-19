@@ -280,7 +280,10 @@ export default {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
-            return '/BoatDetails/' + id;
+            if(!(this.$store.accessToken==null))
+                return '/client/BoatDetails/' + id;
+            else
+                return '/BoatDetails/' + id;
         },
         generateIdSlider(id) {
             return 'carouselExampleIndicators' + id;
