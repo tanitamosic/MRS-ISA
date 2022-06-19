@@ -284,7 +284,7 @@ export default {
         },
         getNextPath(id) {
             if(this.isOwner) 
-                return '/CottageProfile/' + id;
+                return '/co/cottage-profile/' + id;
             else
                 return '/CottageDetails/' + id;
         },

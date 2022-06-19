@@ -325,10 +325,11 @@ export default {
 
         'Biography': this.Biography ? this.Biography : ''
       };
-
+      if(this.checkInput()) {
       // let self = this;
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+
       axios.post('/api/profile/update-profile',
         jsonData). then(function (requestResponse) {
           if (requestResponse.status === 200) {
@@ -338,6 +339,9 @@ export default {
           if (err)
             alert("Serverska greska");
         });
+      } else{
+        alert("")
+      }
     },
     delete_profile: function () {
       let usr = {
@@ -353,7 +357,8 @@ export default {
       }).catch((err) => {
         alert(err.data);
       });
-    }
+    },
+
   }
 }
 </script>

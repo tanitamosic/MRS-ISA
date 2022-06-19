@@ -24,6 +24,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Modifying
     @Query(nativeQuery = true, value="UPDATE ACCOUNTS SET password = ?2 WHERE ACCOUNTS.id=?1 ")
     public void updatePassword(Integer acc_id, String newPassword);
+
     @Transactional
     @Modifying
     @Query(nativeQuery = true, value="UPDATE ACCOUNTS SET username = ?2 WHERE ACCOUNTS.id=?1 ")
@@ -38,4 +39,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Modifying
     @Query(nativeQuery = true, value="UPDATE ACCOUNTS SET deleted = true WHERE ACCOUNTS.id=?1")
     void deleteAcc(Integer id);
+
 }

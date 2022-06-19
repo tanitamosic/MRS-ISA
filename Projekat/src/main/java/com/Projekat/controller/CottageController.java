@@ -52,6 +52,12 @@ public class CottageController {
         return pageCottageDTO;
     }
 
+    @PostMapping(value="/cottages/update-cottage-profile")
+    public ResponseEntity<CottageDTO> updateCottageProfile(@RequestBody Cottage newCottage){
+        Cottage c =cottageService.save(newCottage);
+        return new ResponseEntity<CottageDTO>( new CottageDTO(c),HttpStatus.OK);
+    }
+
     private SimpleCottageDTO convertToSimpleCottageDTO(Cottage c) {
         return new SimpleCottageDTO(c);
     }

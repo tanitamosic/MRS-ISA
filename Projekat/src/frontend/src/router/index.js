@@ -16,6 +16,7 @@ import AdminBoats from '@/view/AdminBoatOverview.vue'
 import AdminAdventures from '@/view/AdminAdvOverview.vue'
 import COProfileView from '@/view/CottageOwnerProfileView.vue'
 import COCottages from '@/view/CottageOwnerOverview.vue'
+import CottageProfileOverview from '@/view/CottageProfileOverview'
 
 
 const routes = [
@@ -103,6 +104,11 @@ const routes = [
     path: '/co/cottage-overview/',
     name: 'COCottages',
     component: COCottages
+  },
+  {
+    path: '/co/cottage-profile/:id?',
+    name: 'CottageProfileOverview',
+    component: CottageProfileOverview
   }
 ]
 
