@@ -1,7 +1,7 @@
 <template>
     <div v-if="!this.delRequestsLoaded" id="ucitavanje">Učitavanje!</div>
     <div v-else-if="this.noRequests" id="nema-podataka">Nema zahteva za brisanje naloga!</div>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
         <div
             class="card col mt-5"
             style="width: 18rem; margin: 20px"
@@ -13,6 +13,7 @@
                 <p class="card-text">Kontakt korisnika je: {{request.user.phone}}</p>
             </div>
             <ul class="list-group list-group-flush">
+                <li class="list-group-item">Razlog: {{ request.deletionRequest }}</li>
                 <li class="list-group-item">{{ request.requestDate }}</li>
                 <li class="list-group-item" :id="username_id(i)">{{ request.account.username }}</li>
             </ul>

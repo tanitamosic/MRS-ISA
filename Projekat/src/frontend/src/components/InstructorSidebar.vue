@@ -8,13 +8,16 @@
         <td>Pregled časova pecanja</td>
       </tr>
       <tr class="fs-5">
-        <td>Pregled zauzeća</td>
+        <td>Istorija rezervacija</td>
       </tr>
       <tr class="fs-5" v-on:click="goToProfits">
-        <td>Izveštaji</td>
+        <td>Izveštaj o prihodima</td>
       </tr>
       <tr class="fs-5" v-on:click="goToAdvCreator">
         <td>Kreiraj termine</td>
+      </tr>
+      <tr class="fs-5" v-on:click="goToCreateAction">
+        <td>Napravi novu akciju</td>
       </tr>
     </table>
   </b-sidebar>
@@ -63,6 +66,9 @@ export default {
     },
     goToAdvCreator: function() {
       this.$router.push('/instructor/create-adventure')
+    },
+    gotToCreateAction: function() {
+      
     }
   }
 }

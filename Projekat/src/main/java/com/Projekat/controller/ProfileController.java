@@ -2,7 +2,7 @@ package com.Projekat.controller;
 
 
 import com.Projekat.dto.SimpleAdminPasswordDTO;
-import com.Projekat.dto.SimpleUserDTO;
+import com.Projekat.dto.AccDeletionRequestDTO;
 import com.Projekat.model.Account;
 import com.Projekat.model.AccountDeletionRequest;
 import com.Projekat.model.users.User;
@@ -66,11 +66,11 @@ public class ProfileController {
     }
 
     @PostMapping(value="make-delete-profile-request")
-    public ResponseEntity<String> postDeletionRequest(@RequestBody SimpleUserDTO simple_dto) {
+    public ResponseEntity<String> postDeletionRequest(@RequestBody AccDeletionRequestDTO simple_dto) {
         final Integer acc_id = userService.findUserAccountId(simple_dto.getId());
         User u = userService.findUserById(simple_dto.getId());
         Account acc = accountService.findById(acc_id);
-        AccountDeletionRequest adr = new AccountDeletionRequest(acc, u);
+        AccountDeletionRequest adr = new AccountDeletionRequest(acc, u, simple_dto.getDeletionRequest());
         deletionService.makeDelRequest(adr);
 
         return new ResponseEntity<>("Uspešno ste poslali zahtev za brisanje naloga.", HttpStatus.OK);

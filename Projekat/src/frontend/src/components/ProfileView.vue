@@ -395,8 +395,14 @@ export default {
         });
     },
     delete_profile: function () {
+      let deletionRequest = prompt('Zasto zelite da obrisete nalog?');
+      if (!deletionRequest) {
+        return;
+      }
+      
       let usr = {
-        'id': this.$store.User.id
+        'id': this.$store.User.id,
+        'deletionRequest': deletionRequest
       };
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;

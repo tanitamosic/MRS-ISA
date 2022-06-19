@@ -5,12 +5,24 @@
                 <div class="col-lg-8">
                     <h2 class="fw-bold mb-5">Nova avantura</h2>
                     <div class="row gx-3 mb-3" id="customDays">
-                        <label class="small mb-1" for="fromDate">Odaberite od kada pocinje termin</label>
-                        <input type="date" name="fromDate" id="Customization" class="form-control" v-model="dateFrom" />
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="fromDate">Odaberite od kada pocinje termin (datum)</label>
+                            <input type="date" name="fromDate" class="form-control" v-model="dateFrom" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="timeFrom">Odaberite od kada pocinje termin (vreme)</label>
+                            <input type="time" name="timeFrom" class="form-control" v-model="timeFrom" />
+                        </div>
                     </div>
                     <div class="row gx-3 mb-3" id="customDays">
-                        <label class="small mb-1" for="dateTo">Odaberite do kada traje termin</label>
-                        <input type="date" id="Customization" class="form-control" name="dateTo" v-model="dateTo" />
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="dateTo">Odaberite do kada traje termin (datum)</label>
+                            <input type="date" class="form-control" name="dateTo" v-model="dateTo" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="timeTo">Odaberite do kada traje termin (vreme)</label>
+                            <input type="time" class="form-control" name="timeTo" v-model="timeTo" />
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-4">
@@ -38,7 +50,7 @@
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <input placeholder="Cena($)" type="number" id="cut" max="999999" min="0"
-                                onkeydown="return false" class="form-control" />
+                                onkeydown="return /^[0-9]$/i.test(event.key)" maxlength="6" class="form-control" />
                         </div>
                         <div class="col-md-4">
                             <textarea rows="1" class="form-control" placeholder="Pravila"></textarea>
@@ -96,6 +108,9 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="col-lg-7 col-sm-12">
+                            <textarea placeholder="Opisite sta ce se raditi na avanturi" class="form-control"></textarea>
+                        </div>
                     </div>
                     <div class="row mt-1">
                         <div class="col-lg-4">
@@ -119,10 +134,6 @@
     margin-top: 100px !important;
     background-color: #fbeec1 !important;
 }
-
-.uploading-image {
-    display: flex;
-}
 </style>
 
 
@@ -140,6 +151,9 @@ export default {
             previewImage: null,
             dateFrom: null,
             dateTo: null,
+            
+            timeFrom: null,
+            timeTo: null,
 
             // ADDITIONAL SERVICES
             addedService: null,

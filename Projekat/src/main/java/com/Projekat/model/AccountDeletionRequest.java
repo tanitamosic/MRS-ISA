@@ -10,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="acc_del_requests")
 public class AccountDeletionRequest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,6 +24,7 @@ public class AccountDeletionRequest {
     private User user;
 
     private boolean accepted;
+    private String deletionRequest;
     private boolean rejected;
     private String requestDate;
 
@@ -30,7 +32,8 @@ public class AccountDeletionRequest {
         return account;
     }
 
-    public AccountDeletionRequest(Account account, User usr) {
+    public AccountDeletionRequest(Account account, User usr, String deletionRequest) {
+        this.deletionRequest = deletionRequest;
         this.account = account;
         this.user = usr;
         this.accepted = false;
@@ -41,6 +44,14 @@ public class AccountDeletionRequest {
 
     public boolean isAccepted() {
         return accepted;
+    }
+
+    public String getDeletionRequest() {
+        return deletionRequest;
+    }
+
+    public void setDeletionRequest(String deletionRequest) {
+        this.deletionRequest = deletionRequest;
     }
 
     public void setAccepted(boolean accepted) {
