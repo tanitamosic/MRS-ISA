@@ -13,7 +13,7 @@
             <tr class="fs-5" v-on:click="goToProfile">
                 <td>Profil</td>
             </tr>
-            <tr class="fs-5">
+            <tr class="fs-5" v-on:click="goToReservationsOverview">
                 <td>Pregled rezervacija</td>
             </tr>
             <tr class="fs-5">
@@ -76,6 +76,9 @@ export default {
         },
         goToProfile: function () {
             this.$router.push('/client/profile');
+        },
+        goToReservationsOverview: function () {
+            this.$router.push('/client/activeReservations');
         }
     }
 }

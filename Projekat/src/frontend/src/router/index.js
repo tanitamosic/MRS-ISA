@@ -18,6 +18,7 @@ import AdminRegistration from '@/components/AdminRegistration.vue'
 import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
+import ReservationsOverview from '@/view/ReservationsOverview.vue'
 
 
 const routes = [
@@ -200,6 +201,13 @@ const routes = [
     components: {
       LeftSidebar: ClientSidebar,
       MainContent: BoatDetails
+    }
+  },
+  {
+    path: '/client/activeReservations',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: ReservationsOverview
     }
   }
 ]
