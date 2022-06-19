@@ -183,9 +183,9 @@ export default {
         async fillOptions() {
             // if(null == this.serviceProp.additionalServices)
             //     return;
-            for (let i = 0; i < this.cotage.additionalServices?.length; i++) {
-                let newD = {text: this.cotage.additionalServices[i].name + '    ' +  '$' + this.cotage.additionalServices[i].price, 
-                            value: this.cotage.additionalServices[i], 
+            for (let i = 0; i < this.boat.additionalServices?.length; i++) {
+                let newD = {text: this.boat.additionalServices[i].name + '    ' +  '$' + this.boat.additionalServices[i].price, 
+                            value: this.boat.additionalServices[i], 
                             disabled: false};
                 this.options.push(newD);
             }
