@@ -144,6 +144,9 @@
                             <div class="d-flex flex-row align-items-center">
                                 <h4 class="mr-1">${{ adventure.price }}</h4>
                             </div>
+                            <div class="d-flex flex-column mt-2 pr-4">
+                                <star-rating v-model:rating="adventure.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                            </div>
                             <div class="d-flex flex-column mt-4">
                                 <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                                 <!-- <a href="#/novaKomponenta">Detalji</a> -->
@@ -170,6 +173,7 @@
 <script>
 import axios from 'axios';
 import Paginate from "vuejs-paginate-next";
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'AdventureOverview',
@@ -363,7 +367,8 @@ export default {
         }
     },
     components: {
-        paginate: Paginate
+        paginate: Paginate,
+        StarRating: StarRating
     }
 }
 </script>

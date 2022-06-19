@@ -147,12 +147,18 @@
                             <div class="d-flex flex-row align-items-center">
                                 <h4 class="mr-1">${{ cotage.price }}</h4>
                             </div>
+                            <div class="d-flex flex-column mt-2 pr-4">
+                                <!-- <star-rating rating="3"></star-rating> -->
+                                <star-rating v-model:rating="cotage.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                            </div>
                             <div class="d-flex flex-column mt-4">
                                 <!-- <button class="btn btn-primary btn-sm" type="button" onclick="#/novaKomponenta">Detalji</button> -->
                                 <!-- <a href="#/novaKomponenta">Detalji</a> -->
-                                <router-link v-if="!isAdmin" class="btn btn-primary btn-sm" :to="getNextPath(cotage.id)">Detalji
+                                <router-link v-if="!isAdmin" class="btn btn-primary btn-sm"
+                                    :to="getNextPath(cotage.id)">Detalji
                                 </router-link>
-                                <button v-if="isAdmin" class="btn btn-danger btn-sm mt-1" v-on:click="deleteCottage(cotage.id)">Obriši</button>
+                                <button v-if="isAdmin" class="btn btn-danger btn-sm mt-1"
+                                    v-on:click="deleteCottage(cotage.id)">Obriši</button>
                             </div>
                         </div>
                     </div>
@@ -173,6 +179,7 @@
 <script>
 import axios from 'axios';
 import Paginate from "vuejs-paginate-next";
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'CardComponent',
@@ -210,7 +217,7 @@ export default {
         this.loadCottagesGet();
         window.scrollTo(0, 0);
 
-        if(this.$store.role === "ROLE_ADMIN") {
+        if (this.$store.role === "ROLE_ADMIN") {
             this.isAdmin = true;
         }
     },
@@ -220,21 +227,21 @@ export default {
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
             axios.delete('/api/admin/delete-cottage/' + id)
-            .then((response) => {
-                if (response.status === 200) {
-                    alert(response.data)
-                    // RE-GET COTTAGES
-                    self.cottagesLoaded = false;
-                    self.loadCottagesGet();
-                    window.scrollTo(0, 0);
-                }
-            }).catch((err) => {
-                console.log(err);
-                alert(err);
-            });
+                .then((response) => {
+                    if (response.status === 200) {
+                        alert(response.data)
+                        // RE-GET COTTAGES
+                        self.cottagesLoaded = false;
+                        self.loadCottagesGet();
+                        window.scrollTo(0, 0);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    alert(err);
+                });
 
-            
-        
+
+
         },
         async clickCallback(pageNum) {
             console.log(pageNum);
@@ -265,7 +272,7 @@ export default {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
-            if(!(this.$store.accessToken==null))
+            if (!(this.$store.accessToken == null))
                 return '/client/CottageDetails/' + id;
             else
                 return '/CottageDetails/' + id;
@@ -357,7 +364,8 @@ export default {
         }
     },
     components: {
-        paginate: Paginate
+        paginate: Paginate,
+        StarRating: StarRating
     }
 }
 </script>
