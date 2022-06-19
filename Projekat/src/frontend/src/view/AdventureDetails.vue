@@ -43,6 +43,9 @@
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0">{{this.adventure.name}}</p>
                                 </div>
+                                <div class="col-lg-12 col-sm-12 mt-2 mb-2">
+                                    <star-rating v-model:rating="this.adventure.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                                </div>
                                 <div class="col-lg-12 col-sm-12">
                                     <p class="m-0 p-0 price-pro">${{this.adventure.price}}</p>
                                     <hr class="p-0 m-0 mt-2">
@@ -117,6 +120,7 @@
 <script>
 import axios from 'axios';
 import AdventureReservationModalVue from '@/components/AdventureReservationModal.vue';
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'AdventureDetails',
@@ -167,7 +171,8 @@ export default {
          }
     },
     components: {
-        'Modal': AdventureReservationModalVue
+        'Modal': AdventureReservationModalVue,
+        StarRating: StarRating
     }
 
 }
