@@ -1,6 +1,7 @@
 package com.Projekat.repository;
 
 import com.Projekat.model.reservations.Reservation;
+import com.Projekat.model.users.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -58,4 +59,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> getReservationsForServiceBetweenDates(Integer serviceId, LocalDateTime startDate, LocalDateTime endDate);
 
 
+    @Query(nativeQuery = true,
+            value="SELECT u.name, u.surname, u.id FROM USERS AS u " +
+                    "INNER JOIN RESERVATION AS r ON u.id=r.client_id " +
+                    "INNER JOIN ADVENTURES ON r.service_id=?1 ")
+    Client findIfAdventureIsReserved(Integer adv_id);
 }

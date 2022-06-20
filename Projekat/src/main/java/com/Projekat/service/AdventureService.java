@@ -37,5 +37,9 @@ public class AdventureService {
 
     public void setAdventurePrimaryPhoto(Integer serviceId, Integer photoId) { adventureRepository.setAdventurePrimaryPhoto(serviceId, photoId); }
 
+    public List<Adventure> getAllInstructorsAdventures(Integer ownerId) { return adventureRepository.getAllInstructorsAdventures(ownerId); }
+
+    public Adventure getAdventure(Integer ownerId, Integer advId) { return adventureRepository.getAdventure(ownerId, advId); }
+
 
 }

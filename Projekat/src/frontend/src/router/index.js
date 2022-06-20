@@ -20,6 +20,8 @@ import UserOverview from '@/components/UserOverview.vue'
 
 import InstructorSidebar from '@/components/InstructorSidebar.vue'
 import AdventureCreator from '@/components/CreateAdventure.vue'
+import InstructorsAdventures from '@/components/InstructorsAdventures.vue'
+import InstructorAdventureDetails from '@/components/InstructorAdventureDetails.vue'
 
 const routes = [
   {
@@ -163,6 +165,20 @@ const routes = [
     components: {
       LeftSidebar: InstructorSidebar,
       MainContent: AdventureCreator
+    }
+  },
+  {
+    path: '/instructor/view-adventures',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorsAdventures
+    }
+  },
+  {
+    path: '/instructor/view-adventure-details/:id?',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorAdventureDetails
     }
   }
 ]

@@ -45,6 +45,7 @@ public class ReservationService {
     public List<Reservation> getInstructorsReservationsBetweenDates(Timestamp from, Timestamp to, Integer id){
         return reservationRepository.getInstructorsReservationsBetweenDates(from, to, id);
     }
+    public Client findIfAdventureIsReserved(Integer adv_id) { return reservationRepository.findIfAdventureIsReserved(adv_id); }
 
     @Autowired
     private AdditionalServicesService asService;

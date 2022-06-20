@@ -10,6 +10,7 @@ import com.Projekat.model.Photo;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
+import com.Projekat.model.users.Client;
 import com.Projekat.model.users.Instructor;
 import com.Projekat.service.*;
 import org.apache.tomcat.jni.File;
@@ -47,6 +48,8 @@ public class AdventureController {
     private AdditionalServicesService additionalServicesService;
     @Autowired
     private PhotoService photoService;
+    @Autowired
+    private ReservationService reservationService;
 
     @PostMapping(value="/instructor/create-new-adventure", consumes = "application/json")
     @PreAuthorize("hasRole('INSTRUCTOR')")
@@ -163,7 +166,6 @@ public class AdventureController {
 
         return new ResponseEntity<>("Slike uspesno dodate", HttpStatus.OK);
     }
-
     private String generateRandomFileName() {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
@@ -177,4 +179,29 @@ public class AdventureController {
         return buffer.toString() + ".jpg";
     }
 
+    @GetMapping(value="/instructor/{usr_id}/adventures/all")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<List<Adventure>> getAllInstructorsAdventures(@PathVariable Integer usr_id) {
+        List<Adventure> allAdventures = adventureService.getAllInstructorsAdventures(usr_id);
+        return new ResponseEntity<>(allAdventures, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/instructor/{usr_id}/adventures/getadventure/{adv_id}")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<Adventure> getAllInstructorsAdventures(@PathVariable Integer usr_id, @PathVariable Integer adv_id) {
+        Adventure adventure = adventureService.getAdventure(usr_id, adv_id);
+        if (null == adventure) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(adventure, HttpStatus.OK);
+    }
+
+    @GetMapping("/instructor/{adv_id}/find-client")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<Client> isAdventureReserved(@PathVariable Integer adv_id) {
+        Client c = reservationService.findIfAdventureIsReserved(adv_id);
+        // returning null as client is fine. cuz front knows to handle null for return value
+        return new ResponseEntity<>(c, HttpStatus.OK);
+
+    }
 }

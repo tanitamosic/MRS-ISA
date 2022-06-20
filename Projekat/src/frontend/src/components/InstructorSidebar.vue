@@ -4,7 +4,7 @@
       <tr class="fs-5" v-on:click="goToProfile">
         <td>Profil</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToAdventures">
         <td>Pregled časova pecanja</td>
       </tr>
       <tr class="fs-5">
@@ -15,9 +15,6 @@
       </tr>
       <tr class="fs-5" v-on:click="goToAdvCreator">
         <td>Kreiraj termine</td>
-      </tr>
-      <tr class="fs-5" v-on:click="goToCreateAction">
-        <td>Napravi novu akciju</td>
       </tr>
     </table>
   </b-sidebar>
@@ -65,10 +62,10 @@ export default {
       this.$router.push('/instructor/profits');
     },
     goToAdvCreator: function() {
-      this.$router.push('/instructor/create-adventure')
+      this.$router.push('/instructor/create-adventure');
     },
-    gotToCreateAction: function() {
-      
+    goToAdventures: function() {
+      this.$router.push('/instructor/view-adventures');
     }
   }
 }
