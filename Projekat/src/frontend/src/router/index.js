@@ -52,13 +52,8 @@ const routes = [
   {
     path: '/BoatsOverview',
     name: 'BoatsOverview',
-<<<<<<< Updated upstream
     components: {
       UnloggedContent: BoatsOverview
-=======
-    components: { 
-      UnloggedContent: BoatsOverview 
->>>>>>> Stashed changes
     }
   },
   {
@@ -72,11 +67,7 @@ const routes = [
     path: '/AdventureOverview',
     name: 'AdventureOverview',
     components: {
-<<<<<<< Updated upstream
       UnloggedContent: AdventureOverview
-=======
-      UnloggedContent: AdventureOverview 
->>>>>>> Stashed changes
     }
   },
   {
