@@ -1,8 +1,7 @@
 package com.Projekat.service;
 
 import com.Projekat.dto.ReservationDTO;
-import com.Projekat.exception.RequestNotValidException;
-import com.Projekat.exception.ServiceNotAvailableException;
+import com.Projekat.exception.*;
 import com.Projekat.mail.MyMailSender;
 import com.Projekat.model.Account;
 import com.Projekat.model.reservations.*;
@@ -19,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -285,5 +286,37 @@ public class ReservationService {
 
     public Page<Reservation> getAllHistoricalUserReservations(int id, Pageable page) {
         return reservationRepository.getAllHistoricalUserReservations(id, page);
+    }
+
+    public void cancelReservation(Client client, Integer id_reservation) {
+        Reservation reservation = null;
+        try {
+            reservation = reservationRepository.findById(id_reservation).orElseGet(null);
+        }
+        catch (NullPointerException npe) {
+            throw new ReservationDoesNotExistException("Izabrana rezervacija ne postoji u sistemu!");
+        }
+
+        if (reservation.getClient().getId() != client.getId()) {
+            throw new ReservationOwnerNotAppropriateException("Vi niste napravili izabranu rezervaciju, pa je ne možete ni otkazati!");
+        }
+
+        if (reservation.getStatus() != ReservationStatus.BOOKED) {
+            throw new ReservationStatusNotAppropriateForCancelationException("Nije moguće otkazati rezervaciju, jer ona trenutno nema status Rezervisana!");
+        }
+
+        // provera da li ima barem 3 dana pre početka termina rezervacije
+        LocalDateTime reservationStart = reservation.getStartDate();
+        LocalDateTime now = LocalDateTime.now();
+
+        long daysBetween = Duration.between(now ,reservationStart).toDays();
+
+        if (daysBetween <= 3) {
+            throw new DeadlineForReservationCancellationPassedException("Prošao je rok u kojem je moguće otkazati rezervaciju");
+        }
+
+        // promena statusa u BP na CANCELLED
+        reservationRepository.cancelReservation(id_reservation);
+
     }
 }

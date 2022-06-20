@@ -4,6 +4,7 @@ package com.Projekat.controller;
 import com.Projekat.dto.CutDTO;
 import com.Projekat.dto.ReservationSimpleDTO;
 import com.Projekat.dto.SortParametersReservationsDTO;
+import com.Projekat.exception.*;
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.Service;
 import org.springframework.data.domain.Page;
@@ -16,9 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.Projekat.dto.ReservationDTO;
-import com.Projekat.exception.RequestNotValidException;
-import com.Projekat.exception.ServiceDoesNotExistException;
-import com.Projekat.exception.ServiceNotAvailableException;
 import com.Projekat.model.Account;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
@@ -285,6 +283,48 @@ public class ReservationController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+
+    @GetMapping(value = "/client/cancelreservation/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> cancelReservation(@PathVariable Integer id) {
+        // id je id rezervacije koju želimo da otkažemo
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            System.out.println(account.getUsername());
+            System.out.println(account.getPassword());
+            System.out.println("ID rezervacije: " + id);
+
+            reservationService.cancelReservation(client, id);
+
+            return new ResponseEntity<>("Rezervacija je uspešno otkazana.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>("Došlo je do greške", HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationOwnerNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationStatusNotAppropriateForCancelationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (DeadlineForReservationCancellationPassedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 

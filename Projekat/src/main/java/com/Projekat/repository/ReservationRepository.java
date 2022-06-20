@@ -3,10 +3,13 @@ package com.Projekat.repository;
 import com.Projekat.model.reservations.Reservation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,4 +64,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE client_id=?1 AND status=2")
     Page<Reservation> getAllHistoricalUserReservations(int clientId, Pageable page);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE reservation SET status=1 WHERE reservation.id=?1")
+    void cancelReservation(int id);
+
 }
