@@ -2,13 +2,15 @@
     <div v-if="!this.ReservationsLoaded" id="ucitavanje">Učitavanje!</div>
     <div v-else-if="this.ReservationsLoaded && this.ReservationsEmpty" id="nema-podataka">Nema podataka za prikaz!</div>
     <div v-else-if="this.ReservationsLoaded && this.ReservationsEmpty === false" pb-5>
+        <!-- 4 dugmeta za sortiranje -->
         <div class="container mt-5 mb-0">
             <div class="d-flex justify-content-center row">
                 <div class="col-md-10 mt-5">
                     <div class="row p-2 bg-white border rounded mt-2">
                         <div class="row gx-3 mb-1">
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-primary w-100" v-on:click="sortingByDateDescending">
+                                <button type="button" class="btn btn-primary w-100"
+                                    v-on:click="sortingByDateDescending">
                                     Sortiraj po datumu rastuće
                                 </button>
                             </div>
@@ -16,14 +18,16 @@
                                 <button type="button" class="btn btn-primary w-100" v-on:click="sortingByDateAscending">
                                     Sortiraj po datumu opadajuće
                                 </button>
-                            </div>                            
+                            </div>
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-primary w-100" v-on:click="sortingByPriceDescending">
+                                <button type="button" class="btn btn-primary w-100"
+                                    v-on:click="sortingByPriceDescending">
                                     Sortiraj po ceni opadajuće
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-primary w-100" v-on:click="sortingByPriceAscending">
+                                <button type="button" class="btn btn-primary w-100"
+                                    v-on:click="sortingByPriceAscending">
                                     Sortiraj po ceni rastuće
                                 </button>
                             </div>
@@ -88,7 +92,7 @@
                             </div>
                             <div class="d-flex flex-column mt-4">
                                 <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" v-if="!(this.$store.accessToken == null)">
+                                    data-bs-target="#exampleModal" v-if="!(this.$store.accessToken == null)" v-on:click="this.setSelectedReservation(reservation.id)">
                                     Otkaži rezervaciju
                                 </button>
                             </div>
@@ -103,6 +107,41 @@
                 :click-handler="clickCallback" :prev-text="'Nazad'" :next-text="'Napred'"
                 :container-class="'pagination'" :page-class="'page-item'">
             </paginate>
+        </div>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Otkazivanje rezervacije</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="modalClosing"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="searchForm">
+
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-md-12">
+                                        <label class="small mb-1">Da li ste sigurni da želite da otkažete rezervaciju:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-1">
+                                    <div class="col-md-12">
+                                        <div v-if="!(this.returnMessage===undefined || this.returnMessage==='')" :class="this.klasa">{{ this.returnMessage }}</div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="modalClosing">Zatvori</button>
+                            <button type="button" class="btn btn-primary" v-on:click="cancelReservation">Otkaži
+                                rezervaciju</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -129,7 +168,11 @@ export default {
             sortByDateAscending: false,
             sortByDateDescending: true,
             sortByPriceAscending: false,
-            sortByPrisceDescending: false
+            sortByPrisceDescending: false,
+
+            idSelectedReservation: -1,
+            returnMessage: '',
+            klasa: 'text-primary'
         }
     },
     mounted() {
@@ -234,6 +277,39 @@ export default {
         },
         generateIdSliderWithHashTag(id) {
             return '#carouselExampleIndicators' + id;
+        },
+        setSelectedReservation(id) {
+            this.idSelectedReservation = id;
+        },
+        async cancelReservation() {
+            // idSelectedReservation is id for reservation that we want to cancel
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            await axios
+                .get('api/client/cancelreservation/' + this.idSelectedReservation)
+                .then(response => (
+                    this.returnMessage = response.data,
+                    this.klasa = 'text-success'
+                ))
+                .catch(err => {
+                        if (err.response.status === 400) {
+                            // alert(err.response.data);
+                            this.returnMessage = err.response.data,
+                            this.klasa = 'text-danger'
+                        }
+                        else {
+                            // alert(err);
+                            this.returnMessage = err.response.data,
+                            this.klasa = 'text-danger'
+                        }
+                        console.log(err);
+                    }
+                );
+            this.loadReservations();
+        },
+        modalClosing() {
+            this.returnMessage = ''
+            this.klasa = 'text-primary'
         }
     },
     components: {
