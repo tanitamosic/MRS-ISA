@@ -7,14 +7,22 @@
                    <i><b>TurboJavaSpringbootTurizamExpo</b></i>
                 </div>
                 <div class="d-flex ms-auto order-5">
-                    <router-link class="me-2 navtxt" to="/" >Pregled Vikendica</router-link>
-
-                    <router-link class="me-2 navtxt" to="/register">Registracija</router-link>
+                    <router-link class="me-4 navtxt" to="/" v-if="!$store.User" >Vikendice</router-link>
+                    <router-link class="me-4 navtxt" to="/BoatsOverview" v-if="!$store.User" >Brodovi</router-link>
+                    <router-link class="me-4 navtxt" to="/AdventureOverview" v-if="!$store.User" >Avanture</router-link>
+                    <router-link class="me-4 navtxt" to="/login" v-if="!$store.User" >Prijava</router-link>
+                    <router-link class="me-2 navtxt" to="/register" v-if="!$store.User" >Registracija</router-link>
                 </div>
             </div>
         </div>
     </nav>
 </template>
+
+<script>
+export default {
+    
+}
+</script>
 
 <style scoped>
 * {

@@ -64,6 +64,16 @@ import axios from 'axios'
 
 export default {
   name: "LoginView",
+  mounted() {
+    this.$store.User = {};
+    this.$store.accessToken = '';
+    this.$store.role = '';
+    this.$store.User = '';
+    this.$store.username = '';
+    this.$store.currentPassword = '',
+    this.$store.lastPasswordResetDate = null
+    this.$forceUpdate();
+  },
   methods: {
     login: function () {
 
