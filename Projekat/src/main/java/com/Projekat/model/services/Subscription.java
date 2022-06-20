@@ -16,11 +16,11 @@ public class Subscription {
     private Integer id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+    @JoinColumn(name = "client_id",referencedColumnName = "id")
     private Client client;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
+    @JoinColumn(name = "service_id",referencedColumnName = "id")
     private Service service;
 
 }

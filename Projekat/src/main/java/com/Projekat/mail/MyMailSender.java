@@ -71,6 +71,12 @@ public class MyMailSender {
         mailSender.send(email);
     }
 
-
+    public void notifyClientOfQuickAction(String target, String mail_body) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(target);
+        email.setSubject("Obaveštenje o novoj akciji na TurboJavaSpringbootTurizamExpo");
+        email.setText(mail_body);
+        mailSender.send(email);
+    }
 
 }

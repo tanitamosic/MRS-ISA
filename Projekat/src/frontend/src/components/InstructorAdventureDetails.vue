@@ -1,8 +1,10 @@
 <template>
     <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
+            
             <div class="col-lg-8 border p-3 main-section bg-white">
-                <form id="profileForm">
+                
+                    
                     <div class="row m-0 pt-3">
                         <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
                         <img class="border p-3 img-thumbnail" :src="this.adventure.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
@@ -137,7 +139,8 @@
                             </div>
                             <div class="col">
                                 <div class="card shadow-lg border-dark" style="width: 18rem; margin:20px;">
-                                    <div class="card-header">Klijent: {{ this.client.name }} {{ this.client.surname }}</div>
+                                    <div class="card-header">Klijent: {{ this.client.name }} {{ this.client.surname }}
+                                    </div>
                                     <div class="card-body">
                                         <p class="card-text">Kontakt telefon: {{ this.client.phone }}</p>
                                     </div>
@@ -159,6 +162,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row gx-3 mb-3">
                         <div class="col-md-6 mb-4">
                             <input type="text" v-model="addedService" id="addedServiceName" maxlength="20"
@@ -177,30 +181,47 @@
                         </div>
                     </div>
                     <hr />
-                    <button class="btn btn-primary mx-1" type="button" v-on:click="update_adventure">
+                    <button class="btn btn-primary m-1" type="button" v-on:click.prevent="update_adventure">
                         Sačuvaj izmene
                     </button>
-                    <button id="account-deletion" class="btn btn-danger mx-1" type="button"
-                        v-on:click="delete_adventure">
+                    <button id="account-deletion" class="btn btn-danger m-1" type="button"
+                        v-on:click.prevent="delete_adventure">
                         Obriši vikendicu
                     </button>
-                    <button class="btn btn-success mx-1" v-on:click="createAction">
+                    <button id="show-modal" class="btn btn-success m-1" @click="showModal=true">
                         Napravi akciju
                     </button>
-                </form>
+                     
+                
             </div>
         </div>
     </div>
+     
+    <!-- MODAL IMPLEMENTATION -->
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <modal :show="showModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showModal = false">
+      <template #header>
+        <h3>custom header</h3>
+      </template>
+    </modal>
+  </Teleport>
 </template>
 
 
 <script>
 import axios from "axios";
+import Modal from '@/components/QuickReservationModal.vue'
 
 export default {
     name: "AdventureDetails",
+    components: {
+        Modal,
+    },
     data() {
         return {
+            showModal: false,
+
             id: null,
             adventure: {},
             additionalServicesExists: false,
@@ -443,15 +464,44 @@ function checkAddress(adventure) {
 
 
 <style scoped>
-body {
-    font-family: "Roboto Condensed", sans-serif;
-    background-color: #f5f5f5;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.hedding {
-    font-size: 20px;
-    color: #ab8181;
+body {
+    font-family: 'montserrat', sans-serif;
 }
+
+
+.button {
+    appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    display: inline-block;
+    padding: 15px 25px;
+    background-image: linear-gradient(to right, #CC2E5D, #FF5858);
+    border-radius: 8px;
+
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 700;
+
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+    transition: 0.4s ease-out;
+
+}
+
+
+
+/* body {
+    font-family: "Roboto Condensed", sans-serif;
+    background-color: #f5f5f5;
+} */
 
 .main-section {
     position: absolute;
@@ -464,11 +514,11 @@ body {
     width: 100%;
 }
 
-.left-side-product-box .sub-img img {
+/* .left-side-product-box{
     margin-top: 5px;
     width: 83px;
     height: 100px;
-}
+} */
 
 .right-side-pro-detail span {
     font-size: 15px;
@@ -483,13 +533,9 @@ body {
     color: #e45641;
 }
 
-.right-side-pro-detail .tag-section {
+.right-side-pro-detail  {
     font-size: 18px;
     color: #5d4c46;
 }
 
-.pro-box-section .pro-box img {
-    width: 100%;
-    height: 200px;
-}
 </style>
