@@ -24,7 +24,7 @@ public class Complaint {
     private ComplaintStatus status;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="reservation_id")
+    @JoinColumn(name="reservation_id", referencedColumnName = "id")
     private Reservation reservation;
 
     public Reservation getReservation() {
