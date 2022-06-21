@@ -143,6 +143,9 @@
                                 <div class="card-body">
                                     <p class="card-text">Kontakt telefon: {{ this.client.phone }}</p>
                                 </div>
+                                <div class="card-body">
+                                    <button class="btn btn-success" v-if="!this.client.id" @click="showClientResModal = true">Napravi rezervaciju za klijenta</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,7 +190,7 @@
                     v-on:click.prevent="delete_adventure">
                     Obriši vikendicu
                 </button>
-                <button id="show-modal" class="btn btn-success m-1" @click="showModal = true">
+                <button id="show-modal" class="btn btn-success m-1" @click="showQuickActionModal = true">
                     Napravi akciju
                 </button>
 
@@ -199,27 +202,39 @@
     <!-- MODAL IMPLEMENTATION -->
     <Teleport to="body">
         <!-- use the modal component, pass in the prop -->
-        <modal :show="showModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showModal = false">
+        <QuickActionModal :show="showQuickActionModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showQuickActionModal = false">
             <template #header>
                 <h3>custom header</h3>
             </template>
-        </modal>
+        </QuickActionModal>
+    </Teleport>
+    <!-- MODAL IMPLEMENTATION -->
+    <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <ClientReservationModal :show="showClientResModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showClientResModal = false">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </ClientReservationModal>
     </Teleport>
 </template>
 
 
 <script>
 import axios from "axios";
-import Modal from '@/components/QuickReservationModal.vue'
+import QuickActionModal from '@/components/QuickReservationModal.vue'
+import ClientReservationModal from '@/components/ClientReservationModa.vue'
 
 export default {
     name: "AdventureDetails",
     components: {
-        Modal,
+        QuickActionModal,
+        ClientReservationModal
     },
     data() {
         return {
-            showModal: false,
+            showQuickActionModal: false,
+            showClientResModal: false,
 
             id: null,
             adventure: {},
@@ -438,6 +453,9 @@ export default {
                     console.log(err);
                     alert(err.response.data);
                 })
+        },
+        makeClientReservation() {
+
         }
     },
 };
