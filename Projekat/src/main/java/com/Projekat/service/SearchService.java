@@ -8,7 +8,6 @@ import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.repository.AdventureSearchRepository;
 import com.Projekat.repository.BoatSearchRepository;
-import com.Projekat.repository.CottageRepository;
 import com.Projekat.repository.CottageSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

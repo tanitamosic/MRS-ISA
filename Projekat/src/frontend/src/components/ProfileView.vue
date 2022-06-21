@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-4 mt-4 content-right">
+  <div class="container-fluid px-4 mt-4">
     <div class="row">
       <div class="col-xl-4">
         <!-- Profile picture card-->
@@ -16,6 +16,17 @@
             <div class="small font-italic text-muted mb-4">JPG ili PNG slika ne veća od 5 MB</div>
             <!-- Profile picture upload button-->
             <button class="btn btn-primary" type="button">Zameni sliku</button>
+          </div>
+        </div>
+        <div class="card" v-if="show_cut">
+          <div class="card-header">%Cut</div>
+          <div class="card-body text-center">
+            <label for="cut" id="cutlbl">Procenat koji uzimate za svaku rezervaciju</label>
+            <input type="number" id="cut" max="100" min="0" onkeydown="return false" v-model="cut" />
+            <!-- Profile picture help block-->
+            <div class="small font-italic text-muted mb-2"></div>
+            <!-- Profile picture upload button-->
+            <button class="btn btn-primary" type="button" v-on:click="changeCut">Potvrdi</button>
           </div>
         </div>
       </div>
@@ -88,8 +99,6 @@
                     v-model="Street"
                   />
                 </div>
-                
-                
               </div>
               <!-- Form Group (email address)-->
               <div class="mb-3">
@@ -101,6 +110,8 @@
                   type="email"
                   placeholder="Enter your email address"
                   v-model="Username"
+                  title="Ne možete menjati email adresu"
+                  readonly
                 />
               </div>
               <!-- Form Row-->
@@ -141,17 +152,35 @@
                   <!-- Old password -->
                   <div class="col-md-6">
                     <label for="OldPasswordInput" class="form-label">Stara lozinka</label>
-                    <input type="password" class="form-control" id="OldPasswordInput" name="OldPasswordInput" v-model="OldPasswordInput" />
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="OldPasswordInput"
+                      name="OldPasswordInput"
+                      v-model="OldPasswordInput"
+                    />
                   </div>
                   <!-- New password -->
                   <div class="col-md-6">
                     <label for="NewPassword1" class="form-label">Nova lozinka</label>
-                    <input type="password" class="form-control" id="NewPassword1" name="NewPassword1" v-model="NewPassword1" />
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="NewPassword1"
+                      name="NewPassword1"
+                      v-model="NewPassword1"
+                    />
                   </div>
                   <!-- Confirm password -->
                   <div class="col-md-12">
                     <label for="NewPassword2" class="form-label">Potvrdite novu lozinku</label>
-                    <input type="password" class="form-control" id="NewPassword2" name="NewPassword2" v-model="NewPassword2" />
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="NewPassword2"
+                      name="NewPassword2"
+                      v-model="NewPassword2"
+                    />
                   </div>
                 </div>
               </div>
@@ -178,12 +207,6 @@
 </template>
 
 <style scoped>
-.content-right {
-  top: 50px;
-  z-index: -1;
-  float: right;
-  width: 85%;
-}
 body {
   /* margin-top:50px; */
   background-color: #f2f6fc;
@@ -260,7 +283,10 @@ export default {
       Biography: '',
 
       show_biography: false,
-      show_delete_btn: true
+      show_delete_btn: true,
+      show_cut: false,
+
+      cut: 10
     }
   },
   mounted() {
@@ -278,14 +304,35 @@ export default {
       this.show_biography = true;
     }
     if (this.$store.role === "ROLE_ADMIN") {
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+      let self = this;
+      axios.get('/api/admin/get-cut').then((response) => {
+        self.cut = response.data;
+      })
       this.show_delete_btn = false;
+      this.show_cut = true;
     }
     //console.log(this.$store.User);
   },
 
   methods: {
+    changeCut: function () {
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+      let data = {
+        'cut': this.cut
+      };
+      axios.post('/api/admin/change-cut', data)
+        .then((response) => {
+          alert(response.data);
+        }).catch((err) => {
+          console.log(err);
+          alert("Došlo je do greške");
+        });
+    },
     update_profile: function () {
-      
+
       let OldPasswordInput = document.getElementById("OldPasswordInput").value;
       if ((this.OldPassword != OldPasswordInput) && OldPasswordInput != '') {
         alert("Uneta stara lozinka se ne podudara sa trenutnom lozinkom.");
@@ -294,18 +341,17 @@ export default {
         alert("Unos nove lozinke je neispravan.");
         return;
       }
-      
-      if (this.Name === '' ||
-          this.Surname === '' ||
-          this.Phone === '' ||
-          this.Username === '' ||
-          this.State === '' ||
-          this.City === '' ||
-          this.Street === '') {
-          alert("Polja sa Vašim ličnim podacima ne smeju biti prazna.")
-          return;
-      }
 
+      if (this.Name === '' ||
+        this.Surname === '' ||
+        this.Phone === '' ||
+        this.Username === '' ||
+        this.State === '' ||
+        this.City === '' ||
+        this.Street === '') {
+        alert("Polja sa Vašim ličnim podacima ne smeju biti prazna.")
+        return;
+      }
 
       let jsonData = {
         'Id': this.$store.User.id,
@@ -317,7 +363,7 @@ export default {
         'City': this.City,
         'Street': this.Street,
         'Phone': this.Phone,
-        
+
         'NewPassword': this.Password1 ? this.Password1 : '',
 
         'NewUsername': this.Username,
@@ -325,40 +371,50 @@ export default {
 
         'Biography': this.Biography ? this.Biography : ''
       };
-      if(this.checkInput()) {
-      // let self = this;
+
+      let self = this;
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
-
       axios.post('/api/profile/update-profile',
-        jsonData). then(function (requestResponse) {
+        jsonData).then(function (requestResponse) {
           if (requestResponse.status === 200) {
+            self.$store.User.name = self.Name;
+            self.$store.User.surname = self.Surname;
+            self.$store.User.phone = self.Phone;
+            self.$store.username = self.Username;
+            self.$store.User.address.state = self.State;
+            self.$store.User.address.city = self.City;
+            self.$store.User.address.street = self.Street;
+            self.$store.currentPassword = self.OldPassword;
+            self.$store.User.biography = self.Biography;
             alert("Promena podataka je uspesna.")
           }
         }).catch(function (err) {
           if (err)
             alert("Serverska greska");
         });
-      } else{
-        alert("")
-      }
     },
     delete_profile: function () {
+      let deletionRequest = prompt('Zasto zelite da obrisete nalog?');
+      if (!deletionRequest) {
+        return;
+      }
+      
       let usr = {
-        'id': this.$store.User.id
+        'id': this.$store.User.id,
+        'deletionRequest': deletionRequest
       };
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
       axios.post('/api/profile/make-delete-profile-request', usr)
-      .then((response) => {
-        if (response.status === 200) {
-          alert(response.data);
-        }
-      }).catch((err) => {
-        alert(err.data);
-      });
-    },
-
+        .then((response) => {
+          if (response.status === 200) {
+            alert(response.data);
+          }
+        }).catch((err) => {
+          alert(err.data);
+        });
+    }
   }
 }
 </script>

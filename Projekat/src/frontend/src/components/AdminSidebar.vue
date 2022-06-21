@@ -31,6 +31,12 @@
       <tr class="fs-5" v-on:click="goToDeletionRequests">
         <td>Zahtevi za brisanje naloga</td>
       </tr>
+       <tr class="fs-5" v-on:click="goToAdminRegistration">
+        <td>Registracija novog admina</td>
+      </tr>
+       <tr class="fs-5" v-on:click="goToProfits">
+        <td>Izveštaj o prihodima</td>
+      </tr>
     </table>
   </b-sidebar>
 </template>
@@ -61,7 +67,7 @@ td {
 }
 
 tr:hover {
-  background-color: #bcd8ab;
+  background-color: #daad86;
 }
 </style>
 
@@ -94,6 +100,12 @@ export default {
     },
     goToAdventures: function() {
       this.$router.push('/admin/adventure-overview')
+    },
+    goToAdminRegistration: function() {
+      this.$router.push('/admin/admin-registration');
+    },
+    goToProfits: function() {
+      this.$router.push('/admin/profits');
     }
   }
 }

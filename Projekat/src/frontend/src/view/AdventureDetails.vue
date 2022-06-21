@@ -62,7 +62,14 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-sm-6"></div>
                                         <div class="col-lg-6 col-sm-12">
-                                            <a href="#" class="btn btn-success w-100">Rezerviši</a>
+                                            <!-- <a href="#" class="btn btn-success w-100">Rezerviši</a> -->
+                                            <!-- <router-link class="btn btn-primary btn-sm" :to="/">
+                                                Rezerviši
+                                            </router-link> -->
+                                            <button type="button" class="btn btn-success w-100"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal" v-if="!(this.$store.accessToken==null)">
+                                                Rezerviši
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -104,10 +111,12 @@
             </div>
         </div>
     </div>
+    <Modal :serviceProp="this.adventure" :options="this.options" :price-prop="this.adventure.price"></Modal>
 </template>
 
 <script>
 import axios from 'axios';
+import AdventureReservationModalVue from '@/components/AdventureReservationModal.vue';
 
 export default {
     name: 'AdventureDetails',
@@ -118,12 +127,14 @@ export default {
             additionalServicesExists: false,
             primaryPhotoExists: false,
             addressExists: false,
-            photosExists: false
+            photosExists: false,
+
+            options: []
         };
     },
-    mounted() {
+    async mounted() {
         this.id=this.$route.params.id;
-        axios
+        await axios
             .get('/api/adventures/getAdventure/' + this.id)
             .then(response => (
                 this.adventure = response.data,
@@ -132,6 +143,7 @@ export default {
                 this.photosExists = this.adventure.photos.length === 0 ? false : true,
                 this.addressExists = this.adventure.address === undefined ? false : true
                 ));
+        await this.fillOptions();
     },
     methods: {
         transformAddress(address) {
@@ -142,7 +154,20 @@ export default {
         },
         createAriaLabel(index) {
             return 'Slide ' + index;
-        }
+        },
+        async fillOptions() {
+            // if(null == this.serviceProp.additionalServices)
+            //     return;
+            for (let i = 0; i < this.cotage.additionalServices?.length; i++) {
+                let newD = {text: this.cotage.additionalServices[i].name + '    ' +  '$' + this.cotage.additionalServices[i].price, 
+                            value: this.cotage.additionalServices[i], 
+                            disabled: false};
+                this.options.push(newD);
+            }
+         }
+    },
+    components: {
+        'Modal': AdventureReservationModalVue
     }
 
 }

@@ -84,8 +84,8 @@ INSERT INTO accounts (id, username, password, activated, deleted, user_id)
 INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'nesto3@gmail.com', 'sifra123', TRUE, FALSE, 3);
 -- 4 Admin
-INSERT INTO accounts (id, username, password, activated, deleted, user_id)
-    VALUES (nextval('acc_id'), 'admin@gmail.com', 'admin123', TRUE, FALSE, 4);
+INSERT INTO public.accounts(id, activated, deleted, last_password_reset_date, password, username, user_id)
+    VALUES (nextval('acc_id'), TRUE, FALSE, '2022-06-06 07:00:00', 'admin123', 'admin@gmail.com', 4);
 -- 5 BoatOwner
 INSERT INTO accounts (id, username, password, activated, deleted, user_id)
     VALUES (nextval('acc_id'), 'boatowner1@gmail.com', 'sifra123', TRUE, FALSE, 5);
@@ -115,7 +115,7 @@ INSERT INTO public.account_role(account_id, role_id)
 
 
 --AdditionalService
-INSERT INTO additional_services (id, name) VALUES (nextval('as_id_seq'), 'WIFI');
+INSERT INTO additional_services (id, name, price) VALUES (nextval('as_id_seq'), 'WIFI', 10);
 
 
 --INSERT INTO cottages (id, name, address_id, description, rules, price, cancellation_terms,
@@ -179,8 +179,8 @@ INSERT INTO public.cottages(
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 6, 10, 15,
-			'2016-06-22 19:10:25-07',
-			'2016-06-22 19:10:25-07',
+			'2025-10-22 00:00:00',
+			'2016-06-22 00:00:00',
 			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Morava', 500, 'Pravila', 8, 'Uslovi otkaza', 1, 5);
 
 INSERT INTO public.cottages(
@@ -188,8 +188,8 @@ INSERT INTO public.cottages(
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 6, 10, 15,
-			'2016-06-22 19:10:25-07',
-			'2016-06-22 19:10:25-07',
+			'2025-10-22 00:00:00',
+            '2016-06-22 00:00:00',
 			'Najlepsa vikendica na Dunavu, samo nam dodjite', false, 'Vila Dunav', 300, 'Pravila', 9, 'Uslovi otkaza', 2, 4.1);
 
 INSERT INTO public.cottages(
@@ -197,8 +197,8 @@ INSERT INTO public.cottages(
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 6, 10, 15,
-			'2016-06-22 19:10:25-07',
-			'2016-06-22 19:10:25-07',
+			'2025-10-22 00:00:00',
+            '2016-06-22 00:00:00',
 			'Veoma lepa kuća', false, 'Vila Dragulj', 500, 'Pravila', 10, 'Uslovi otkaza', 3, 4.3);
 
 INSERT INTO public.cottages(
@@ -206,8 +206,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 6, 14,
-                 			'2020-10-22 18:11:07',
-                 			'2020-10-04 18:11:07',
+                 			'2023-10-22 00:00:00',
+                            '2021-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 4', 432, 'Pravila', 6,
                  'Uslovi otkaza', 4, 5);
 INSERT INTO public.cottages(
@@ -215,8 +215,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 3, 6,
-                 			'2022-12-04 12:42:13',
-                 			'2022-11-17 12:42:13',
+                 			'2023-10-22 00:00:00',
+                            '2019-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 5', 552, 'Pravila', 2,
                  'Uslovi otkaza', 5, 4);
 INSERT INTO public.cottages(
@@ -224,8 +224,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 11, 13,
-                 			'2022-09-12 01:33:12',
-                 			'2022-09-06 01:33:12',
+                 			'2026-10-22 00:00:00',
+                            '2016-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 6', 237, 'Pravila', 9,
                  'Uslovi otkaza', 6, 4.6);
 INSERT INTO public.cottages(
@@ -233,8 +233,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 5, 6,
-                 			'2021-08-19 20:37:17',
-                 			'2021-08-14 20:37:17',
+                 			'2024-10-22 00:00:00',
+                            '2016-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 7', 165, 'Pravila', 10,
                  'Uslovi otkaza', 7, 5);
 INSERT INTO public.cottages(
@@ -242,8 +242,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 3, 13,
-                 			'2021-04-20 05:29:45',
-                 			'2021-04-11 05:29:45',
+                 			'2023-10-22 00:00:00',
+                            '2016-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 8', 730, 'Pravila', 9,
                  'Uslovi otkaza', 8, 2);
 INSERT INTO public.cottages(
@@ -251,8 +251,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 4, 5,
-                 			'2020-07-25 18:37:36',
-                 			'2020-07-19 18:37:36',
+                 			'2024-10-22 00:00:00',
+                            '2016-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 9', 497, 'Pravila', 4,
                  'Uslovi otkaza', 9, 3);
 INSERT INTO public.cottages(
@@ -260,8 +260,8 @@ INSERT INTO public.cottages(
                  	availability_start,
                  	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
                  	VALUES (nextval('service_id_seq'), 6, 9, 7,
-                 			'2020-06-16 15:46:27',
-                 			'2020-06-05 15:46:27',
+                 			'2023-10-22 00:00:00',
+                            '2022-06-22 00:00:00',
                  'Najlepsa vikendica, samo nam dodjite', false, 'Vikendica 10', 475, 'Pravila', 7,
                  'Uslovi otkaza', 10, 5);
 
@@ -287,8 +287,8 @@ INSERT INTO public.cottages(
 	availability_start,
 	description, is_deleted, name, price, rules, address_id, cancellation_terms, photo_id, rating)
 	VALUES (nextval('service_id_seq'), 6, 10, 15,
-			'2017-06-22 19:10:25',
-			'2016-06-22 19:10:25',
+			'2020-10-22 00:00:00',
+            '2016-06-22 00:00:00',
 			'Najlepsa vikendica, samo nam dodjite', false, 'Vila Nova lepa', 500, 'Pravila', 12, 'Uslovi otkaza', 12, 4);
 
 -- BRODOVI

@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Registration from '../view/Registration-Component.vue'
 import CottageOverview from '../view/CottageOverview.vue'
 import Login from '../view/Login.vue'
-import AdminProfileView from '../view/AdminProfileView.vue'
 import CottageDetails from '@/view/CottageDetails.vue'
 import BoatsOverview from '@/view/BoatsOverview.vue'
 import BoatDetails from '@/view/BoatDetails.vue'
@@ -17,33 +16,49 @@ import AdminAdventures from '@/view/AdminAdvOverview.vue'
 import COProfileView from '@/view/CottageOwnerProfileView.vue'
 import COCottages from '@/view/CottageOwnerOverview.vue'
 import CottageProfileOverview from '@/view/CottageProfileOverview'
+import CottageOwnerSidebar from '@components/CottageOwnerSidebar.vue'
 
+import ProfileView from '@/components/ProfileView.vue';
+
+import AdminSidebar from "@/components/AdminSidebar.vue";
+import PendingRegistrations from '@/components/PendingRegistrations.vue'
+import AccountDelRequests from '@/components/AccountDelRequests.vue'
+import AdminRegistration from '@/components/AdminRegistration.vue'
+import ComplaintResponse from '@/components/ComplaintResponse.vue'
+import ProfitsComponent from '@/components/ProfitsComponent.vue'
+import UserOverview from '@/components/UserOverview.vue'
+
+import InstructorSidebar from '@/components/InstructorSidebar.vue'
+import AdventureCreator from '@/components/CreateAdventure.vue'
+import InstructorsAdventures from '@/components/InstructorsAdventures.vue'
+import InstructorAdventureDetails from '@/components/InstructorAdventureDetails.vue'
 
 const routes = [
   {
     path: '/',
     name: 'CottageOverview',
-    component: CottageOverview
+    components: {
+      UnloggedContent: CottageOverview
+    }
   },
   {
     path: '/register',
     name: 'Registration',
-    component: Registration
+    components: {
+      UnloggedContent: Registration
+    }
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
-  },
-  {
-    path: '/admin/profile',
-    name: 'AdminProfileView',
-    component: AdminProfileView
+    components: {
+      UnloggedContent: Login
+    }
   },
   {
     path: '/CottageDetails/:id?',
     name: 'CottageDetails',
-    component: CottageDetails
+    components: { UnloggedContent: CottageDetails }
   },
   {
     path: '/BoatsOverview',
@@ -66,49 +81,139 @@ const routes = [
     component: AdventureDetails
   },
   {
+    path: '/admin/profile',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ProfileView
+    } // DONE
+  },
+  {
     path: '/admin/pendingreg',
-    name: 'AdminPendingRegs',
-    component: AdminPendingRegs
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: PendingRegistrations
+    } // DONE
   },
   {
     path: '/admin/delreq',
-    name: 'AdminDelRequests',
-    component: AdminDelRequests
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AccountDelRequests
+    } // DONE 
   },
   {
     path: '/admin/complaints',
-    name: 'AdminComplaints',
-    component: AdminComplaints
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ComplaintResponse
+    } // Done
   },
   {
     path: '/admin/cottage-overview',
-    name: 'AdminCottages',
-    component: AdminCottages
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: CottageOverview
+    } // DONE
   },
   {
     path: '/admin/boat-overview',
-    name: 'AdminBoats',
-    component: AdminBoats
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: BoatsOverview
+    } // DONE
   },
   {
     path: '/admin/adventure-overview',
-    name: 'AdminAdventures',
-    component: AdminAdventures
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AdventureOverview
+    } // DONE
   },
   {
     path: '/co/profile/',
     name: 'COProfileView',
-    component: COProfileView
+    components: {
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: COProfileView
+    } // DONE
   },
   {
     path: '/co/cottage-overview/',
     name: 'COCottages',
-    component: COCottages
+    components: {
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: CottageOverview
+    } // DONE
   },
   {
     path: '/co/cottage-profile/:id?',
     name: 'CottageProfileOverview',
-    component: CottageProfileOverview
+    components: {
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: CottageProfileOverview
+    } // UPDATE, FLASH SALE UNFINISHED
+  },
+  {
+    path: '/admin/admin-registration',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AdminRegistration
+    } // DONE
+  },
+  {
+    path: '/admin/new-admin-pass-reset',
+    components: {
+      UnloggedContent: AccountDelRequests
+    } // DONE
+  },
+  {
+    path: '/admin/users',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: UserOverview
+    } // DONE
+  },
+  {
+    path: '/admin/profits',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ProfitsComponent
+    } // DONE
+  },
+  {
+    path: '/instructor/profile',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfileView
+    }
+  },
+  {
+    path: '/instructor/profits',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
+    path: '/instructor/create-adventure',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: AdventureCreator
+    }
+  },
+  {
+    path: '/instructor/view-adventures',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorsAdventures
+    }
+  },
+  {
+    path: '/instructor/view-adventure-details/:id?',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorAdventureDetails
+    }
   }
 ]
 

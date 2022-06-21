@@ -8,11 +8,12 @@
                     </div> -->
 
                     <div class="col-lg-5 col-sm-12 left-side-product-box pb-3" v-if="this.photosExists">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
+                            data-bs-interval="false">
                             <div class="carousel-indicators">
-                                <button v-for="(photo, i) in this.cotage.photos" :key="i" type="button" 
-                                    data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i"
-                                    class="active" aria-current="true" :aria-label="createAriaLabel(i)"></button>
+                                <button v-for="(photo, i) in this.cotage.photos" :key="i" type="button"
+                                    data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i" class="active"
+                                    aria-current="true" :aria-label="createAriaLabel(i)"></button>
                                 <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
                                     aria-label="Slide 2"></button>
                                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
@@ -20,8 +21,8 @@
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img :src="this.cotage.photos[0].assetPath" class="d-block w-100 img-fluid img-responsive"
-                                        alt="image">
+                                    <img :src="this.cotage.photos[0].assetPath"
+                                        class="d-block w-100 img-fluid img-responsive" alt="image">
                                 </div>
                                 <div v-for="(photo, i) in this.cotage.photos.slice(1)" :key="i" class="carousel-item">
                                     <img :src="photo.assetPath" class="d-block w-100 img-fluid img-responsive"
@@ -36,13 +37,13 @@
                                         alt="image">
                                 </div> -->
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                                data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                                data-bs-slide="next">
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -53,21 +54,22 @@
                         <div class="right-side-pro-detail border p-3 m-0">
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12">
-                                    <p class="m-0 p-0">{{this.cotage.name}}</p>
+                                    <p class="m-0 p-0">{{ this.cotage.name }}</p>
                                 </div>
                                 <div class="col-lg-12 col-sm-12">
-                                    <p class="m-0 p-0 price-pro">${{this.cotage.price}}</p>
+                                    <p class="m-0 p-0 price-pro">${{ this.cotage.price }}</p>
                                     <hr class="p-0 m-0 mt-2">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 pt-2">
                                     <h5>Opis</h5>
-                                    <div>{{this.cotage.description}}</div>
+                                    <div>{{ this.cotage.description }}</div>
                                     <hr class="m-0 p-0 pt-0 mt-3">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 pt-2">
                                     <span>Adresa: </span>
                                     <!-- <span>Marka Kraljevića 18, Novi Sad, Srbija</span> -->
-                                    <span v-if="this.addressExists">{{ this.transformAddress(this.cotage.address) }}</span>
+                                    <span v-if="this.addressExists">{{ this.transformAddress(this.cotage.address)
+                                    }}</span>
                                     <hr class="m-0 p-0 pt-0 mt-3">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 mt-5">
@@ -77,7 +79,14 @@
                                         </div> -->
                                         <div class="col-lg-6 col-sm-6"></div>
                                         <div class="col-lg-6 col-sm-12">
-                                            <a href="#" class="btn btn-success w-100">Rezerviši</a>
+                                            <!-- <a href="#" class="btn btn-success w-100">Rezerviši</a> -->
+                                            <!-- <router-link class="btn btn-primary btn-sm" :to="/">
+                                                Rezerviši
+                                            </router-link> -->
+                                            <button type="button" class="btn btn-success w-100"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal" v-if="!(this.$store.accessToken==null)">
+                                                Rezerviši
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -92,19 +101,19 @@
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-3">
                         <span>Pravila: </span>
-                        <span>{{this.cotage.rules}}</span>
+                        <span>{{ this.cotage.rules }}</span>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-1">
                         <span>Uslovi otkazivanja: </span>
-                        <span>{{this.cotage.cancellationTerms}}</span>
+                        <span>{{ this.cotage.cancellationTerms }}</span>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-1">
                         <span>Broj soba: </span>
-                        <span>{{this.cotage.numberOfRooms}}</span>
+                        <span>{{ this.cotage.numberOfRooms }}</span>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-1">
                         <span>Broj kreveta: </span>
-                        <span>{{this.cotage.numberOfBeds}}</span>
+                        <span>{{ this.cotage.numberOfBeds }}</span>
                     </div>
                 </div>
                 <div class="row" v-if="this.additionalServicesExists">
@@ -113,16 +122,19 @@
                         <h4>Dodatne usluge</h4>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-3">
-                        <div v-for="service in this.cotage.additionalServices" :key="service.id">{{service.name}}</div>
+                        <div v-for="service in this.cotage.additionalServices" :key="service.id">{{ service.name }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <Modal :serviceProp="this.cotage" :options="this.options" :price-prop="this.cotage.price"></Modal>
 </template>
 
 <script>
 import axios from 'axios';
+import CReservationModal from '@/components/CottageReservationModal.vue'
 
 export default {
     name: 'CottageDetails',
@@ -133,12 +145,14 @@ export default {
             additionalServicesExists: false,
             primaryPhotoExists: false,
             addressExists: false,
-            photosExists: false
+            photosExists: false,
+
+            options: []
         };
     },
-    mounted() {
-        this.id=this.$route.params.id;
-        axios
+    async mounted() {
+        this.id = this.$route.params.id;
+        await axios
             .get('/api/cottages/getCottage/' + this.id)
             .then(response => (
                 this.cotage = response.data,
@@ -146,7 +160,8 @@ export default {
                 this.primaryPhotoExists = this.cotage.primaryPhoto === undefined ? false : true,
                 this.photosExists = this.cotage.photos.length === 0 ? false : true,
                 this.addressExists = this.cotage.address === undefined ? false : true
-                ));
+            ));
+        await this.fillOptions();
     },
     methods: {
         transformAddress(address) {
@@ -157,7 +172,20 @@ export default {
         },
         createAriaLabel(index) {
             return 'Slide ' + index;
+        },
+        async fillOptions() {
+            // if(null == this.serviceProp.additionalServices)
+            //     return;
+            for (let i = 0; i < this.cotage.additionalServices?.length; i++) {
+                let newD = {text: this.cotage.additionalServices[i].name + '    ' +  '$' + this.cotage.additionalServices[i].price, 
+                            value: this.cotage.additionalServices[i], 
+                            disabled: false};
+                this.options.push(newD);
+            }
         }
+    },
+    components: {
+        'Modal': CReservationModal
     }
 
 }
@@ -165,53 +193,53 @@ export default {
 
 
 <style scoped>
-    body {
-      font-family: 'Roboto Condensed', sans-serif;
-      background-color: #f5f5f5
-    }
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #f5f5f5
+}
 
-    .hedding {
-      font-size: 20px;
-      color: #ab8181;
-    }
+.hedding {
+    font-size: 20px;
+    color: #ab8181;
+}
 
-    .main-section {
-      position: absolute;
-      left: 50%;
-      right: 50%;
-      transform: translate(-50%, 5%);
-    }
+.main-section {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, 5%);
+}
 
-    .left-side-product-box img {
-      width: 100%;
-    }
+.left-side-product-box img {
+    width: 100%;
+}
 
-    .left-side-product-box .sub-img img {
-      margin-top: 5px;
-      width: 83px;
-      height: 100px;
-    }
+.left-side-product-box .sub-img img {
+    margin-top: 5px;
+    width: 83px;
+    height: 100px;
+}
 
-    .right-side-pro-detail span {
-      font-size: 15px;
-    }
+.right-side-pro-detail span {
+    font-size: 15px;
+}
 
-    .right-side-pro-detail p {
-      font-size: 25px;
-      color: #a1a1a1;
-    }
+.right-side-pro-detail p {
+    font-size: 25px;
+    color: #a1a1a1;
+}
 
-    .right-side-pro-detail .price-pro {
-      color: #E45641;
-    }
+.right-side-pro-detail .price-pro {
+    color: #E45641;
+}
 
-    .right-side-pro-detail .tag-section {
-      font-size: 18px;
-      color: #5D4C46;
-    }
+.right-side-pro-detail .tag-section {
+    font-size: 18px;
+    color: #5D4C46;
+}
 
-    .pro-box-section .pro-box img {
-      width: 100%;
-      height: 200px;
-    }
+.pro-box-section .pro-box img {
+    width: 100%;
+    height: 200px;
+}
 </style>

@@ -1,7 +1,8 @@
 package com.Projekat.controller;
 
 
-import com.Projekat.dto.SimpleUserDTO;
+import com.Projekat.dto.SimpleAdminPasswordDTO;
+import com.Projekat.dto.AccDeletionRequestDTO;
 import com.Projekat.model.Account;
 import com.Projekat.model.AccountDeletionRequest;
 import com.Projekat.model.users.User;
@@ -13,10 +14,14 @@ import com.Projekat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "api/profile")
@@ -35,13 +40,17 @@ public class ProfileController {
     public ResponseEntity<String> updateProfile(@RequestBody ProfileDetailsDTO profile) {
         System.out.println(profile.getId());
         final Integer acc_id = userService.findUserAccountId(profile.getId());
-        // UPDATE USERNAME
+        // UPDATE PASSWORD
         if (profile.DidTryPasswordUpdate()) {
             accountService.updatePassword(acc_id, profile.getNewPassword());
         }
-        // UPDATE PASSWORD
+        // UPDATE USERNAME
         if (profile.DidTryUsernameUpdate()) {
             accountService.updateUsername(acc_id, profile.getNewUsername());
+        }
+        // UPDATE BIOGRAPHY
+        if (!profile.getBiography().isEmpty()) {
+            userService.updateBiography(profile.getId(), profile.getBiography());
         }
         // UPDATE USER DATA
         userService.updateUserProfile(profile.getId(), profile.getName(), profile.getSurname(), profile.getPhone());
@@ -57,13 +66,24 @@ public class ProfileController {
     }
 
     @PostMapping(value="make-delete-profile-request")
-    public ResponseEntity<String> postDeletionRequest(@RequestBody SimpleUserDTO simple_dto) {
-        //final Integer acc_id = userService.findUserAccountId(simple_dto.getId());
+    public ResponseEntity<String> postDeletionRequest(@RequestBody AccDeletionRequestDTO simple_dto) {
+        final Integer acc_id = userService.findUserAccountId(simple_dto.getId());
         User u = userService.findUserById(simple_dto.getId());
-        Account acc = accountService.findById(u.getId());
-        AccountDeletionRequest adr = new AccountDeletionRequest(acc, u);
+        Account acc = accountService.findById(acc_id);
+        AccountDeletionRequest adr = new AccountDeletionRequest(acc, u, simple_dto.getDeletionRequest());
         deletionService.makeDelRequest(adr);
 
         return new ResponseEntity<>("Uspešno ste poslali zahtev za brisanje naloga.", HttpStatus.OK);
+    }
+
+    @PostMapping(value="make-first-password-reset")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> firstPasswordResetNewAdmin(@RequestBody SimpleAdminPasswordDTO newPassword) {
+        Account acc = accountService.findByUserId(newPassword.getUsrId());
+        accountService.updatePassword(acc.getId(), newPassword.getPassword());
+        Date date = new Date();
+        Timestamp today = new Timestamp(date.getTime());
+        accountService.updatePassResetDate(acc.getId(), today);
+        return new ResponseEntity<>("Uspešno ste promenili lozinku", HttpStatus.OK);
     }
 }

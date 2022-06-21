@@ -1,5 +1,6 @@
 package com.Projekat.service;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
@@ -81,4 +82,10 @@ public class AccountService {
     public void activateAccount(Integer acc_id) { accountRepository.activateAccount(acc_id); }
 
     public void delete(Integer id) { accountRepository.deleteAcc(id); }
+
+    public void insertAccountRole(Integer acc_id, Integer role_id) {  }
+
+    public Account findByUserId(Integer usrId) { return accountRepository.findByUserId(usrId); }
+
+    public void updatePassResetDate(Integer acc_id, Timestamp today) { accountRepository.updatePassResetDate(acc_id, today); }
 }

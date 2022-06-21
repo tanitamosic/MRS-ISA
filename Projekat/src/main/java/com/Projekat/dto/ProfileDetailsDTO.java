@@ -15,7 +15,7 @@ public class ProfileDetailsDTO {
     public String City;
     public String Street;
 
-    private String Biography;
+    public String Biography;
 
     public Integer getId() {
         return Id;

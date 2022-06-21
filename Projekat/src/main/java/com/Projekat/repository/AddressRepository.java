@@ -16,4 +16,6 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
     public void upsertAddress(String state, String city, String street);
     @Query(nativeQuery = true, value="SELECT ADDRESSES.id FROM ADDRESSES WHERE ADDRESSES.state=?1 AND ADDRESSES.city=?2 AND ADDRESSES.street=?3")
     public Integer getAddressId(String state, String city, String street);
+    @Query(nativeQuery = true, value="SELECT * FROM ADDRESSES WHERE ADDRESSES.state=?1 AND ADDRESSES.city=?2 AND ADDRESSES.street=?3")
+    public Address getAddress(String state, String city, String street);
 }

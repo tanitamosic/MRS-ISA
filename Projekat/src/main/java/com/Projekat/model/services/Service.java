@@ -18,6 +18,19 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Where(clause="is_deleted = false")
 public abstract class Service {
 
+    private static Integer cut = 10; // between 0 and 100
+    public static Integer getCut() {
+        return cut;
+    }
+
+    public static boolean setCut(Integer newCut) {
+        if (newCut > 100 || newCut < 0) {
+            return false;
+        }
+        cut = newCut;
+        return true;
+    }
+
     @Id
     @SequenceGenerator(name = "serviceIdSeqGen", sequenceName = "serviceIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "serviceIdSeqGen")
@@ -39,7 +52,7 @@ public abstract class Service {
     private String description;
 
     // TODO: pictures
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(/*cascade = CascadeType.ALL,*/ fetch = FetchType.EAGER)
     //@PrimaryKeyJoinColumn(name = "service_id",referencedColumnName = "primaryPhoto_id")
     @JoinColumn(name = "photo_id")
     private Photo primaryPhoto;
@@ -57,7 +70,7 @@ public abstract class Service {
     @Column(name="rating", unique = false, nullable = true)
     private Double rating;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(/*cascade = {CascadeType.ALL},*/ fetch = FetchType.EAGER)
     @JoinTable(name = "additionals",
                 joinColumns = {@JoinColumn(name = "service_id")},
                 inverseJoinColumns = {@JoinColumn(name = "additional_id")}

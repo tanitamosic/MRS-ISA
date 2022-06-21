@@ -9,12 +9,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "accounts")
 @Where(clause="deleted = false")
 public class Account implements UserDetails {
+
+    private static final Map<String, Integer> account_roles = Stream.of(new Object[][] {
+            { "ROLE_ADMIN", 1 },
+            { "ROLE_INSTRUCTOR", 2 },
+            { "ROLE_CLIENT", 3 },
+            { "ROLE_COTTAGEOWNER", 4 },
+            { "ROLE_BOATOWNER", 5 }
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
+
+    public Integer getRoleId(String role) {
+        return account_roles.get(role);
+    }
 
     @Id
     @SequenceGenerator(name = "accIdSeqGen", sequenceName = "accId", initialValue = 1, allocationSize = 1)
