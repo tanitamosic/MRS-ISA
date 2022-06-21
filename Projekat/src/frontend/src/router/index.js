@@ -19,6 +19,10 @@ import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
 
+import InstructorSidebar from '@/components/InstructorSidebar.vue'
+import AdventureCreator from '@/components/CreateAdventure.vue'
+import InstructorsAdventures from '@/components/InstructorsAdventures.vue'
+import InstructorAdventureDetails from '@/components/InstructorAdventureDetails.vue'
 
 const routes = [
   {
@@ -161,6 +165,13 @@ const routes = [
     }
   },
   {
+    path: '/instructor/profile',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfileView
+    }
+  },
+  {
     path: '/client/cottages',
     components: {
       LeftSidebar: ClientSidebar,
@@ -200,6 +211,34 @@ const routes = [
     components: {
       LeftSidebar: ClientSidebar,
       MainContent: BoatDetails
+    }
+  },
+  {
+    path: '/instructor/profits',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
+    path: '/instructor/create-adventure',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: AdventureCreator
+    }
+  },
+  {
+    path: '/instructor/view-adventures',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorsAdventures
+    }
+  },
+  {
+    path: '/instructor/view-adventure-details/:id?',
+    components: {
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorAdventureDetails
     }
   }
 ]

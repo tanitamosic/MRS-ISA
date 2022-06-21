@@ -120,7 +120,11 @@ export default {
               self.$router.push('/client/profile');
               break;
             }
-            case 'ROLE_INSTRUCTOR': break;
+            case 'ROLE_INSTRUCTOR': {
+              self.$store.User = cookie.instructor;
+              self.$router.push('/instructor/profile');
+              break;
+              }
             case 'ROLE_COTTAGEOWNER': break;
             case 'ROLE_BOATOWNER': break;
           }

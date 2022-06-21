@@ -41,4 +41,12 @@ public class AdditionalService {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    public AdditionalService() {
+    }
+
+    public AdditionalService(String name, Double price) {
+        this.name = name;
+        this.price = price;
+    }
 }
