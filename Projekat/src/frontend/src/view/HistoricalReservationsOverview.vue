@@ -97,7 +97,8 @@
                             </div>
                             <div class="d-flex flex-column mt-4">
                                 <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" v-if="!(this.$store.accessToken == null)">
+                                    data-bs-target="#exampleModalReview" v-if="!(this.$store.accessToken == null)"
+                                    v-on:click="this.setSelectedReservation(reservation.id)">
                                     Žalba
                                 </button>
                             </div>
@@ -113,6 +114,52 @@
                 :click-handler="clickCallback" :prev-text="'Nazad'" :next-text="'Napred'"
                 :container-class="'pagination'" :page-class="'page-item'">
             </paginate>
+        </div>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal fade" id="exampleModalReview" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Otkazivanje rezervacije</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                v-on:click="modalClosing"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="searchForm">
+
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-md-12">
+                                        <label class="small mb-1">Unesite žalbu:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-md-12">
+                                        <div class="d-flex aligns-items-center justify-content-center">
+                                            <textarea v-model="this.complaintText" cols="45" rows="5"></textarea>
+                                        </div>                                        
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-1">
+                                    <div class="col-md-12">
+                                        <div v-if="!(this.returnMessage === undefined || this.returnMessage === '')"
+                                            :class="this.klasa">{{ this.returnMessage }}</div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                v-on:click="modalClosing">Zatvori</button>
+                            <button type="button" class="btn btn-primary" v-on:click="sendComplaint">Pošalji
+                                žalbu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -139,7 +186,13 @@ export default {
             sortByDateAscending: false,
             sortByDateDescending: true,
             sortByPriceAscending: false,
-            sortByPrisceDescending: false
+            sortByPrisceDescending: false,
+
+            idSelectedReservation: -1,
+            returnMessage: '',
+            klasa: 'text-primary',
+
+            complaintText: ''
         }
     },
     mounted() {
@@ -244,6 +297,46 @@ export default {
         },
         generateIdSliderWithHashTag(id) {
             return '#carouselExampleIndicators' + id;
+        },
+        modalClosing() {
+            this.returnMessage = '';
+            this.complaintText = '';
+            this.klasa = 'text-primary';
+        },
+        setSelectedReservation(id) {
+            this.idSelectedReservation = id;
+        },
+        async sendComplaint() {
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            
+            let jsonData = JSON.stringify({
+                reservationId: this.idSelectedReservation,
+                complaintText: this.complaintText
+            });
+
+            await axios
+                .post('api/client/makecomplaint',
+                    jsonData,
+                    { headers: { 'Content-Type': 'application/json' } })
+                .then(response => (
+                    this.returnMessage = response.data,
+                    this.klasa = 'text-success'
+                ))
+                .catch(err => {
+                    if (err.response.status === 400) {
+                        // alert(err.response.data);
+                        this.returnMessage = err.response.data,
+                        this.klasa = 'text-danger'
+                    }
+                    else {
+                        // alert(err);
+                        this.returnMessage = err.response.data,
+                        this.klasa = 'text-danger'
+                    }
+                    console.log(err);
+                }
+                );
         }
     },
     components: {
