@@ -1,38 +1,38 @@
 <template>
     <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
-            
+
             <div class="col-lg-8 border p-3 main-section bg-white">
-                
-                    
-                    <div class="row m-0 pt-3">
-                        <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
+
+
+                <div class="row m-0 pt-3">
+                    <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
                         <img class="border p-3 img-thumbnail" :src="this.adventure.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
                     </div> -->
 
-                        <div class="col-lg-5 col-sm-12 left-side-product-box pb-3" v-if="this.photosExists">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
-                                data-bs-interval="false">
-                                <div class="carousel-indicators">
-                                    <button v-for="(photo, i) in this.adventure.photos" :key="i" type="button"
-                                        data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i" class="active"
-                                        aria-current="true" :aria-label="createAriaLabel(i)"></button>
-                                    <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    <div class="col-lg-5 col-sm-12 left-side-product-box pb-3" v-if="this.photosExists">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
+                            data-bs-interval="false">
+                            <div class="carousel-indicators">
+                                <button v-for="(photo, i) in this.adventure.photos" :key="i" type="button"
+                                    data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i" class="active"
+                                    aria-current="true" :aria-label="createAriaLabel(i)"></button>
+                                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
                                     aria-label="Slide 2"></button>
                                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
                                     aria-label="Slide 3"></button> -->
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img :src="this.adventure.photos[0].assetPath"
+                                        class="d-block w-100 img-fluid img-responsive" alt="image" />
                                 </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img :src="this.adventure.photos[0].assetPath"
-                                            class="d-block w-100 img-fluid img-responsive" alt="image" />
-                                    </div>
-                                    <div v-for="(photo, i) in this.adventure.photos.slice(1)" :key="i"
-                                        class="carousel-item">
-                                        <img :src="photo.assetPath" class="d-block w-100 img-fluid img-responsive"
-                                            alt="image" />
-                                    </div>
-                                    <!-- <div class="carousel-item active">
+                                <div v-for="(photo, i) in this.adventure.photos.slice(1)" :key="i"
+                                    class="carousel-item">
+                                    <img :src="photo.assetPath" class="d-block w-100 img-fluid img-responsive"
+                                        alt="image" />
+                                </div>
+                                <!-- <div class="carousel-item active">
                                     <img src="img/adventures/vikendica11.jpg" class="d-block w-100 img-fluid img-responsive"
                                         alt="image">
                                 </div>
@@ -40,187 +40,201 @@
                                     <img src="img/adventures/vikendica12.jpg" class="d-block w-100 img-fluid img-responsive"
                                         alt="image">
                                 </div> -->
-                                </div>
-                                <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
                             </div>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
+                    </div>
 
-                        <div class="col-lg-7 col-sm-12">
-                            <div class="right-side-pro-detail border p-3 m-0">
+                    <div class="col-lg-7 col-sm-12">
+                        <div class="right-side-pro-detail border p-3 m-0">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-1" for="Name">Ime</h5>
+                                    <input class="form-control" id="Name" name="Name" type="text"
+                                        placeholder="Unesite ime vikendice" v-model="adventure.name" />
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-1 price-pro" for="Name">Cena ($)</h5>
+                                    <input class="form-control" id="Price" name="Price" type="number"
+                                        onkeydown="return /^[0-9]$/i.test(event.key)"
+                                        placeholder="Unesite cenu vikendice" v-model="adventure.price" />
+                                </div>
+                                <div class="col-lg-12 col-sm-12 pt-2">
+                                    <h5>Opis</h5>
+                                    <div class="col-lg-12">
+                                        <textarea class="form-control" id="Description" name="Description" type="text"
+                                            placeholder="Unesite opis vikendice"
+                                            v-model="adventure.description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row gx-3 mb-3">
+                                    <h5 class="mt-3">Adresa </h5>
+                                    <!-- <span>Marka Kraljevića 18, Novi Sad, Srbija</span> -->
+                                    <div class="col-md-4">
+                                        <input v-if="this.addressExists" class="form-control" id="State" name="State"
+                                            type="text" placeholder="Unesite državu vikendice"
+                                            v-model="this.adventure.address.state" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input v-if="this.addressExists" class="form-control" id="City" name="City"
+                                            type="text" placeholder="Unesite grad vikendice"
+                                            v-model="this.adventure.address.city" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input v-if="this.addressExists" class="form-control" id="Street" name="Street"
+                                            type="text" placeholder="Unesite ulicu i broj vikendice"
+                                            v-model="this.adventure.address.street" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 pb-2">
+                                        <span>Datum kada pocinje</span>
+                                        <input type="date" class="form-control" v-model="dateFrom" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span>Datum kada se zavrsava</span>
+                                        <input type="date" class="form-control" v-model="dateTo" />
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h5 class="mb-1" for="Name">Ime</h5>
-                                        <input class="form-control" id="Name" name="Name" type="text"
-                                            placeholder="Unesite ime vikendice" v-model="adventure.name" />
+                                        <label class="small mb-1" for="timeFrom">Vreme kada pocinje</label>
+                                        <input type="time" class="form-control" name="timeFrom" v-model="timeFrom" />
                                     </div>
                                     <div class="col-md-6">
-                                        <h5 class="mb-1 price-pro" for="Name">Cena ($)</h5>
-                                        <input class="form-control" id="Price" name="Price" type="number"
-                                            onkeydown="return /^[0-9]$/i.test(event.key)"
-                                            placeholder="Unesite cenu vikendice" v-model="adventure.price" />
-                                    </div>
-                                    <div class="col-lg-12 col-sm-12 pt-2">
-                                        <h5>Opis</h5>
-                                        <div class="col-lg-12">
-                                            <textarea class="form-control" id="Description" name="Description"
-                                                type="text" placeholder="Unesite opis vikendice"
-                                                v-model="adventure.description"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <h5 class="mt-3">Adresa </h5>
-                                        <!-- <span>Marka Kraljevića 18, Novi Sad, Srbija</span> -->
-                                        <div class="col-md-4">
-                                            <input v-if="this.addressExists" class="form-control" id="State"
-                                                name="State" type="text" placeholder="Unesite državu vikendice"
-                                                v-model="this.adventure.address.state" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input v-if="this.addressExists" class="form-control" id="City" name="City"
-                                                type="text" placeholder="Unesite grad vikendice"
-                                                v-model="this.adventure.address.city" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input v-if="this.addressExists" class="form-control" id="Street"
-                                                name="Street" type="text" placeholder="Unesite ulicu i broj vikendice"
-                                                v-model="this.adventure.address.street" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 pb-2">
-                                            <span>Datum kada pocinje</span>
-                                            <input type="date" class="form-control" v-model="dateFrom" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span>Datum kada se zavrsava</span>
-                                            <input type="date" class="form-control" v-model="dateTo" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="timeFrom">Vreme kada pocinje</label>
-                                            <input type="time" class="form-control" name="timeFrom"
-                                                v-model="timeFrom" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="timeTo">Vreme kada se zavrsava</label>
-                                            <input type="time" class="form-control" name="timeTo" v-model="timeTo" />
-                                        </div>
+                                        <label class="small mb-1" for="timeTo">Vreme kada se zavrsava</label>
+                                        <input type="time" class="form-control" name="timeTo" v-model="timeTo" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row gx-3 mb-3">
-                        <!-- Detalji deo -->
-                        <div class="col-lg-12 col-sm-12 text-left pt-5">
-                            <h4>Detalji</h4>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <!-- Detalji deo -->
+                    <div class="col-lg-12 col-sm-12 text-left pt-5">
+                        <h4>Detalji</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 text-left pt-3">
+                            <span>Pravila: </span>
+                            <textarea class="form-control" id="Rules" name="Rules" type="text"
+                                placeholder="Unesite pravila vikendice" v-model="adventure.rules"></textarea>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3 text-left pt-3">
-                                <span>Pravila: </span>
-                                <textarea class="form-control" id="Rules" name="Rules" type="text"
-                                    placeholder="Unesite pravila vikendice" v-model="adventure.rules"></textarea>
-                            </div>
-                            <div class="col-md-3 text-left pt-3">
-                                <span>Uslovi otkazivanja: </span>
-                                <textarea class="form-control" id="Rules" name="Rules" type="text"
-                                    placeholder="Unesite uslove otkazivanja rezervacije vikendice"
-                                    v-model="adventure.cancellationTerms"></textarea>
-                            </div>
-                            <div class="col">
-                                <div class="card shadow-lg border-dark" style="width: 18rem; margin:20px;">
-                                    <div class="card-header">Klijent: {{ this.client.name }} {{ this.client.surname }}
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-text">Kontakt telefon: {{ this.client.phone }}</p>
-                                    </div>
+                        <div class="col-md-3 text-left pt-3">
+                            <span>Uslovi otkazivanja: </span>
+                            <textarea class="form-control" id="Rules" name="Rules" type="text"
+                                placeholder="Unesite uslove otkazivanja rezervacije vikendice"
+                                v-model="adventure.cancellationTerms"></textarea>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow-lg border-dark" style="width: 18rem; margin:20px;">
+                                <div class="card-header">Klijent: {{ this.client.name }} {{ this.client.surname }}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Kontakt telefon: {{ this.client.phone }}</p>
+                                </div>
+                                <div class="card-body">
+                                    <button class="btn btn-success" v-if="!this.client.id" @click="showClientResModal = true">Napravi rezervaciju za klijenta</button>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row mt-5">
-                            <div class="col-sm-6">
-                                <span>Kapacitet: </span>
-                                <input placeholder="Kapacitet" type="number" id="cut" max="30" min="0"
-                                    v-model="this.adventure.capacity" onkeydown="return /^[0-9]$/i.test(event.key)"
-                                    maxlength="6" class="form-control" />
-                            </div>
-                            <div class="col-sm-6">
-                                <span>Oprema za pecanje: </span>
-                                <textarea rows="1" class="form-control" placeholder="Oprema za pecanje"
-                                    v-model="this.adventure.fishingEquipment"></textarea>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6 mb-4">
-                            <input type="text" v-model="addedService" id="addedServiceName" maxlength="20"
-                                placeholder="Dodatna usluga" class="form-control mb-1" />
-                            <input type="number" min="0" max="100" v-model="addedServicePrice"
-                                placeholder="Cena dodatne usluge ($)" onkeydown="return false" id="addedServicePrice"
-                                class="form-control mb-1" />
-                            <button v-on:click.prevent="addService" class="btn btn-primary">Dodaj uslugu</button>
-                            <button v-on:click.prevent="removeServices" class="btn btn-danger mx-1">Ukloni
-                                usluge</button>
+                    <div class="row mt-5">
+                        <div class="col-sm-6">
+                            <span>Kapacitet: </span>
+                            <input placeholder="Kapacitet" type="number" id="cut" max="30" min="0"
+                                v-model="this.adventure.capacity" onkeydown="return /^[0-9]$/i.test(event.key)"
+                                maxlength="6" class="form-control" />
                         </div>
-                        <div class="col-md-6 mb-4">
-                            <select name="services" id="services" class="form-control" multiple>
-                                <option v-for="(s, i) in this.services" :key="i">{{ s.name }} - ${{ s.price }}</option>
-                            </select>
+                        <div class="col-sm-6">
+                            <span>Oprema za pecanje: </span>
+                            <textarea rows="1" class="form-control" placeholder="Oprema za pecanje"
+                                v-model="this.adventure.fishingEquipment"></textarea>
                         </div>
                     </div>
-                    <hr />
-                    <button class="btn btn-primary m-1" type="button" v-on:click.prevent="update_adventure">
-                        Sačuvaj izmene
-                    </button>
-                    <button id="account-deletion" class="btn btn-danger m-1" type="button"
-                        v-on:click.prevent="delete_adventure">
-                        Obriši vikendicu
-                    </button>
-                    <button id="show-modal" class="btn btn-success m-1" @click="showModal=true">
-                        Napravi akciju
-                    </button>
-                     
-                
+                </div>
+
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-6 mb-4">
+                        <input type="text" v-model="addedService" id="addedServiceName" maxlength="20"
+                            placeholder="Dodatna usluga" class="form-control mb-1" />
+                        <input type="number" min="0" max="100" v-model="addedServicePrice"
+                            placeholder="Cena dodatne usluge ($)" onkeydown="return false" id="addedServicePrice"
+                            class="form-control mb-1" />
+                        <button v-on:click.prevent="addService" class="btn btn-primary">Dodaj uslugu</button>
+                        <button v-on:click.prevent="removeServices" class="btn btn-danger mx-1">Ukloni
+                            usluge</button>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <select name="services" id="services" class="form-control" multiple>
+                            <option v-for="(s, i) in this.services" :key="i">{{ s.name }} - ${{ s.price }}</option>
+                        </select>
+                    </div>
+                </div>
+                <hr />
+                <button class="btn btn-primary m-1" type="button" v-on:click.prevent="update_adventure">
+                    Sačuvaj izmene
+                </button>
+                <button id="account-deletion" class="btn btn-danger m-1" type="button"
+                    v-on:click.prevent="delete_adventure">
+                    Obriši vikendicu
+                </button>
+                <button id="show-modal" class="btn btn-success m-1" @click="showQuickActionModal = true">
+                    Napravi akciju
+                </button>
+
+
             </div>
         </div>
     </div>
-     
+
     <!-- MODAL IMPLEMENTATION -->
-  <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
-    <modal :show="showModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showModal = false">
-      <template #header>
-        <h3>custom header</h3>
-      </template>
-    </modal>
-  </Teleport>
+    <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <QuickActionModal :show="showQuickActionModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showQuickActionModal = false">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </QuickActionModal>
+    </Teleport>
+    <!-- MODAL IMPLEMENTATION -->
+    <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <ClientReservationModal :show="showClientResModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showClientResModal = false">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </ClientReservationModal>
+    </Teleport>
 </template>
 
 
 <script>
 import axios from "axios";
-import Modal from '@/components/QuickReservationModal.vue'
+import QuickActionModal from '@/components/QuickReservationModal.vue'
+import ClientReservationModal from '@/components/ClientReservationModa.vue'
 
 export default {
     name: "AdventureDetails",
     components: {
-        Modal,
+        QuickActionModal,
+        ClientReservationModal
     },
     data() {
         return {
-            showModal: false,
+            showQuickActionModal: false,
+            showClientResModal: false,
 
             id: null,
             adventure: {},
@@ -366,6 +380,9 @@ export default {
 
 
         update_adventure: function () {
+            if (this.client.id !== null) {
+                alert('Ne mozete menjati rezervisanu avanturu.');
+            }
 
             if (this.adventure.name === '' ||
                 this.adventure.price === '' ||
@@ -383,12 +400,30 @@ export default {
 
 
             if (checkInput(this.adventure)) {
+                let updatedAdventure = {
+                    'adv_id': this.id,
+                    'owner_id': this.$store.User.id,
+                    'availabilityStart': this.dateFrom + 'T' + this.timeFrom,
+                    'availabilityEnd': this.dateTo + 'T' + this.timeTo,
+                    'fishingEq': this.adventure.fishingEquipment,
+                    'cancelTerms': this.adventure.cancellationTerms,
+                    'capacity': this.adventure.capacity,
+                    'rules': this.adventure.rules,
+                    'price': this.adventure.price,
+                    'name': this.adventure.name,
+                    'description': this.adventure.description,
+                    'state': this.adventure.address.state,
+                    'city': this.adventure.address.city,
+                    'street': this.adventure.address.street
+                }
+                updatedAdventure['additionalServices'] = this.services;
+
                 // let self = this;
                 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
 
-                axios.post('',
-                    this.adventure).then(function (requestResponse) {
+                axios.post('/api/instructor/update-adventure',
+                    updatedAdventure).then(function (requestResponse) {
                         if (requestResponse.status === 200) {
                             alert("Promena podataka je uspesna.")
                         }
@@ -401,6 +436,27 @@ export default {
             }
 
         },
+        delete_adventure: function () {
+            if (this.client.id !== null) {
+                alert('Ne mozete brisati rezervisanu avanturu');
+                return;
+            }
+            let self = this;
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            axios.delete('/api/instructor/delete-adventure/' + this.$store.User.id + '/' + this.id)
+                .then((response) => {
+                    alert(response.data);
+                    self.$router.push('/instructor/view-adventures');
+
+                }).catch((err) => {
+                    console.log(err);
+                    alert(err.response.data);
+                })
+        },
+        makeClientReservation() {
+
+        }
     },
 };
 
@@ -533,9 +589,8 @@ body {
     color: #e45641;
 }
 
-.right-side-pro-detail  {
+.right-side-pro-detail {
     font-size: 18px;
     color: #5d4c46;
 }
-
 </style>
