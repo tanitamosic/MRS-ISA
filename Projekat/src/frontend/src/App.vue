@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavigationBar></NavigationBar>
+    <router-view name="Navbar"></router-view>
     <router-view name="UnloggedContent"></router-view>
     <div class="sidebar-left">
       <router-view name="LeftSidebar"></router-view>
@@ -12,13 +12,10 @@
 </template>
 
 <script>
-import NavigationBar from './components/NavigationBar.vue'
+
 
 export default {
   name: 'App',
-  components: {
-    NavigationBar,
-}
 }
 </script>
 
@@ -29,6 +26,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   height:100%; 
   min-height:100%;
+  background-color: #fbeec1 !important;
 }
 
 .sidebar-left {

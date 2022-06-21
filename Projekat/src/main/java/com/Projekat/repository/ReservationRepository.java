@@ -64,4 +64,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
                     "INNER JOIN RESERVATION AS r ON u.id=r.client_id " +
                     "INNER JOIN ADVENTURES ON r.service_id=?1 ")
     Client findIfAdventureIsReserved(Integer adv_id);
+
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN ADVENTURES AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
+    List<Reservation> fetchCompletedReservations(Integer owner_id);
 }

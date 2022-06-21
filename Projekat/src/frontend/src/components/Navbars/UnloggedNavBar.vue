@@ -7,11 +7,11 @@
                    <i><b>TurboJavaSpringbootTurizamExpo</b></i>
                 </div>
                 <div class="d-flex ms-auto order-5">
-                    <router-link class="me-4 navtxt" to="/" v-if="!$store.User" >Vikendice</router-link>
-                    <router-link class="me-4 navtxt" to="/BoatsOverview" v-if="!$store.User" >Brodovi</router-link>
-                    <router-link class="me-4 navtxt" to="/AdventureOverview" v-if="!$store.User" >Avanture</router-link>
-                    <router-link class="me-4 navtxt" to="/login" v-if="!$store.User" >Prijava</router-link>
-                    <router-link class="me-2 navtxt" to="/register" v-if="!$store.User" >Registracija</router-link>
+                    <router-link class="me-4 navtxt" to="/">Vikendice</router-link>
+                    <router-link class="me-4 navtxt" to="/BoatsOverview">Brodovi</router-link>
+                    <router-link class="me-4 navtxt" to="/AdventureOverview">Avanture</router-link>
+                    <router-link class="me-4 navtxt" to="/login">Prijava</router-link>
+                    <router-link class="me-2 navtxt" to="/register">Registracija</router-link>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@ nav {
     height: 50px;
     width: 100%;
     /* background-color: #33d466; */
-    background-color: #8d8741;
+    background-color: #659dbd;
     position: fixed;
     top: 0px;
     z-index: 1;

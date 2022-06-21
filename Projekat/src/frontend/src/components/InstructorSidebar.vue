@@ -7,7 +7,7 @@
       <tr class="fs-5" v-on:click="goToAdventures">
         <td>Pregled časova pecanja</td>
       </tr>
-      <tr class="fs-5">
+      <tr class="fs-5" v-on:click="goToAdventureHistory">
         <td>Istorija rezervacija</td>
       </tr>
       <tr class="fs-5" v-on:click="goToProfits">
@@ -66,6 +66,9 @@ export default {
     },
     goToAdventures: function() {
       this.$router.push('/instructor/view-adventures');
+    },
+    goToAdventureHistory: function() {
+      this.$router.push('/instructor1/view-history')
     }
   }
 }

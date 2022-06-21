@@ -73,6 +73,9 @@ export default {
     this.$store.currentPassword = '',
     this.$store.lastPasswordResetDate = null
     this.$forceUpdate();
+    // INTERFERES WITH DEBUGGING.
+    // document.getElementById('emailInput').value = '';
+    // document.getElementById('passwordInput').value = ''
   },
   methods: {
     login: function () {

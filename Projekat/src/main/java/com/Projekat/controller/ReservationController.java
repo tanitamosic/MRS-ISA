@@ -2,6 +2,7 @@ package com.Projekat.controller;
 
 
 import com.Projekat.dto.CutDTO;
+import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,15 +22,14 @@ import com.Projekat.model.users.User;
 import com.Projekat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +50,14 @@ public class ReservationController {
 
     @Autowired
     ReservationService reservationService;
+
+
+    @GetMapping("/instructor/{usr_id}/get-completed-reservations")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<List<Reservation>> getAdventureHistory(@PathVariable Integer usr_id) {
+        List<Reservation> reservations =  reservationService.getInstructorsCompletedReservations(usr_id);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 
 
     @PostMapping(value="/admin/change-cut")
