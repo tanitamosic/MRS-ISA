@@ -16,14 +16,14 @@ public class Complaint {
     @Column(name="description", nullable = false)
     private String description;
 
-    @Column(name="answer", nullable = false)
+    @Column(name="answer", nullable = true)
     private String answer;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name="status", nullable = false)
     private ComplaintStatus status;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name="reservation_id", referencedColumnName = "id")
     private Reservation reservation;
 

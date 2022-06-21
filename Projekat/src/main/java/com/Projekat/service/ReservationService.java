@@ -5,12 +5,15 @@ import com.Projekat.exception.*;
 import com.Projekat.mail.MyMailSender;
 import com.Projekat.model.Account;
 import com.Projekat.model.reservations.*;
+import com.Projekat.model.reservations.submitions.Complaint;
+import com.Projekat.model.reservations.submitions.ComplaintStatus;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
 //import com.Projekat.model.services.Service;
 import com.Projekat.model.users.Client;
+import com.Projekat.repository.ComplaintRepository;
 import com.Projekat.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,6 +50,9 @@ public class ReservationService {
 
     @Autowired
     MyMailSender mailSender;
+
+    @Autowired
+    ComplaintRepository complaintRepository;
 
     private ReservationDTO reservationRequest;
     private Client client;
@@ -319,4 +325,40 @@ public class ReservationService {
         reservationRepository.cancelReservation(id_reservation);
 
     }
+
+
+    public void makeComplaint(Client client, Integer id_reservation, String complaintText) {
+        Reservation reservation = null;
+        try {
+            reservation = reservationRepository.findById(id_reservation).orElseGet(null);
+        }
+        catch (NullPointerException npe) {
+            throw new ReservationDoesNotExistException("Izabrana rezervacija ne postoji u sistemu!");
+        }
+
+        if (reservation.getClient().getId() != client.getId()) {
+            throw new ReservationOwnerNotAppropriateException("Vi niste napravili izabranu rezervaciju, pa ne možete napraviti žalbu!");
+        }
+
+        if (reservation.getStatus() != ReservationStatus.FINISHED) {
+            throw new ReservationStatusNotAppropriateForMakingComplaintException("Nije moguće uložiti žalbu za rezervaciju koja se nije završila.");
+        }
+
+        // provera da li rezervacija vec ima complaint
+        if (reservation.getComplaint() != null) {
+            throw new ComplaintAlreadyExistsException("Već ste napravili žalbu za izabranu rezervaciju. Žalbu je moguće uložiti samo jednom, te ova žalba neće biti evidentirana.");
+        }
+
+        // dodavanje zalbe u DB
+        Complaint complaint = new Complaint();
+        complaint.setReservation(reservation);
+        complaint.setStatus(ComplaintStatus.OPEN);
+        complaint.setDescription(complaintText);
+        complaintRepository.save(complaint);
+
+        reservationRepository.addComplaintIDToReservation(id_reservation, complaint.getId());
+
+
+    }
+
 }

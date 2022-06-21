@@ -1,9 +1,7 @@
 package com.Projekat.controller;
 
 
-import com.Projekat.dto.CutDTO;
-import com.Projekat.dto.ReservationSimpleDTO;
-import com.Projekat.dto.SortParametersReservationsDTO;
+import com.Projekat.dto.*;
 import com.Projekat.exception.*;
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.Service;
@@ -16,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.Projekat.dto.ReservationDTO;
 import com.Projekat.model.Account;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
@@ -298,17 +295,13 @@ public class ReservationController {
 
             Client client = (Client) user;      //ClassCastException e
 
-            System.out.println(account.getUsername());
-            System.out.println(account.getPassword());
-            System.out.println("ID rezervacije: " + id);
-
             reservationService.cancelReservation(client, id);
 
             return new ResponseEntity<>("Rezervacija je uspešno otkazana.", HttpStatus.OK);
         }
         catch (ClassCastException e) {
             //System.out.println("ClassCastException");
-            return new ResponseEntity<>("Došlo je do greške", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
         }
         catch (ReservationDoesNotExistException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -323,7 +316,50 @@ public class ReservationController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PostMapping(value = "/client/makecomplaint")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> makeComplaint(@RequestBody CLientComplaintDTO complaintDTO) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            if (complaintDTO.getComplaintText() == null || complaintDTO.getComplaintText().equals("")) {
+                throw new ComplaintTextEmptyException("Morate napisati tekst žalbe!");
+            }
+            reservationService.makeComplaint(client, complaintDTO.getReservationId(), complaintDTO.getComplaintText());
+
+            return new ResponseEntity<>("Žalba je uspešno priložena.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationDoesNotExistException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationOwnerNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationStatusNotAppropriateForMakingComplaintException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ComplaintAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ComplaintTextEmptyException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
         }
     }
 
