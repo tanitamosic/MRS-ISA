@@ -1,11 +1,15 @@
 package com.Projekat.service;
 
+import com.Projekat.dto.ClientReservationReviewDTO;
 import com.Projekat.dto.ReservationDTO;
-import com.Projekat.exception.RequestNotValidException;
-import com.Projekat.exception.ServiceNotAvailableException;
+import com.Projekat.exception.*;
 import com.Projekat.mail.MyMailSender;
 import com.Projekat.model.Account;
 import com.Projekat.model.reservations.*;
+import com.Projekat.model.reservations.submitions.Complaint;
+import com.Projekat.model.reservations.submitions.ComplaintStatus;
+import com.Projekat.model.reservations.submitions.Review;
+import com.Projekat.model.reservations.submitions.ReviewStatus;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
@@ -14,11 +18,17 @@ import com.Projekat.model.services.Cottage;
 import com.Projekat.model.users.Client;
 import com.Projekat.model.users.Instructor;
 import com.Projekat.model.users.User;
+import com.Projekat.repository.ComplaintRepository;
 import com.Projekat.repository.ReservationRepository;
+import com.Projekat.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -56,6 +66,12 @@ public class ReservationService {
 
     @Autowired
     MyMailSender mailSender;
+
+    @Autowired
+    ComplaintRepository complaintRepository;
+
+    @Autowired
+    ReviewRepository reviewRepository;
 
     private ReservationDTO reservationRequest;
     private Client client;
@@ -308,5 +324,115 @@ public class ReservationService {
 
     public List<Reservation> getAllAdventureReservations(Integer adv_id) {
         return reservationRepository.getAllAdventureReservations(adv_id);
+    }
+
+    public Page<Reservation> getAllUserReservations(int id, Pageable page){
+        return reservationRepository.getAllUserReservations(id, page);
+    }
+
+    public Page<Reservation> getAllActiveUserReservations(int id, Pageable page){
+        return reservationRepository.getAllActiveUserReservations(id, page);
+    }
+
+    public Page<Reservation> getAllHistoricalUserReservations(int id, Pageable page) {
+        return reservationRepository.getAllHistoricalUserReservations(id, page);
+    }
+
+    public void cancelReservation(Client client, Integer id_reservation) {
+        Reservation reservation = null;
+        try {
+            reservation = reservationRepository.findById(id_reservation).orElseGet(null);
+        }
+        catch (NullPointerException npe) {
+            throw new ReservationDoesNotExistException("Izabrana rezervacija ne postoji u sistemu!");
+        }
+
+        if (reservation.getClient().getId() != client.getId()) {
+            throw new ReservationOwnerNotAppropriateException("Vi niste napravili izabranu rezervaciju, pa je ne možete ni otkazati!");
+        }
+
+        if (reservation.getStatus() != ReservationStatus.BOOKED) {
+            throw new ReservationStatusNotAppropriateForCancelationException("Nije moguće otkazati rezervaciju, jer ona trenutno nema status Rezervisana!");
+        }
+
+        // provera da li ima barem 3 dana pre početka termina rezervacije
+        LocalDateTime reservationStart = reservation.getStartDate();
+        LocalDateTime now = LocalDateTime.now();
+
+        long daysBetween = Duration.between(now ,reservationStart).toDays();
+
+        if (daysBetween <= 3) {
+            throw new DeadlineForReservationCancellationPassedException("Prošao je rok u kojem je moguće otkazati rezervaciju");
+        }
+
+        // promena statusa u BP na CANCELLED
+        reservationRepository.cancelReservation(id_reservation);
+
+    }
+
+
+    public void makeComplaint(Client client, Integer id_reservation, String complaintText) {
+        Reservation reservation = null;
+        try {
+            reservation = reservationRepository.findById(id_reservation).orElseGet(null);
+        }
+        catch (NullPointerException npe) {
+            throw new ReservationDoesNotExistException("Izabrana rezervacija ne postoji u sistemu!");
+        }
+
+        if (reservation.getClient().getId() != client.getId()) {
+            throw new ReservationOwnerNotAppropriateException("Vi niste napravili izabranu rezervaciju, pa ne možete napraviti žalbu!");
+        }
+
+        if (reservation.getStatus() != ReservationStatus.FINISHED) {
+            throw new ReservationStatusNotAppropriateException("Nije moguće uložiti žalbu za rezervaciju koja se nije završila.");
+        }
+
+        // provera da li rezervacija vec ima complaint
+        if (reservation.getComplaint() != null) {
+            throw new ComplaintAlreadyExistsException("Već ste napravili žalbu za izabranu rezervaciju. Žalbu je moguće uložiti samo jednom, te ova žalba neće biti evidentirana.");
+        }
+
+        // dodavanje zalbe u DB
+        Complaint complaint = new Complaint();
+        complaint.setReservation(reservation);
+        complaint.setStatus(ComplaintStatus.OPEN);
+        complaint.setDescription(complaintText);
+        complaintRepository.save(complaint);
+
+        reservationRepository.addComplaintIDToReservation(id_reservation, complaint.getId());
+
+
+    }
+
+    public void reviewReservation(Client client, ClientReservationReviewDTO crrDto) {
+        Reservation reservation = null;
+        try {
+            reservation = reservationRepository.findById(crrDto.getReservationId()).orElseGet(null);
+        }
+        catch (NullPointerException npe) {
+            throw new ReservationDoesNotExistException("Izabrana rezervacija ne postoji u sistemu!");
+        }
+
+        if (reservation.getClient().getId() != client.getId()) {
+            throw new ReservationOwnerNotAppropriateException("Vi niste napravili izabranu rezervaciju, pa je ne možete oceniti!");
+        }
+
+        if (reservation.getStatus() != ReservationStatus.FINISHED) {
+            throw new ReservationStatusNotAppropriateException("Nije moguće uneti ocenu za rezervaciju koja se nije završila.");
+        }
+
+        // provera da li rezervacija vec ima review
+        if (reservation.getReview() != null) {
+            throw new ReviewAlreadyExistsException("Već ste ocenili izabranu rezervaciju. Ocenu je moguće uneti samo jednom, te ova ocena neće biti evidentirana.");
+        }
+
+        Review review = new Review();
+        review.setRating(crrDto.getRating());
+        review.setComment(crrDto.getComment());
+        review.setStatus(ReviewStatus.OPEN);
+        reviewRepository.save(review);
+
+        reservationRepository.addReviewIDToReservation(reservation.getId(), review.getId());
     }
 }

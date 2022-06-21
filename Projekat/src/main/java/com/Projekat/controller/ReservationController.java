@@ -5,15 +5,19 @@ import com.Projekat.dto.CutDTO;
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.Service;
 import com.Projekat.model.users.Instructor;
+import com.Projekat.dto.*;
+import com.Projekat.exception.*;
+import com.Projekat.model.reservations.Reservation;
+import com.Projekat.model.services.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.Projekat.dto.ReservationDTO;
-import com.Projekat.exception.RequestNotValidException;
-import com.Projekat.exception.ServiceDoesNotExistException;
-import com.Projekat.exception.ServiceNotAvailableException;
 import com.Projekat.model.Account;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
@@ -253,5 +257,217 @@ public class ReservationController {
             return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
         }
     }
+
+    
+    @PostMapping(value = "/client/reservations")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Page<ReservationSimpleDTO>> getAllUserReservations(Pageable page,
+                                                                             @RequestBody SortParametersReservationsDTO parameters) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Pageable page2 = null;
+            if(parameters.getSortByDateAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+            else if (parameters.getSortByDateDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").descending());
+            }
+            else if (parameters.getSortByPriceAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").ascending());
+            }
+            else if (parameters.getSortByPrisceDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").descending());
+            }
+            else {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+
+            Client client = (Client) user;      //ClassCastException e
+            Page<Reservation> queryPage = reservationService.getAllActiveUserReservations(user.getId(), page2);
+            Page<ReservationSimpleDTO> returnPage = queryPage.map(this::convertToReservationSimpleDTO);
+            return new ResponseEntity<>(returnPage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    private ReservationSimpleDTO convertToReservationSimpleDTO(Reservation r) {
+        return new ReservationSimpleDTO(r);
+    }
+
+    @PostMapping(value = "/client/historicalreservations")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Page<ReservationSimpleDTO>> getAllHistoricalUserReservations(Pageable page,
+                                                                             @RequestBody SortParametersReservationsDTO parameters) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Pageable page2 = null;
+            if(parameters.getSortByDateAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+            else if (parameters.getSortByDateDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").descending());
+            }
+            else if (parameters.getSortByPriceAscending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").ascending());
+            }
+            else if (parameters.getSortByPrisceDescending() == true) {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("price").descending());
+            }
+            else {
+                page2 = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by("start_date").ascending());
+            }
+
+            Client client = (Client) user;      //ClassCastException e
+            Page<Reservation> queryPage = reservationService.getAllHistoricalUserReservations(user.getId(), page2);
+            Page<ReservationSimpleDTO> returnPage = queryPage.map(this::convertToReservationSimpleDTO);
+            return new ResponseEntity<>(returnPage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
+    @GetMapping(value = "/client/cancelreservation/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> cancelReservation(@PathVariable Integer id) {
+        // id je id rezervacije koju želimo da otkažemo
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            reservationService.cancelReservation(client, id);
+
+            return new ResponseEntity<>("Rezervacija je uspešno otkazana.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationOwnerNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationStatusNotAppropriateForCancelationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (DeadlineForReservationCancellationPassedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PostMapping(value = "/client/makecomplaint")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> makeComplaint(@RequestBody CLientComplaintDTO complaintDTO) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+
+            Client client = (Client) user;      //ClassCastException e
+
+            if (complaintDTO.getComplaintText() == null || complaintDTO.getComplaintText().equals("")) {
+                throw new ComplaintTextEmptyException("Morate napisati tekst žalbe!");
+            }
+            reservationService.makeComplaint(client, complaintDTO.getReservationId(), complaintDTO.getComplaintText());
+
+            return new ResponseEntity<>("Žalba je uspešno priložena.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationOwnerNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationStatusNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ComplaintAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ComplaintTextEmptyException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PostMapping(value = "/client/reviewreservation")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> reviewReservation(@RequestBody ClientReservationReviewDTO crrDto) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            if (crrDto.getRating() == null) {
+                throw new ReviewRatingEmptyException("Morate uneti ocenu!");
+            }
+            if (crrDto.getComment() == null || crrDto.getComment().equals("")) {
+                throw new ReviewCommentEmptyException("Morate napisati komentar!");
+            }
+            reservationService.reviewReservation(client, crrDto);
+
+            return new ResponseEntity<>("Ocena je uspešno poslata.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationOwnerNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationStatusNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReviewAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReviewRatingEmptyException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReviewCommentEmptyException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

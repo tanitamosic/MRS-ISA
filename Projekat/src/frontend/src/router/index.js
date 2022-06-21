@@ -21,6 +21,8 @@ import AdminRegistration from '@/components/AdminRegistration.vue'
 import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
+import ReservationsOverview from '@/view/ReservationsOverview.vue'
+import HistoricalReservationsOverview from '@/view/HistoricalReservationsOverview.vue'
 
 import InstructorSidebar from '@/components/InstructorSidebar.vue'
 import AdventureCreator from '@/components/CreateAdventure.vue'
@@ -282,6 +284,22 @@ const routes = [
       Navbar: LoggedNavBar,
       LeftSidebar: InstructorSidebar,
       MainContent: InstCompletedReservations
+    }
+  },
+  {
+    path: '/client/activeReservations',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: ClientSidebar,
+      MainContent: ReservationsOverview
+    }
+  },
+  {
+    path: '/client/historicalReservations',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: ClientSidebar,
+      MainContent: HistoricalReservationsOverview
     }
   }
 ]

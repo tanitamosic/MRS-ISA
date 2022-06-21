@@ -1,5 +1,6 @@
 package com.Projekat.model.reservations;
 
+import com.Projekat.model.reservations.submitions.Complaint;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Service;
 import com.Projekat.model.reservations.submitions.Review;
@@ -46,6 +47,10 @@ public class Reservation {
 //    @PrimaryKeyJoinColumn(name = "id",referencedColumnName = "id")
     @JoinColumn(name = "review_id", referencedColumnName = "id")
     private Review review;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "complaint_id", referencedColumnName = "id")
+    private Complaint complaint;
 
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "reservation_additional_services",
@@ -134,5 +139,13 @@ public class Reservation {
 
     public void setAdditionalServices(Set<AdditionalService> additionalServices) {
         this.additionalServices = additionalServices;
+    }
+
+    public Complaint getComplaint() {
+        return complaint;
+    }
+
+    public void setComplaint(Complaint complaint) {
+        this.complaint = complaint;
     }
 }
