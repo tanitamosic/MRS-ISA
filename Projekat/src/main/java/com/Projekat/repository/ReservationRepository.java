@@ -2,6 +2,7 @@ package com.Projekat.repository;
 
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.users.Client;
+import com.Projekat.model.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -60,11 +61,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
 
     @Query(nativeQuery = true,
-            value="SELECT u.name, u.surname, u.id FROM USERS AS u " +
+            value="SELECT u.id, u.name, u.surname, u.phone FROM USERS AS u " +
                     "INNER JOIN RESERVATION AS r ON u.id=r.client_id " +
-                    "INNER JOIN ADVENTURES ON r.service_id=?1 ")
-    Client findIfAdventureIsReserved(Integer adv_id);
+                    "INNER JOIN ADVENTURES ON r.service_id=ADVENTURES.id " +
+                    "WHERE ADVENTURES.id=?1 ")
+    User findIfAdventureIsReserved(Integer adv_id);
 
     @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN ADVENTURES AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
     List<Reservation> fetchCompletedReservations(Integer owner_id);
+
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION as r INNER JOIN ADVENTURES as a ON r.service_id=a.id WHERE a.id=?1")
+    List<Reservation> getAllAdventureReservations(Integer adv_id);
 }

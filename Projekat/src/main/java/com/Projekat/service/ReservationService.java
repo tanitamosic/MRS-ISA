@@ -12,6 +12,8 @@ import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
 //import com.Projekat.model.services.Service;
 import com.Projekat.model.users.Client;
+import com.Projekat.model.users.Instructor;
+import com.Projekat.model.users.User;
 import com.Projekat.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +49,7 @@ public class ReservationService {
     public List<Reservation> getInstructorsCompletedReservations(Integer owner_id) {
         return reservationRepository.fetchCompletedReservations(owner_id);
     }
-    public Client findIfAdventureIsReserved(Integer adv_id) { return reservationRepository.findIfAdventureIsReserved(adv_id); }
+    public User findIfAdventureIsReserved(Integer adv_id) { return reservationRepository.findIfAdventureIsReserved(adv_id); }
 
     @Autowired
     private AdditionalServicesService asService;
@@ -282,4 +284,29 @@ public class ReservationService {
             throw new RequestNotValidException("Datum pocetka rezervacije mora biti pre datuma kraja!");
     }
 
+    public void reserveAdventureForClient(ReservationDTO reservationRequest, Account account,
+                                          Client c, Adventure adventure) {
+        this.reservationRequest = reservationRequest;
+        this.client = c;
+        this.account = account;
+        this.service = adventure;
+
+        // provere
+        checkDates();
+
+        checkIfDatesAreInGoodRangeForService();
+        checkForPossibleConflictInReservationDates();
+        checkCapacityForAdventure(adventure.getCapacity());
+        checkAdditionalServices();
+        Double price = calculatePrice();
+
+        saveNewAdventureReservation(price);
+
+        // slanje na mejl klijenta
+        sendConfirmationMail(createSucessfulReservationText());
+    }
+
+    public List<Reservation> getAllAdventureReservations(Integer adv_id) {
+        return reservationRepository.getAllAdventureReservations(adv_id);
+    }
 }

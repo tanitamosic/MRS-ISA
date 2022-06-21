@@ -7,6 +7,7 @@ import com.Projekat.dto.ComplexCottageDTO;
 import com.Projekat.dto.SimpleAdventureDTO;
 import com.Projekat.model.Address;
 import com.Projekat.model.Photo;
+import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
@@ -215,11 +216,17 @@ public class AdventureController {
         return new ResponseEntity<>(adventure, HttpStatus.OK);
     }
 
-    @GetMapping("/instructor/{adv_id}/find-client")
+    @GetMapping("/instructor/{ownerId}/{adv_id}/find-client")
     @PreAuthorize("hasRole('INSTRUCTOR')")
-    public ResponseEntity<Client> isAdventureReserved(@PathVariable Integer adv_id) {
-        Client c = reservationService.findIfAdventureIsReserved(adv_id);
+    public ResponseEntity<Client> isAdventureReserved(@PathVariable Integer ownerId, @PathVariable Integer adv_id) {
+//        Adventure adventures = adventureService.getAdventure(ownerId, adv_id);
+        List<Reservation> reservations = reservationService.getAllAdventureReservations(adv_id);
         // returning null as client is fine. cuz front knows to handle null for return value
+        Client c = new Client();
+        for (Reservation r: reservations) {
+            c = r.getClient();
+            break;
+        }
         return new ResponseEntity<>(c, HttpStatus.OK);
 
     }

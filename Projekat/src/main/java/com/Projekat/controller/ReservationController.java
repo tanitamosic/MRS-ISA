@@ -4,6 +4,7 @@ package com.Projekat.controller;
 import com.Projekat.dto.CutDTO;
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.services.Service;
+import com.Projekat.model.users.Instructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -181,6 +182,51 @@ public class ReservationController {
             }
 
             reservationService.reservateAdventure(reservationRequest, client, account, adventure);
+
+            return new ResponseEntity<>("Uspešno je izvršena rezervacija. " +
+                    "Potvrda treba da Vam stigne na email adresu.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ServiceDoesNotExistException e) {
+            //System.out.println("ServiceDoesNotExistException");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (RequestNotValidException e) {
+            //System.out.println("RequestNotValid");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ServiceNotAvailableException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (DataAccessException selectException) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PostMapping(value = "/instructor/create-client-reservation")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<String> reserveClientAdventure(@RequestBody ReservationDTO reservationRequest) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Instructor inst = (Instructor) user;      //ClassCastException e
+
+            Adventure adventure = adventureService.findOne(reservationRequest.getServiceId());
+            if (null == adventure) {
+                throw new ServiceDoesNotExistException("Izabrana vikendica ne postoji!");
+            }
+            Client c = (Client) userService.findUserById(reservationRequest.getClientId());
+            reservationService.reserveAdventureForClient(reservationRequest, account, c, adventure);
 
             return new ResponseEntity<>("Uspešno je izvršena rezervacija. " +
                     "Potvrda treba da Vam stigne na email adresu.", HttpStatus.OK);

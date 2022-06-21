@@ -16,6 +16,16 @@ public class ReservationDTO {
 
     private Set<Integer> additionalServices;
 
+    private Integer clientId;
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
     public ReservationDTO() {}
 
     public LocalDateTime getStartDate() {
