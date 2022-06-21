@@ -91,13 +91,14 @@
                             </div>
                             <div class="d-flex flex-column mt-4 mb-3">
                                 <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" v-if="!(this.$store.accessToken == null)">
+                                    data-bs-target="#exampleModalReview" v-if="!(this.$store.accessToken == null)"
+                                    v-on:click="this.setSelectedReservation(reservation.id)">
                                     Oceni
                                 </button>
                             </div>
                             <div class="d-flex flex-column mt-4">
                                 <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModalReview" v-if="!(this.$store.accessToken == null)"
+                                    data-bs-target="#exampleModalComplaint" v-if="!(this.$store.accessToken == null)"
                                     v-on:click="this.setSelectedReservation(reservation.id)">
                                     Žalba
                                 </button>
@@ -108,6 +109,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Komponenta za paginaciju -->
         <div v-if="this.totalPages > 1" mt-5 mb-0>
             <paginate v-model="page" :page-count=totalPages :page-range="3" :margin-pages="2"
@@ -115,13 +117,15 @@
                 :container-class="'pagination'" :page-class="'page-item'">
             </paginate>
         </div>
+
+        <!-- Modal za zalbe -->
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal fade" id="exampleModalReview" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="exampleModalComplaint" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Otkazivanje rezervacije</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Žalba na rezervaciju</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                 v-on:click="modalClosing"></button>
                         </div>
@@ -138,7 +142,7 @@
                                     <div class="col-md-12">
                                         <div class="d-flex aligns-items-center justify-content-center">
                                             <textarea v-model="this.complaintText" cols="45" rows="5"></textarea>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </div>
 
@@ -161,6 +165,67 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal za ocenjivanje -->
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal fade" id="exampleModalReview" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ocenjivanje rezervacije</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                v-on:click="modalClosing"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="searchForm">
+
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-md-12">
+                                        <label class="small mb-1">Unesite ocenu:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-md-12">
+                                        <!-- stars -->
+                                        <star-rating v-model:rating="this.rating" :show-rating="false"></star-rating>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-1">
+                                    <div class="col-md-12">
+                                        <label class="small mb-1">Unesite komentar:</label>
+                                    </div>
+                                </div>
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-md-12">
+                                        <div class="d-flex aligns-items-center justify-content-center">
+                                            <textarea v-model="this.commentText" cols="45" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-1">
+                                    <div class="col-md-12">
+                                        <div v-if="!(this.returnMessage === undefined || this.returnMessage === '')"
+                                            :class="this.klasa">{{ this.returnMessage }}</div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                v-on:click="modalClosing">Zatvori</button>
+                            <button type="button" class="btn btn-primary" v-on:click="sendReview">Pošalji
+                                ocenu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </template>
@@ -192,7 +257,9 @@ export default {
             returnMessage: '',
             klasa: 'text-primary',
 
-            complaintText: ''
+            complaintText: '',
+            rating: 0,
+            commentText: '',
         }
     },
     mounted() {
@@ -302,6 +369,8 @@ export default {
             this.returnMessage = '';
             this.complaintText = '';
             this.klasa = 'text-primary';
+            this.rating = 0;
+            this.commentText = '';
         },
         setSelectedReservation(id) {
             this.idSelectedReservation = id;
@@ -309,7 +378,7 @@ export default {
         async sendComplaint() {
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
-            
+
             let jsonData = JSON.stringify({
                 reservationId: this.idSelectedReservation,
                 complaintText: this.complaintText
@@ -327,16 +396,62 @@ export default {
                     if (err.response.status === 400) {
                         // alert(err.response.data);
                         this.returnMessage = err.response.data,
-                        this.klasa = 'text-danger'
+                            this.klasa = 'text-danger'
                     }
                     else {
                         // alert(err);
                         this.returnMessage = err.response.data,
-                        this.klasa = 'text-danger'
+                            this.klasa = 'text-danger'
                     }
                     console.log(err);
                 }
                 );
+        },
+        async sendReview() {
+
+            if (this.rating===undefined || this.rating === 0) {
+                this.returnMessage = "Morate uneti ocenu!";
+                this.klasa = 'text-danger';
+                return;
+            }          
+            if (this.commentText===undefined || this.commentText==='') {
+                this.returnMessage = "Morate komentar!";
+                this.klasa = 'text-danger';
+                return;
+            }  
+
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+
+            let jsonData = JSON.stringify({
+                rating : this.rating,
+                comment : this.commentText,
+                reservationId : this.idSelectedReservation
+            });
+
+            await axios
+                .post('api/client/reviewreservation',
+                    jsonData,
+                    { headers: { 'Content-Type': 'application/json' } })
+                .then(response => (
+                    this.returnMessage = response.data,
+                    this.klasa = 'text-success'
+                ))
+                .catch(err => {
+                    if (err.response.status === 400) {
+                        // alert(err.response.data);
+                        this.returnMessage = err.response.data,
+                            this.klasa = 'text-danger'
+                    }
+                    else {
+                        // alert(err);
+                        this.returnMessage = err.response.data,
+                            this.klasa = 'text-danger'
+                    }
+                    console.log(err);
+                }
+                );
+            
         }
     },
     components: {
