@@ -48,7 +48,7 @@ public class Reservation {
     @JoinColumn(name = "review_id", referencedColumnName = "id")
     private Review review;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "complaint_id", referencedColumnName = "id")
     private Complaint complaint;
 

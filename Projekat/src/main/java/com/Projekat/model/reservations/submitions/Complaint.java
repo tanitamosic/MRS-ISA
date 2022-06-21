@@ -23,7 +23,7 @@ public class Complaint {
     @Column(name="status", nullable = false)
     private ComplaintStatus status;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name="reservation_id", referencedColumnName = "id")
     private Reservation reservation;
 

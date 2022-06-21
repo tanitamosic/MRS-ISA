@@ -76,4 +76,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(nativeQuery = true, value = "UPDATE reservation SET complaint_id=?2 WHERE reservation.id=?1")
     void addComplaintIDToReservation(int r_id, int c_id);
 
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE reservation SET review_id=?2 WHERE reservation.id=?1")
+    void addReviewIDToReservation(Integer resId, Integer revId);
 }

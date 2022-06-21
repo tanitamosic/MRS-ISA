@@ -23,9 +23,6 @@ import com.Projekat.model.users.User;
 import com.Projekat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -349,13 +346,62 @@ public class ReservationController {
         catch (ReservationOwnerNotAppropriateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        catch (ReservationStatusNotAppropriateForMakingComplaintException e) {
+        catch (ReservationStatusNotAppropriateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (ComplaintAlreadyExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (ComplaintTextEmptyException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PostMapping(value = "/client/reviewreservation")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> reviewReservation(@RequestBody ClientReservationReviewDTO crrDto) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            if (crrDto.getRating() == null) {
+                throw new ReviewRatingEmptyException("Morate uneti ocenu!");
+            }
+            if (crrDto.getComment() == null || crrDto.getComment().equals("")) {
+                throw new ReviewCommentEmptyException("Morate napisati komentar!");
+            }
+            reservationService.reviewReservation(client, crrDto);
+
+            return new ResponseEntity<>("Ocena je uspešno poslata.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationOwnerNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReservationStatusNotAppropriateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReviewAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReviewRatingEmptyException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ReviewCommentEmptyException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {

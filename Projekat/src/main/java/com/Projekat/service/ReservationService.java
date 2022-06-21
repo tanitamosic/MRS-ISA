@@ -1,5 +1,6 @@
 package com.Projekat.service;
 
+import com.Projekat.dto.ClientReservationReviewDTO;
 import com.Projekat.dto.ReservationDTO;
 import com.Projekat.exception.*;
 import com.Projekat.mail.MyMailSender;
@@ -7,6 +8,8 @@ import com.Projekat.model.Account;
 import com.Projekat.model.reservations.*;
 import com.Projekat.model.reservations.submitions.Complaint;
 import com.Projekat.model.reservations.submitions.ComplaintStatus;
+import com.Projekat.model.reservations.submitions.Review;
+import com.Projekat.model.reservations.submitions.ReviewStatus;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
@@ -15,6 +18,7 @@ import com.Projekat.model.services.Cottage;
 import com.Projekat.model.users.Client;
 import com.Projekat.repository.ComplaintRepository;
 import com.Projekat.repository.ReservationRepository;
+import com.Projekat.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +30,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -53,6 +56,9 @@ public class ReservationService {
 
     @Autowired
     ComplaintRepository complaintRepository;
+
+    @Autowired
+    ReviewRepository reviewRepository;
 
     private ReservationDTO reservationRequest;
     private Client client;
@@ -341,7 +347,7 @@ public class ReservationService {
         }
 
         if (reservation.getStatus() != ReservationStatus.FINISHED) {
-            throw new ReservationStatusNotAppropriateForMakingComplaintException("Nije moguće uložiti žalbu za rezervaciju koja se nije završila.");
+            throw new ReservationStatusNotAppropriateException("Nije moguće uložiti žalbu za rezervaciju koja se nije završila.");
         }
 
         // provera da li rezervacija vec ima complaint
@@ -361,4 +367,34 @@ public class ReservationService {
 
     }
 
+    public void reviewReservation(Client client, ClientReservationReviewDTO crrDto) {
+        Reservation reservation = null;
+        try {
+            reservation = reservationRepository.findById(crrDto.getReservationId()).orElseGet(null);
+        }
+        catch (NullPointerException npe) {
+            throw new ReservationDoesNotExistException("Izabrana rezervacija ne postoji u sistemu!");
+        }
+
+        if (reservation.getClient().getId() != client.getId()) {
+            throw new ReservationOwnerNotAppropriateException("Vi niste napravili izabranu rezervaciju, pa je ne možete oceniti!");
+        }
+
+        if (reservation.getStatus() != ReservationStatus.FINISHED) {
+            throw new ReservationStatusNotAppropriateException("Nije moguće uneti ocenu za rezervaciju koja se nije završila.");
+        }
+
+        // provera da li rezervacija vec ima review
+        if (reservation.getReview() != null) {
+            throw new ReviewAlreadyExistsException("Već ste ocenili izabranu rezervaciju. Ocenu je moguće uneti samo jednom, te ova ocena neće biti evidentirana.");
+        }
+
+        Review review = new Review();
+        review.setRating(crrDto.getRating());
+        review.setComment(crrDto.getComment());
+        review.setStatus(ReviewStatus.OPEN);
+        reviewRepository.save(review);
+
+        reservationRepository.addReviewIDToReservation(reservation.getId(), review.getId());
+    }
 }
