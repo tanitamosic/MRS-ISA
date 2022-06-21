@@ -70,7 +70,7 @@ public abstract class Service {
     @Column(name="rating", unique = false, nullable = true)
     private Double rating;
 
-    @ManyToMany(/*cascade = {CascadeType.ALL},*/ fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "additionals",
                 joinColumns = {@JoinColumn(name = "service_id")},
                 inverseJoinColumns = {@JoinColumn(name = "additional_id")}

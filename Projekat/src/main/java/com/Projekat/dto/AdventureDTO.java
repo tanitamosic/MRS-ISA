@@ -1,10 +1,21 @@
 package com.Projekat.dto;
 
+import com.Projekat.model.services.AdditionalService;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 public class AdventureDTO {
+
+    private Integer adv_id;
+
+    public Integer getAdv_id() {
+        return adv_id;
+    }
+
+    public void setAdv_id(Integer adv_id) {
+        this.adv_id = adv_id;
+    }
 
     private Integer owner_id;
 
@@ -25,7 +36,7 @@ public class AdventureDTO {
     private String name;
     private String description;
 
-    private String[] additionalServices;
+    private AdditionalService[] additionalServices;
 
     private String state;
     private String city;
@@ -114,11 +125,11 @@ public class AdventureDTO {
         this.description = description;
     }
 
-    public String[] getAdditionalServices() {
+    public AdditionalService[] getAdditionalServices() {
         return additionalServices;
     }
 
-    public void setAdditionalServices(String[] additionalServices) {
+    public void setAdditionalServices(AdditionalService[] additionalServices) {
         this.additionalServices = additionalServices;
     }
 

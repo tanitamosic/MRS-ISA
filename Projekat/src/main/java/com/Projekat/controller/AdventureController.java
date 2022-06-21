@@ -51,6 +51,38 @@ public class AdventureController {
     @Autowired
     private ReservationService reservationService;
 
+    @DeleteMapping(value="/instructor/delete-adventure/{usr_id}/{adv_id}")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<String> deleteAdventure(@PathVariable Integer adv_id, @PathVariable Integer usr_id) {
+        try {
+            Adventure a = adventureService.getAdventure(usr_id, adv_id);
+            if (null == a) {
+                return new ResponseEntity<>("Niste vlasnik ove avanture", HttpStatus.BAD_REQUEST);
+            }
+            adventureService.delete(adv_id);
+            return new ResponseEntity<>("Uspešno ste obrisali avanturu", HttpStatus.OK);
+        } catch (DataAccessException err) {
+            return new ResponseEntity<>("Avantura ne postoji", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value="/instructor/update-adventure")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<String> updateAdventure(@RequestBody AdventureDTO ua) {
+        Integer advId = ua.getAdv_id();
+        Integer owner = ua.getOwner_id();
+        addressService.upsertAddress(ua.getState(), ua.getCity(), ua.getStreet());
+        Integer addressId = addressService.getAddressId(ua.getState(), ua.getCity(), ua.getStreet());
+        adventureService.updateAdventureAddress(addressId, addressId);
+        adventureService.updateAdventure(ua.getName(), ua.getAvailabilityStart(), ua.getAvailabilityEnd(), ua.getCancelTerms(),
+                ua.getCapacity(), ua.getDescription(), ua.getFishingEq(), ua.getPrice(), ua.getRules(), advId);
+        Adventure a = adventureService.getAdventure(owner, advId);
+        Set<AdditionalService> additionalServices = new HashSet<>(Arrays.asList(ua.getAdditionalServices()));
+        a.setAdditionalServices(additionalServices);
+        adventureService.saveAdventure(a);
+        return new ResponseEntity<>("Uspesno ste updateovali avanturu", HttpStatus.OK);
+    }
+
     @PostMapping(value="/instructor/create-new-adventure", consumes = "application/json")
     @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<Integer> saveAdventure(@RequestBody AdventureDTO adventureDTO) {
@@ -60,26 +92,13 @@ public class AdventureController {
 
         Address address = addressService.getAddress(adventureDTO.getState(), adventureDTO.getCity(), adventureDTO.getStreet());
 
-        Set<AdditionalService> additionalServices = getAdditionalServices(adventureDTO);
+        Set<AdditionalService> additionalServices = new HashSet<>(Arrays.asList(adventureDTO.getAdditionalServices()));
 
         additionalServicesService.addServices(additionalServices);
 
         Adventure a = new Adventure(adventureDTO, address, owner, additionalServices);
         a = adventureService.saveAdventure(a);
         return new ResponseEntity<>(a.getId(), HttpStatus.OK);
-    }
-
-    private Set<AdditionalService> getAdditionalServices(AdventureDTO adventureDTO) {
-        Set<AdditionalService> additionalServices = new HashSet<>(adventureDTO.getAdditionalServices().length);
-        for (String service: adventureDTO.getAdditionalServices()) {
-            AdditionalService addedService = new AdditionalService();
-            String name = service.split(" - \\$")[0];
-            Double price = Double.parseDouble(service.split(" - \\$")[1]);
-            addedService.setName(name);
-            addedService.setPrice(price);
-            additionalServices.add(addedService);
-        }
-        return additionalServices;
     }
 
     @GetMapping(value = "/adventures/all")

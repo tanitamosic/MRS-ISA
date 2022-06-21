@@ -233,10 +233,12 @@ export default {
             if (!this.addedService) {
                 return;
             }
-            let newService = this.addedService + ' - $' + this.addedServicePrice
-            this.services.push(newService);
+            let newS = {'name': this.addedService, 'price': this.addedServicePrice}
+            this.services.push(newS);
 
-            let newOption = new Option(newService, newService);
+
+            let newServiceText = this.addedService + ' - $' + this.addedServicePrice
+            let newOption = new Option(newServiceText, newServiceText);
             let listbox = document.getElementById('services');
             listbox.options[this.services.length - 1] = newOption;
             if (listbox.size < 5) {
