@@ -29,7 +29,7 @@ public class AccountTokenState {
                 this.instructor = (Instructor) loggedUser;
                 break;
             }
-            case "ROLE_COTTAGE_OWNER": {
+            case "ROLE_COTTAGEOWNER": {
                 this.cottageOwner = (CottageOwner) loggedUser;
                 break;
             }

@@ -214,7 +214,7 @@ export default {
             this.isAdmin = true;
         }
 
-        if(this.$store.role === "ROLE_COTTAGE_OWNER"){
+        if(this.$store.role === "ROLE_COTTAGEOWNER"){
             this.isOwner = true;
             this.owner = this.$store.username;
         }

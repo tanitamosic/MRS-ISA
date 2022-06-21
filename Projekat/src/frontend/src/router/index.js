@@ -7,16 +7,9 @@ import BoatsOverview from '@/view/BoatsOverview.vue'
 import BoatDetails from '@/view/BoatDetails.vue'
 import AdventureOverview from '@/view/AdventureOverview.vue'
 import AdventureDetails from '@/view/AdventureDetails.vue'
-import AdminPendingRegs from '@/view/AdminPendingRegs.vue'
-import AdminDelRequests from '@/view/AdminDelRequests.vue'
-import AdminComplaints from '@/view/AdminComplaints.vue'
-import AdminCottages from '@/view/AdminCotOverview.vue'
-import AdminBoats from '@/view/AdminBoatOverview.vue'
-import AdminAdventures from '@/view/AdminAdvOverview.vue'
-import COProfileView from '@/view/CottageOwnerProfileView.vue'
-import COCottages from '@/view/CottageOwnerOverview.vue'
-import CottageProfileOverview from '@/view/CottageProfileOverview'
-import CottageOwnerSidebar from '@components/CottageOwnerSidebar.vue'
+import CottageProfile from '@/components/CottageProfile'
+import CottageOwnerSidebar from '@/components/CottageOwnerSidebar.vue'
+import CreateCottage from '@/components/CreateCottage.vue'
 
 import ProfileView from '@/components/ProfileView.vue';
 
@@ -134,7 +127,7 @@ const routes = [
     name: 'COProfileView',
     components: {
       LeftSidebar: CottageOwnerSidebar,
-      MainContent: COProfileView
+      MainContent: ProfileView
     } // DONE
   },
   {
@@ -150,8 +143,16 @@ const routes = [
     name: 'CottageProfileOverview',
     components: {
       LeftSidebar: CottageOwnerSidebar,
-      MainContent: CottageProfileOverview
+      MainContent: CottageProfile
     } // UPDATE, FLASH SALE UNFINISHED
+  },
+  {
+    path: '/co/add-cottage',
+    name: 'AddCottage',
+    components:{
+      LeftSidebar:CottageOwnerSidebar,
+      MainContent: CreateCottage
+    }
   },
   {
     path: '/admin/admin-registration',

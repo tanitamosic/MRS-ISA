@@ -21,4 +21,9 @@ public interface CottageRepository extends JpaRepository<Cottage,Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM COTTAGES WHERE owner_id=?1 AND is_deleted=false")
     Page<Cottage> findAllByOwner(Pageable page, Integer owner);
 
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value="UPDATE COTTAGES SET photo_id=?2 WHERE id=?1")
+    void setAdventurePrimaryPhoto(Integer id, Integer photo_id);
+
 }

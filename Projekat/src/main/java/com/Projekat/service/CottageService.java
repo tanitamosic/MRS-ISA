@@ -43,4 +43,11 @@ public class CottageService {
     public void remove(Integer id) {
         cottageRepository.deleteCottage(id);
     }
+
+    public Cottage saveCottage(Cottage cottage){
+        return cottageRepository.saveAndFlush(cottage);
+    }
+
+    public void setCottagePrimaryPhoto(Integer serviceId, Integer photoId) { cottageRepository.setAdventurePrimaryPhoto(serviceId, photoId); }
+
 }
