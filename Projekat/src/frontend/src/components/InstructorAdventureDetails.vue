@@ -144,7 +144,7 @@
                                     <p class="card-text">Kontakt telefon: {{ this.client.phone }}</p>
                                 </div>
                                 <div class="card-body">
-                                    <button class="btn btn-success" v-if="!this.client.id" @click="showClientResModal = true">Napravi rezervaciju za klijenta</button>
+                                    <button class="btn btn-success" v-if="this.client.id" @click="showClientResModal = true">Napravi rezervaciju za klijenta</button>
                                 </div>
                             </div>
                         </div>
@@ -211,7 +211,7 @@
     <!-- MODAL IMPLEMENTATION -->
     <Teleport to="body">
         <!-- use the modal component, pass in the prop -->
-        <ClientReservationModal :show="showClientResModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showClientResModal = false">
+        <ClientReservationModal :show="showClientResModal" :clientId="this.client.id" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showClientResModal = false">
             <template #header>
                 <h3>custom header</h3>
             </template>
@@ -265,7 +265,7 @@ export default {
             let self = this;
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
-            axios.get('/api/instructor/' + this.id + '/find-client')
+            axios.get('/api/instructor/' + this.$store.User.id + '/' + this.id + '/find-client')
                 .then((response) => {
                     if (response.data) {
                         self.client = response.data;

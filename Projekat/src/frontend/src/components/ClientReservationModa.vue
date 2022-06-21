@@ -12,9 +12,10 @@
                         <slot name="body">
                             <span>Datum kada pocinje nova rezervacija</span>
                             <input class="form-control mb-3" type="date" v-model="resDateFrom" />
-
-                            <span>Datum kada se zavrsava akcija</span>
+                            <span>Datum kada se zavrsava rezervacija</span>
                             <input type="date" class="form-control mb-3" v-model="resDateTo" />
+                            <span>Kapacitet</span>
+                            <input type="number" class="form-control mb-3" v-model="capacity" />
                             <hr>
                         </slot>
                     </div>
@@ -40,13 +41,16 @@ export default {
         show: Boolean,
         dateFrom: Object,
         dateTo: Object,
-        adventureId: Object
+        adventureId: Number,
+        clientId: Number,
+        maxCapacity: Number
 
     },
     data() {
         return {
             resDateFrom: null,
             resDateTo: null,
+            capacity: null
         }
     },
     methods: {
@@ -64,11 +68,13 @@ export default {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
 
             let newAction = {
+                'clientId': this.clientId,
                 'serviceId': this.adventureId,
-                'actionDateFrom': this.resDateFrom + "T00:00",
-                'actionDateTo': this.resDateFrom + "T00:00",
+                'startDate': this.resDateFrom + "T00:00",
+                'endDate': this.resDateTo + "T00:00",
+                'capacity': this.capacity
             }
-            axios.post('', newAction).then((response) => {
+            axios.post('/api/instructor/create-client-reservation/' , newAction).then((response) => {
                 alert(response.data);
                 this.$emit('close');
             }).catch((err) => {
