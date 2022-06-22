@@ -11,6 +11,14 @@ import BoatDetails from '@/view/BoatDetails.vue'
 import AdventureOverview from '@/view/AdventureOverview.vue'
 import AdventureDetails from '@/view/AdventureDetails.vue'
 
+import BoatProfile from '@/components/BoatProfile.vue'
+import CreateBoat from '@/components/CreateBoat.vue'
+import BoatOwnerSidebar from '@/components/BoatOwnerSidebar.vue'
+
+import CottageProfile from '@/components/CottageProfile'
+import CottageOwnerSidebar from '@/components/CottageOwnerSidebar.vue'
+import CreateCottage from '@/components/CreateCottage.vue'
+
 import ProfileView from '@/components/ProfileView.vue';
 
 import AdminSidebar from "@/components/AdminSidebar.vue";
@@ -21,6 +29,8 @@ import AdminRegistration from '@/components/AdminRegistration.vue'
 import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
+import ReservationsOverview from '@/view/ReservationsOverview.vue'
+import HistoricalReservationsOverview from '@/view/HistoricalReservationsOverview.vue'
 
 import InstructorSidebar from '@/components/InstructorSidebar.vue'
 import AdventureCreator from '@/components/CreateAdventure.vue'
@@ -91,7 +101,7 @@ const routes = [
     components: {
       Navbar: UnloggedNavBar,
       UnloggedContent: AdventureDetails
-    } 
+    }
   },
   {
     path: '/admin/profile',
@@ -189,11 +199,138 @@ const routes = [
     }
   },
   {
+    path: '/bo/profile/',
+    name: 'BOProfileView',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: ProfileView
+    } // DONE
+  },
+  {
+    path: '/bo/boat-overview/',
+    name: 'BOBoats',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: BoatsOverview
+    } // DONE
+  },
+  {
+    path: '/bo/boat-profile/:id?',
+    name: 'BoatProfileOverview',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: BoatProfile
+    } // FLASH SALE UNFINISHED
+  },
+  {
+    path: '/bo/add-boat',
+    name: 'AddBoat',
+    components:{
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: CreateBoat
+    }
+  },
+  {
+    path: '/bo/profits',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
+    path: '/co/profile/',
+    name: 'COProfileView',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: ProfileView
+    } // DONE
+  },
+  {
+    path: '/co/cottage-overview/',
+    name: 'COCottages',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: CottageOverview
+    } // DONE
+  },
+  {
+    path: '/co/cottage-profile/:id?',
+    name: 'CottageProfileOverview',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: CottageProfile
+    } 
+  },
+  {
+    path: '/co/add-cottage',
+    name: 'AddCottage',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: CreateCottage
+    }
+  },
+  {
+    path: '/co/profits',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
     path: '/instructor/profile',
     components: {
       Navbar: LoggedNavBar,
       LeftSidebar: InstructorSidebar,
+    }
+  },
+  {
+    path: '/client/profile',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: ClientSidebar,
       MainContent: ProfileView
+    }
+  },
+  {
+    path: '/instructor/profits',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: InstructorSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
+    path: '/instructor/create-adventure',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: InstructorSidebar,
+      MainContent: AdventureCreator
+    }
+  },
+  {
+    path: '/instructor/view-adventures',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorsAdventures
+    }
+  },
+  {
+    path: '/instructor/view-adventure-details/:id?',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorAdventureDetails
     }
   },
   {
@@ -260,28 +397,26 @@ const routes = [
       MainContent: AdventureCreator
     }
   },
+{
+  path: '/instructor/view-history',
+  components: {
+    Navbar: LoggedNavBar,
+    LeftSidebar: InstructorSidebar,
+    MainContent: InstCompletedReservations}},
+
   {
-    path: '/instructor/view-adventures',
+    path: '/client/activeReservations',
     components: {
       Navbar: LoggedNavBar,
-      LeftSidebar: InstructorSidebar,
-      MainContent: InstructorsAdventures
+      LeftSidebar: ClientSidebar,
+      MainContent: ReservationsOverview
     }
   },
   {
-    path: '/instructor/view-adventure-details/:id?',
+    path: '/client/historicalReservations',
     components: {
-      Navbar: LoggedNavBar,
-      LeftSidebar: InstructorSidebar,
-      MainContent: InstructorAdventureDetails
-    }
-  },
-  {
-    path: '/instructor1/view-history',
-    components: {
-      Navbar: LoggedNavBar,
-      LeftSidebar: InstructorSidebar,
-      MainContent: InstCompletedReservations
+      LeftSidebar: ClientSidebar,
+      MainContent: HistoricalReservationsOverview
     }
   }
 ]

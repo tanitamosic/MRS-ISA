@@ -394,7 +394,7 @@ export default {
                 this.adventure.address.street === '' ||
                 this.adventure.fishingEquipment === '' ||
                 this.adventure.capacity === '') {
-                alert("Polja sa osnovnim podacima vikendice ne smeju biti prazna.")
+                alert("Polja sa osnovnim podacima avanture ne smeju biti prazna.")
                 return;
             }
 

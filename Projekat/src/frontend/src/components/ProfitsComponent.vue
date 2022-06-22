@@ -88,8 +88,8 @@ export default {
         switch (this.$store.role) {
             case "ROLE_ADMIN": this.isAdmin = true; break;
             case "ROLE_INSTRUCTOR": this.isInstructor = true; break;
-            case "ROLE_COTTAGE_OWNER": this.isCottageOwner = true; break;
-            case "ROLE_BOAT_OWNER": this.isBoatOwner = true; break;
+            case "ROLE_COTTAGEOWNER": this.isCottageOwner = true; break;
+            case "ROLE_BOATOWNER": this.isBoatOwner = true; break;
             default: { alert("Došlo je do greške"); return; }
         }
     },
