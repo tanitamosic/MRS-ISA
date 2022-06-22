@@ -2,9 +2,14 @@ package com.Projekat.repository;
 
 import com.Projekat.model.reservations.Reservation;
 import com.Projekat.model.users.Client;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -64,4 +69,30 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
                     "INNER JOIN RESERVATION AS r ON u.id=r.client_id " +
                     "INNER JOIN ADVENTURES ON r.service_id=?1 ")
     Client findIfAdventureIsReserved(Integer adv_id);
+    
+    @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE client_id=?1")
+    Page<Reservation> getAllUserReservations(int clientID, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE client_id=?1 AND status=0")
+    Page<Reservation> getAllActiveUserReservations(int clientId, Pageable page);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM RESERVATION WHERE client_id=?1 AND status=2")
+    Page<Reservation> getAllHistoricalUserReservations(int clientId, Pageable page);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE reservation SET status=1 WHERE reservation.id=?1")
+    void cancelReservation(int id);
+
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE reservation SET complaint_id=?2 WHERE reservation.id=?1")
+    void addComplaintIDToReservation(int r_id, int c_id);
+
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE reservation SET review_id=?2 WHERE reservation.id=?1")
+    void addReviewIDToReservation(Integer resId, Integer revId);
 }

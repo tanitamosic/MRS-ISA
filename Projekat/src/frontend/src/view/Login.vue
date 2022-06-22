@@ -102,21 +102,28 @@ export default {
               } else {
                 self.$router.push('/admin/profile');
               }
-
               break;
             }
-            case 'ROLE_CLIENT': break;
             case 'ROLE_INSTRUCTOR': {
               self.$store.User = cookie.instructor;
               self.$router.push('/instructor/profile');
               break;
-              }
+            }
             case 'ROLE_COTTAGEOWNER': {
-            self.$store.User=cookie.cottageOwner;
-            self.$router.push('/co/profile')
-            break;
-          }
-            case 'ROLE_BOATOWNER': break;
+              self.$store.User = cookie.cottageOwner;
+              self.$router.push('/co/profile')
+              break;
+            }
+            case 'ROLE_CLIENT': {
+              self.$store.User = cookie.client;
+              self.$router.push('/client/profile');
+              break;
+            }
+            case 'ROLE_BOATOWNER': {
+              self.$store.User = cookie.boatOwner;
+              self.$router.push('/bo/profile');
+              break;
+            }
           }
           return cookie;
         }).catch((err) => {

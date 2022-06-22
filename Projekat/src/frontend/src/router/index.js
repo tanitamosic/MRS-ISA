@@ -14,12 +14,15 @@ import CreateCottage from '@/components/CreateCottage.vue'
 import ProfileView from '@/components/ProfileView.vue';
 
 import AdminSidebar from "@/components/AdminSidebar.vue";
+import ClientSidebar from '@/components/ClientSidebar.vue'
 import PendingRegistrations from '@/components/PendingRegistrations.vue'
 import AccountDelRequests from '@/components/AccountDelRequests.vue'
 import AdminRegistration from '@/components/AdminRegistration.vue'
 import ComplaintResponse from '@/components/ComplaintResponse.vue'
 import ProfitsComponent from '@/components/ProfitsComponent.vue'
 import UserOverview from '@/components/UserOverview.vue'
+import ReservationsOverview from '@/view/ReservationsOverview.vue'
+import HistoricalReservationsOverview from '@/view/HistoricalReservationsOverview.vue'
 
 import InstructorSidebar from '@/components/InstructorSidebar.vue'
 import AdventureCreator from '@/components/CreateAdventure.vue'
@@ -51,27 +54,37 @@ const routes = [
   {
     path: '/CottageDetails/:id?',
     name: 'CottageDetails',
-    components: { UnloggedContent: CottageDetails }
+    components: {
+      UnloggedContent: CottageDetails
+    }
   },
   {
     path: '/BoatsOverview',
     name: 'BoatsOverview',
-    component: BoatsOverview
+    components: {
+      UnloggedContent: BoatsOverview
+    }
   },
   {
     path: '/BoatDetails/:id?',
     name: 'BoatDetails',
-    component: BoatDetails
+    components: {
+      UnloggedContent: BoatDetails
+    }
   },
   {
     path: '/AdventureOverview',
     name: 'AdventureOverview',
-    component: AdventureOverview
+    components: {
+      UnloggedContent: AdventureOverview
+    }
   },
   {
     path: '/AdventureDetails/:id?',
     name: 'AdventureDetails',
-    component: AdventureDetails
+    components: {
+      UnloggedContent: AdventureDetails
+    }
   },
   {
     path: '/admin/profile',
@@ -149,8 +162,8 @@ const routes = [
   {
     path: '/co/add-cottage',
     name: 'AddCottage',
-    components:{
-      LeftSidebar:CottageOwnerSidebar,
+    components: {
+      LeftSidebar: CottageOwnerSidebar,
       MainContent: CreateCottage
     }
   },
@@ -185,6 +198,12 @@ const routes = [
     path: '/instructor/profile',
     components: {
       LeftSidebar: InstructorSidebar,
+    }
+  },
+  {
+    path: '/client/profile',
+    components: {
+      LeftSidebar: ClientSidebar,
       MainContent: ProfileView
     }
   },
@@ -214,6 +233,62 @@ const routes = [
     components: {
       LeftSidebar: InstructorSidebar,
       MainContent: InstructorAdventureDetails
+    }
+  },
+  {
+    path: '/client/cottages',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: CottageOverview
+    }
+  },
+  {
+    path: '/client/boats',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: BoatsOverview
+    }
+  },
+  {
+    path: '/client/adventures',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: AdventureOverview
+    }
+  },
+  {
+    path: '/client/CottageDetails/:id?',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: CottageDetails
+    }
+  },
+  {
+    path: '/client/AdventureDetails/:id?',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: AdventureDetails
+    }
+  },
+  {
+    path: '/client/BoatDetails/:id?',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: BoatDetails
+    }
+  },
+  {
+    path: '/client/activeReservations',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: ReservationsOverview
+    }
+  },
+  {
+    path: '/client/historicalReservations',
+    components: {
+      LeftSidebar: ClientSidebar,
+      MainContent: HistoricalReservationsOverview
     }
   }
 ]
