@@ -10,14 +10,12 @@ import com.Projekat.model.reservations.submitions.Complaint;
 import com.Projekat.model.reservations.submitions.ComplaintStatus;
 import com.Projekat.model.reservations.submitions.Review;
 import com.Projekat.model.reservations.submitions.ReviewStatus;
-import com.Projekat.model.services.AdditionalService;
-import com.Projekat.model.services.Adventure;
-import com.Projekat.model.services.Boat;
-import com.Projekat.model.services.Cottage;
+import com.Projekat.model.services.*;
 //import com.Projekat.model.services.Service;
 import com.Projekat.model.users.Client;
 import com.Projekat.model.users.Instructor;
 import com.Projekat.model.users.User;
+import com.Projekat.repository.ActionRepository;
 import com.Projekat.repository.ComplaintRepository;
 import com.Projekat.repository.ReservationRepository;
 import com.Projekat.repository.ReviewRepository;
@@ -72,6 +70,12 @@ public class ReservationService {
 
     @Autowired
     ReviewRepository reviewRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ActionRepository actionRepository;
 
     private ReservationDTO reservationRequest;
     private Client client;
@@ -435,4 +439,127 @@ public class ReservationService {
 
         reservationRepository.addReviewIDToReservation(reservation.getId(), review.getId());
     }
+
+    public void reserveWithQuickAction(Client client, QuickAction quickAction, String type, com.Projekat.model.services.Service service) {
+
+        // provere
+        checkDatesForQuickReservation(quickAction.getDateFrom(), quickAction.getDateTo());
+
+        checkIfDatesAreInGoodRangeForServiceQuickReservationi(quickAction.getDateFrom(), quickAction.getDateTo(), service);
+        checkForPossibleConflictInReservationDatesQuickReservation(service.getId(), quickAction.getDateFrom(), quickAction.getDateTo());
+
+        Double price = calculatePriceQuickReservation(service.getPrice(), quickAction.getDiscount());
+
+        if (type.equals("cottage"))
+            saveNewCottageReservationQuickReservation(price, client, service, quickAction.getDateFrom(), quickAction.getDateTo());
+        else if (type.equals("boat"))
+            saveNewBoatReservationQuickReservation(price, client, service, quickAction.getDateFrom(), quickAction.getDateTo());
+        else if (type.equals("adventure"))
+            saveNewAdventureReservationQuickReservation(price, client, service, quickAction.getDateFrom(), quickAction.getDateTo());
+
+        actionRepository.setStateClosed(quickAction.getId());
+
+        // slanje na mejl klijenta
+        sendConfirmationMailQuickReservation(userService.findUsernameById(client.getId()), createSucessfulQuickReservationText(service.getName(), quickAction.getDateFrom(), quickAction.getDateTo()));
+    }
+
+    private void checkDatesForQuickReservation(LocalDateTime startDate, LocalDateTime endDate) {
+        // startDate < end Date
+        if (null == startDate)
+            throw new RequestNotValidException("Datum pocetka rezervacije nije unet!");
+        if (null == endDate)
+            throw new RequestNotValidException("Datum kraja rezervacije nije unet!");
+        if(!(startDate.isBefore(endDate)))
+            throw new RequestNotValidException("Datum pocetka rezervacije mora biti pre datuma kraja!");
+    }
+
+    private void checkIfDatesAreInGoodRangeForServiceQuickReservationi(LocalDateTime startDate, LocalDateTime endDate, com.Projekat.model.services.Service service) {
+        // provera da su datumi u dozvoljenom opsegu za taj servis
+        if (!(service.getAvailabilityStart().isBefore(startDate)))
+            throw new ServiceNotAvailableException("Servis nije dostupan u odabranom terminu.");
+        if (!(service.getAvailabilityEnd().isAfter(endDate)))
+            throw new ServiceNotAvailableException("Servis nije dostupan u odabranom terminu.");
+    }
+
+    private void checkForPossibleConflictInReservationDatesQuickReservation(Integer serviceId, LocalDateTime startDate, LocalDateTime endDate) {
+        // provera da ne postoji druga rezervacija u sistemu koja se poklapa sa ovom
+        List<Reservation> conflicts = reservationRepository
+                .getReservationsForServiceBetweenDates(serviceId, startDate, endDate);
+        if(!(0==conflicts.size()))
+            throw new ServiceNotAvailableException("Izabrani termin je već zauzet!");
+    }
+
+    private double calculatePriceQuickReservation(Double basicServicePrice, Integer discountPercentage) {
+        Double calculatedPrice = basicServicePrice * (1-(discountPercentage/100));
+        return calculatedPrice;
+    }
+
+    private void sendConfirmationMailQuickReservation(String username, String text) {
+        mailSender.sendSucessfulCottageReservation(username, text);
+    }
+    private String createSucessfulQuickReservationText(String serviceName, LocalDateTime startDate, LocalDateTime endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+        String start_date = startDate.format(formatter);
+        String end_date = endDate.format(formatter);
+
+        String text = "Pozdrav\n" +
+                "\tUspešno ste rezervisali: " + serviceName + "." +
+                "\n\tRezervacija je od: " + start_date +
+                " do: " + end_date + "" +
+                "\nŽelimo Vam lep provod!";
+
+        return text;
+    }
+
+    private void saveNewCottageReservationQuickReservation(Double calculatedPrice, Client client, com.Projekat.model.services.Service service, LocalDateTime startDate, LocalDateTime endDate) {
+        ReservationStatus status = ReservationStatus.BOOKED;        // ovo je uvek ovako
+
+        // pravljenje nove rezervacije
+        CottageReservation reservation = new CottageReservation();
+        reservation.setStartDate(startDate);
+        reservation.setEndDate(endDate);
+        reservation.setPrice(calculatedPrice);
+        reservation.setStatus(status);
+        reservation.setClient(client);
+        reservation.setService(service);
+
+        // ubacivanje u Bazu podataka
+        reservationRepository.save(reservation);
+
+    }
+
+    private void saveNewBoatReservationQuickReservation(Double calculatedPrice, Client client, com.Projekat.model.services.Service service, LocalDateTime startDate, LocalDateTime endDate) {
+        ReservationStatus status = ReservationStatus.BOOKED;        // ovo je uvek ovako
+
+        // pravljenje nove rezervacije
+        BoatReservation reservation = new BoatReservation();
+        reservation.setStartDate(startDate);
+        reservation.setEndDate(endDate);
+        reservation.setPrice(calculatedPrice);
+        reservation.setStatus(status);
+        reservation.setClient(client);
+        reservation.setService(service);
+
+        // ubacivanje u Bazu podataka
+        reservationRepository.save(reservation);
+
+    }
+
+    private void saveNewAdventureReservationQuickReservation(Double calculatedPrice, Client client, com.Projekat.model.services.Service service, LocalDateTime startDate, LocalDateTime endDate) {
+        ReservationStatus status = ReservationStatus.BOOKED;        // ovo je uvek ovako
+
+        // pravljenje nove rezervacije
+        AdventureReservation reservation = new AdventureReservation();
+        reservation.setStartDate(startDate);
+        reservation.setEndDate(endDate);
+        reservation.setPrice(calculatedPrice);
+        reservation.setStatus(status);
+        reservation.setClient(client);
+        reservation.setService(service);
+
+        // ubacivanje u Bazu podataka
+        reservationRepository.save(reservation);
+
+    }
+
 }

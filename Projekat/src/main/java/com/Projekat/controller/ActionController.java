@@ -2,6 +2,7 @@ package com.Projekat.controller;
 
 import com.Projekat.dto.ActionDTO;
 import com.Projekat.mail.MyMailSender;
+import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.QuickAction;
 import com.Projekat.model.services.Service;
 import com.Projekat.model.users.Client;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,15 +29,20 @@ public class ActionController {
     private UserService userService;
     @Autowired
     private MyMailSender mailSender;
+
+
     @PostMapping("/adventure/create-action")
     @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> createAction(@RequestBody ActionDTO actionDTO) {
-        Service s = adventureService.findOne(actionDTO.getServiceId());
+        Adventure s = adventureService.findOne(actionDTO.getServiceId());
         if (null == s) {
             return new ResponseEntity<>("Doslo je do greske", HttpStatus.BAD_REQUEST);
         }
-        QuickAction qa = new QuickAction(actionDTO.getActionDateFrom(), actionDTO.getActionDateTo(), actionDTO.getDiscount(), s);
+        QuickAction qa = new QuickAction(actionDTO.getActionDateFrom(), actionDTO.getActionDateTo(), actionDTO.getDiscount());
         actionService.saveNewAction(qa);
+        s.getQuickActions().add(qa);
+        adventureService.saveAdventure(s);
+
         List<Client> clients = subscriptionService.getSubscribedClients(s.getId());
 
         String mail_body = "Postovani\r\n\r\nZa uslugu na koju ste pretplaceni" + s.getName()+", je otvorena akcija!\r\n\r\nVas TurboJavaSpringbootTurizamExpo";
@@ -50,4 +53,11 @@ public class ActionController {
 
         return new ResponseEntity<>("Uspesno ste kreirali akciju", HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getqr/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<List<QuickAction>> getQuickActionsForService(@PathVariable Integer id) {
+        return new ResponseEntity<>(actionService.getQuickActionsForService(id), HttpStatus.OK);
+    }
+
 }

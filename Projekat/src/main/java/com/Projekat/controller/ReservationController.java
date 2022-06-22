@@ -3,7 +3,7 @@ package com.Projekat.controller;
 
 import com.Projekat.dto.CutDTO;
 import com.Projekat.model.reservations.Reservation;
-import com.Projekat.model.services.Service;
+import com.Projekat.model.services.*;
 import com.Projekat.model.users.Instructor;
 import com.Projekat.dto.*;
 import com.Projekat.exception.*;
@@ -19,9 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.Projekat.model.Account;
-import com.Projekat.model.services.Adventure;
-import com.Projekat.model.services.Boat;
-import com.Projekat.model.services.Cottage;
 import com.Projekat.model.users.Client;
 import com.Projekat.model.users.User;
 import com.Projekat.service.*;
@@ -55,6 +52,9 @@ public class ReservationController {
 
     @Autowired
     ReservationService reservationService;
+
+    @Autowired
+    ActionService actionService;
 
 
     @GetMapping("/instructor/{usr_id}/get-completed-reservations")
@@ -469,5 +469,74 @@ public class ReservationController {
         }
     }
 
+
+    @PostMapping(value = "/quick-action/reservation")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> reserveWithQuickAction(@RequestBody QuickActionDTO qaDTO) {
+        // proveriti klijenta
+
+        // proveriti da ima status Active
+        // proba pravljenja rezervacije
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            // naci quick reservation
+            QuickAction quickAction;
+            try {
+                quickAction = actionService.findById(qaDTO.getQuickActionId());
+            }
+            catch (NullPointerException e) {
+                throw new QuickActionNotFound("Nije nadjena brza akcija!");
+            }
+
+            Service service = null;
+            if (qaDTO.getType().equals("cottage")) {
+                service = cottageService.findOne(qaDTO.getServiceId());
+            }
+            else if (qaDTO.getType().equals("boat")) {
+                service = boatService.findOne(qaDTO.getServiceId());
+            }
+            else if (qaDTO.getType().equals("adventure")) {
+                service = adventureService.findOne(qaDTO.getServiceId());
+            }
+
+            reservationService.reserveWithQuickAction(client, quickAction, qaDTO.getType(), service);
+
+            return new ResponseEntity<>("Uspešno je izvršena rezervacija. " +
+                    "Potvrda treba da Vam stigne na email adresu.", HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ServiceDoesNotExistException e) {
+            //System.out.println("ServiceDoesNotExistException");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (RequestNotValidException e) {
+            //System.out.println("RequestNotValid");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ServiceNotAvailableException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (DataAccessException selectException) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (QuickActionNotFound e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (NullPointerException e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
