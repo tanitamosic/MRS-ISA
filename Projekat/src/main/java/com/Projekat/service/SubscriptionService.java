@@ -1,6 +1,7 @@
 package com.Projekat.service;
 
 import com.Projekat.exception.ServiceDoesNotExistException;
+import com.Projekat.exception.SubscriptionDoesNotExistException;
 import com.Projekat.exception.SubscritpionAlreadyExistsException;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
@@ -47,6 +48,28 @@ public class SubscriptionService {
         Subscription subscription = subscriptionRepository.getSubscriptionByClientIdAndServiceId(clientId, serviceId);
         if (subscription != null) {
             throw new SubscritpionAlreadyExistsException("Već ste pretplaćeni na akcije izabranog Servisa.");
+        }
+    }
+
+    public void removeSubscription(Client client, Integer service_id) {
+        com.Projekat.model.services.Service service;
+        try {
+            service = serviceRepository.findById(service_id).orElseGet(null);
+        }
+        catch (NullPointerException e) {
+            throw new ServiceDoesNotExistException("Izabran Servis ne postoji!");
+        }
+
+        checkIfSubscriptionDoesNotExist(client.getId(), service.getId());
+
+        Subscription subscription = subscriptionRepository.getSubscriptionByClientIdAndServiceId(client.getId(), service.getId());
+        subscriptionRepository.delete(subscription);
+    }
+
+    private void checkIfSubscriptionDoesNotExist(Integer clientId, Integer serviceId) {
+        Subscription subscription = subscriptionRepository.getSubscriptionByClientIdAndServiceId(clientId, serviceId);
+        if (subscription == null) {
+            throw new SubscriptionDoesNotExistException("Pretplata na izabrani servis ne postoji!");
         }
     }
 }
