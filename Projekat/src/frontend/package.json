@@ -16,10 +16,14 @@
     "core-js": "^3.8.3",
     "form-data": "^4.0.0",
     "vue": "^3.2.13",
+    "vue-google-charts": "^1.1.0",
+    "vue-graph": "^0.9.3",
     "vue-router": "^4.0.15",
+    "vue-sessionstorage": "^1.0.0",
     "vue-star-rating": "^2.1.0",
     "vuejs-paginate-next": "^1.0.2",
     "vuex": "^4.0.2",
+    "vuex-along": "^1.2.13",
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {

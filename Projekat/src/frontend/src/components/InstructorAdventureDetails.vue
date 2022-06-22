@@ -267,7 +267,7 @@ export default {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
             axios.get('/api/instructor/' + this.$store.User.id + '/' + this.id + '/find-client')
                 .then((response) => {
-                    if (response.data) {
+                    if (response.data.id) {
                         self.client = response.data;
                     }
                 }).catch((err) => {

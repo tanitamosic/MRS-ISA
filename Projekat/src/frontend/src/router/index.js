@@ -27,6 +27,7 @@ import AdventureCreator from '@/components/CreateAdventure.vue'
 import InstructorsAdventures from '@/components/InstructorsAdventures.vue'
 import InstructorAdventureDetails from '@/components/InstructorAdventureDetails.vue'
 import InstCompletedReservations from '@/components/InstructorHistory.vue'
+import InstructorGraphicProfits from '@/components/InstructorGraphicProfits.vue'
 
 const routes = [
   {
@@ -282,6 +283,14 @@ const routes = [
       Navbar: LoggedNavBar,
       LeftSidebar: InstructorSidebar,
       MainContent: InstCompletedReservations
+    }
+  },
+  {
+    path: '/instructor/graphic-profits',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: InstructorSidebar,
+      MainContent: InstructorGraphicProfits
     }
   }
 ]
