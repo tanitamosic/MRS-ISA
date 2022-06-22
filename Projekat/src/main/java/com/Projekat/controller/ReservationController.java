@@ -60,14 +60,14 @@ public class ReservationController {
     @GetMapping("/instructor/{usr_id}/get-completed-reservations")
     @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<List<Reservation>> getAdventureHistory(@PathVariable Integer usr_id) {
-        List<Reservation> reservations =  reservationService.getProviderCompletedReservations(usr_id);
+        List<Reservation> reservations =  reservationService.getInstructorsCompletedReservations(usr_id);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
     @GetMapping("/co/{usr_id}/get-completed-reservations")
     @PreAuthorize("hasRole('COTTAGEOWNER')")
     public ResponseEntity<List<Reservation>> getCottageHistory(@PathVariable Integer usr_id) {
-        List<Reservation> reservations =  reservationService.getProviderCompletedReservations(usr_id);
+        List<Reservation> reservations =  reservationService.getCOCompletedReservations(usr_id);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
@@ -75,7 +75,7 @@ public class ReservationController {
     @GetMapping("/bo/{usr_id}/get-completed-reservations")
     @PreAuthorize("hasRole('BOATOWNER')")
     public ResponseEntity<List<Reservation>> getBoatHistory(@PathVariable Integer usr_id) {
-        List<Reservation> reservations =  reservationService.getProviderCompletedReservations(usr_id);
+        List<Reservation> reservations =  reservationService.getCOCompletedReservations(usr_id);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 

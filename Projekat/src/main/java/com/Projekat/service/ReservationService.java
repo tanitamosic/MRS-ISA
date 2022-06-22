@@ -56,8 +56,14 @@ public class ReservationService {
         return reservationRepository.getInstructorsReservationsBetweenDates(from, to, id);
     }
 
-    public List<Reservation> getProviderCompletedReservations(Integer owner_id) {
-        return reservationRepository.fetchCompletedReservations(owner_id);
+    public List<Reservation> getInstructorsCompletedReservations(Integer owner_id) {
+        return reservationRepository.fetchInstructorCompletedReservations(owner_id);
+    }
+    public List<Reservation> getBOCompletedReservations(Integer owner_id) {
+        return reservationRepository.fetchBOCompletedReservations(owner_id);
+    }
+    public List<Reservation> getCOCompletedReservations(Integer owner_id) {
+        return reservationRepository.fetchCOCompletedReservations(owner_id);
     }
     public User findIfAdventureIsReserved(Integer adv_id) { return reservationRepository.findIfAdventureIsReserved(adv_id); }
 

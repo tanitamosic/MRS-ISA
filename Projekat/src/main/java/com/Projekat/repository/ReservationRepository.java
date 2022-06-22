@@ -87,7 +87,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
 
     @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN ADVENTURES AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
-    List<Reservation> fetchCompletedReservations(Integer owner_id);
+    List<Reservation> fetchInstructorCompletedReservations(Integer owner_id);
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN BOATS AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
+    List<Reservation> fetchBOCompletedReservations(Integer owner_id);
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN COTTAGES AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
+    List<Reservation> fetchCOCompletedReservations(Integer owner_id);
+
 
     @Query(nativeQuery = true, value="SELECT * FROM RESERVATION as r INNER JOIN ADVENTURES as a ON r.service_id=a.id WHERE a.id=?1")
     List<Reservation> getAllAdventureReservations(Integer adv_id);

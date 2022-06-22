@@ -10,11 +10,11 @@
 
                             <div :id="generateIdSlider(i)" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active" v-if="!(reservation.photos[0] === undefined)">
-                                        <img :src="reservation.photos[0].assetPath"
+                                    <div class="carousel-item active" v-if="!(reservation.service.photos[0] === undefined)">
+                                        <img :src="reservation.service.photos[0].assetPath"
                                             class="img-fluid img-responsive rounded product-image" alt="image">
                                     </div>
-                                    <div v-for="(photo, i) in reservation.photos.slice(1)" :key="i"
+                                    <div v-for="(photo, i) in reservation.service.photos.slice(1)" :key="i"
                                         class="carousel-item">
                                         <img :src="photo.assetPath"
                                             class="img-fluid img-responsive rounded product-image" alt="image">
@@ -34,7 +34,7 @@
 
                         </div>
                         <div class="col-md-6 mt-1">
-                            <h5>{{ reservation.serviceName }}</h5>
+                            <h5>{{ reservation.service.name }}</h5>
                             <br />
                             <p class="text-justify para mb-0">Datum početka rezervacije: {{
                                     this.transformDates(reservation.startDate)
@@ -44,7 +44,7 @@
                             }}</p>
                             <p class="text-justify para mb-0">Broj osoba: {{ reservation.capacity }}</p>
                             <br />
-                            <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(reservation.address) }}
+                            <p class="text-justify para mb-0">Adresa: {{ this.transformAddress(reservation.service.address) }}
                             </p>
                         </div>
                         <div class="align-items-center align-content-center col-md-3 border-left pb-3">
@@ -90,9 +90,10 @@ export default {
             let self = this;
             axios.get('/api/bo/' + this.$store.User.id + '/get-completed-reservations')
             .then((response) => {
+                debugger;
                 self.Reservations = response.data;
-                self.ReservationsEmpty = self.Reservations.length === 0 ? true : false,
-                self.ReservationsLoaded = true
+                self.ReservationsEmpty = self.Reservations.length === 0 ? true : false;
+                self.ReservationsLoaded = true;
             }).catch((err) => {
                 alert('Doslo je do greske');
                 console.log(err);
