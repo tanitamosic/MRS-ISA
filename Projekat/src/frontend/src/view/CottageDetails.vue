@@ -91,8 +91,22 @@
                                                 Rezerviši
                                             </button>
                                         </div>
+                                        
                                     </div>
                                 </div>
+
+                                <div class="col-lg-12 col-sm-12 mt-1">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6"></div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <button type="button" class="btn btn-success w-100"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalAction" v-if="!(this.$store.accessToken==null)">
+                                                Pretplati se na akcije
+                                            </button>
+                                        </div>                                        
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -133,12 +147,15 @@
         </div>
     </div>
     <Modal :serviceProp="this.cotage" :options="this.options" :price-prop="this.cotage.price"></Modal>
+    <ActionsModal :servicePropID="this.cotage.id"></ActionsModal>
+
 </template>
 
 <script>
 import axios from 'axios';
 import CReservationModal from '@/components/CottageReservationModal.vue';
 import StarRating from 'vue-star-rating';
+import ActionsModal from '@/components/ActionsModal.vue';
 
 export default {
     name: 'CottageDetails',
@@ -190,7 +207,8 @@ export default {
     },
     components: {
         'Modal': CReservationModal,
-        StarRating: StarRating
+        StarRating: StarRating,
+        ActionsModal: ActionsModal
     }
 
 }
