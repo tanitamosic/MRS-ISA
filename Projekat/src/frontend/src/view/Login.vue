@@ -65,22 +65,13 @@ import axios from 'axios'
 export default {
   name: "LoginView",
   mounted() {
-    this.$store.User = {};
-    this.$store.accessToken = '';
-    this.$store.role = '';
-    this.$store.User = '';
-    this.$store.username = '';
-    this.$store.currentPassword = '',
-    this.$store.lastPasswordResetDate = null
-    this.$forceUpdate();
-    // INTERFERES WITH DEBUGGING.
-    // document.getElementById('emailInput').value = '';
-    // document.getElementById('passwordInput').value = ''
   },
   methods: {
+    save_session_storage(data) {
+      sessionStorage.setItem('state', JSON.stringify(data));
+      console.log('SESSIONSTORAGE: ' + sessionStorage.getItem('state'));
+    },
     login: function () {
-
-
 
       let username = document.getElementById('emailInput').value;
       let password = document.getElementById('passwordInput').value;
@@ -96,40 +87,68 @@ export default {
       let { data } = axios.post('auth/login', jsonData, { headers: { 'Content-Type': 'application/json' }, withCredentials: true })
         .then((loginResponse) => {
           let cookie = loginResponse.data;
-          // localStorage.setItem('accessToken', cookie.accessToken);
-          // localStorage.setItem('role', cookie.role);
-          // localStorage.setItem('username', username);
-          // localStorage.setItem('currentPassword', password);
+
+          let sessionData = {
+            AccessToken : cookie.accessToken,
+            Role : cookie.role,
+            Username : username,
+            CurrentPassword : password,
+            LastPasswordResetDate : cookie.lastPasswordResetDate,
+          }
+
           self.$store.accessToken = cookie.accessToken;
           self.$store.role = cookie.role;
           self.$store.username = username;
           self.$store.currentPassword = password;
           self.$store.lastPasswordResetDate = cookie.lastPasswordResetDate;
+          // self.$store.commit('login', self.$store, cookie, username, password);
           console.log(self.$store);
 
           switch (cookie.role) {
             case 'ROLE_ADMIN': {
               self.$store.User = cookie.admin;
+              sessionData['User'] = cookie.admin;
+              self.save_session_storage(sessionData);
               if (null == self.$store.lastPasswordResetDate) {
                 self.$router.push('/admin/new-admin-pass-reset');
               } else {
                 self.$router.push('/admin/profile');
               }
-
-              break;
-            }
-            case 'ROLE_CLIENT': {
-              self.$store.User = cookie.client;
-              self.$router.push('/client/profile');
               break;
             }
             case 'ROLE_INSTRUCTOR': {
               self.$store.User = cookie.instructor;
               self.$router.push('/instructor/profile');
               break;
-              }
-            case 'ROLE_COTTAGEOWNER': break;
-            case 'ROLE_BOATOWNER': break;
+            }
+            case 'ROLE_COTTAGEOWNER': {
+              self.$store.User = cookie.cottageOwner;
+              sessionData['User'] = cookie.cottageOwner;
+              self.save_session_storage(sessionData);
+              self.$router.push('/co/profile')
+              break;
+            }
+            case 'ROLE_CLIENT': {
+              self.$store.User = cookie.client;
+              sessionData['User'] = cookie.client;
+              self.save_session_storage(sessionData);
+              self.$router.push('/client/profile');
+              break;
+            }
+            case 'ROLE_INSTRUCTOR': {
+              self.$store.User = cookie.instructor;
+              sessionData['User'] = cookie.instructor;
+              self.save_session_storage(sessionData);
+              self.$router.push('/instructor/profile');
+              break;
+            }
+            case 'ROLE_BOATOWNER': {
+              self.$store.User = cookie.boatOwner;
+              sessionData['User'] = cookie.boatOwner;
+              self.save_session_storage(sessionData);
+              self.$router.push('/bo/profile');
+              break;
+            }
           }
           return cookie;
         }).catch((err) => {

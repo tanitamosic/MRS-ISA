@@ -16,6 +16,9 @@
       <tr class="fs-5" v-on:click="goToAdvCreator">
         <td>Kreiraj termine</td>
       </tr>
+      <tr class="fs-5" v-on:click="goToGraphicProfits">
+        <td>Graficki prikaz profita</td>
+      </tr>
     </table>
   </b-sidebar>
 </template>
@@ -69,6 +72,9 @@ export default {
     },
     goToAdventureHistory: function() {
       this.$router.push('/instructor1/view-history')
+    },
+    goToGraphicProfits: function() {
+      this.$router.push('/instructor/graphic-profits');
     }
   }
 }

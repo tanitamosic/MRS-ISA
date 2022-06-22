@@ -1,6 +1,7 @@
 package com.Projekat.repository;
 
 import com.Projekat.model.reservations.Reservation;
+import com.Projekat.model.users.Client;
 import com.Projekat.model.users.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -92,6 +93,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     void cancelReservation(int id);
 
 
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN ADVENTURES AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
+    List<Reservation> fetchInstructorCompletedReservations(Integer owner_id);
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN BOATS AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
+    List<Reservation> fetchBOCompletedReservations(Integer owner_id);
+    @Query(nativeQuery = true, value="SELECT * FROM RESERVATION AS r INNER JOIN COTTAGES AS a ON a.id=r.service_id WHERE r.status=2 AND a.owner_id=?1")
+    List<Reservation> fetchCOCompletedReservations(Integer owner_id);
+
+
     @Transactional
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE reservation SET complaint_id=?2 WHERE reservation.id=?1")
@@ -102,4 +111,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE reservation SET review_id=?2 WHERE reservation.id=?1")
     void addReviewIDToReservation(Integer resId, Integer revId);
+
+    @Query(nativeQuery = true,
+            value="SELECT * FROM RESERVATION AS r INNER JOIN BOATS AS ad ON r.service_id=ad.id " +
+                    "WHERE (?1>=r.start_date AND ?1<=r.end_date) " +
+                    "OR (?2>=r.start_date AND ?2<=r.end_date) " +
+                    "OR (?1<r.start_date AND ?2>r.end_date) AND ad.owner_id=?3")
+    List<Reservation> getBOReservationsBetweenDates(Timestamp from, Timestamp to, int parseInt);
 }

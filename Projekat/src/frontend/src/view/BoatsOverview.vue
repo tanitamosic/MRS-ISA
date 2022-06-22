@@ -220,18 +220,24 @@ export default {
             availabilityStartStr: '',
             availabilityEndStr: '',
 
-            isAdmin: false
+            isAdmin: false,
+            isOwner: false,
+            owner: ''
 
         }
     },
     mounted() {
-        this.boatsLoaded = false;
-        this.loadBoatsGet();
+        this.boatsLoaded = false;  
         window.scrollTo(0, 0);
 
         if(this.$store.role === "ROLE_ADMIN") {
             this.isAdmin = true;
         }
+        if(this.$store.role === "ROLE_BOATOWNER") {
+            this.isOwner = true;
+            this.owner = this.$store.username;
+        }
+        this.loadBoatsGet();
     },
     methods: {
         async deleteBoat(id) {
@@ -270,7 +276,19 @@ export default {
             window.scrollTo(0, 0);
         },
         async loadBoatsGet() {
-            axios
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            if(this.isOwner){
+                await axios
+                .get('/api/boats/' + this.owner + '/withPagination?size=' + this.size + '&page=' + this.page)
+                .then(response => (
+                    this.responseData = response.data,
+                    this.Boats = this.responseData.content,
+                    this.totalPages = this.responseData.totalPages,
+                    this.BoatsEmpty = this.Boats.length === 0 ? true : false,
+                    this.boatsLoaded = true
+                ));
+            } else{
+            await axios
                 .get('/api/boats/all/withPagination?size=' + this.size + '&page=' + this.page)
                 .then(response => (
                     this.responseData = response.data,
@@ -279,11 +297,14 @@ export default {
                     this.BoatsEmpty = this.Boats.length === 0 ? true : false,
                     this.boatsLoaded = true
                 ));
+            }
         },
         transformAddress(address) {
             return address.street + ', ' + address.city + ', ' + address.state;
         },
         getNextPath(id) {
+            if(this.isOwner) 
+                return '/bo/boat-profile/' + id;
             if(!(this.$store.accessToken==null))
                 return '/client/BoatDetails/' + id;
             else

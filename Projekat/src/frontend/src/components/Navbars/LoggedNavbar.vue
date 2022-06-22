@@ -4,10 +4,10 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="navbar-nav me-auto order-0 nav-title navtxt">
-                   <i><b>TurboJavaSpringbootTurizamExpo</b></i>
+                    <i><b>TurboJavaSpringbootTurizamExpo</b></i>
                 </div>
                 <div class="d-flex ms-auto order-5">
-                    <router-link class="me-4 navtxt" to="/login" >Odjava</router-link>
+                    <router-link class="me-4 navtxt" to="/login">Odjava</router-link>
                 </div>
             </div>
         </div>
@@ -16,7 +16,17 @@
 
 <script>
 export default {
-    
+    mounted() {
+        let cookie = JSON.parse(sessionStorage.getItem('state'));
+        let self = this;
+        self.$store.accessToken = cookie.AccessToken;
+        self.$store.role = cookie.Role;
+        self.$store.username = cookie.Username;
+        self.$store.currentPassword = cookie.Password;
+        self.$store.lastPasswordResetDate = cookie.LastPasswordResetDate;
+        self.$store.User = cookie.User
+    }
+
 }
 </script>
 
@@ -50,5 +60,4 @@ nav {
 .navtxt:hover {
     color: #659dbd;
 }
-
 </style>

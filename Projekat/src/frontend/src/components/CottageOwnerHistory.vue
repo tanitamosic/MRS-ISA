@@ -69,7 +69,7 @@ import axios from 'axios';
 import StarRating from 'vue-star-rating';
 
 export default {
-    name: 'InstCompletedReservations',
+    name: 'COCompletedReservations',
     data() {
         return {
             Reservations: [],
@@ -88,7 +88,7 @@ export default {
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
             let self = this;
-            axios.get('/api/instructor/' + this.$store.User.id + '/get-completed-reservations')
+            axios.get('/api/co/' + this.$store.User.id + '/get-completed-reservations')
             .then((response) => {
                 debugger;
                 self.Reservations = response.data;

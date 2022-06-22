@@ -110,4 +110,22 @@ public class ProfitController {
         }
     }
 
+    @GetMapping(value="/bo/boat-profits/{dateFrom}/{dateTo}/{id}")
+    @PreAuthorize("hasRole('BOATOWNER')")
+    public ResponseEntity<Integer> getBOProfit(@PathVariable String dateFrom, @PathVariable String dateTo,
+                                                       @PathVariable String id) {
+        try {
+            Timestamp from = convertToTimestamp(dateFrom);
+            Timestamp to = convertToTimestamp(dateTo);
+            List<Reservation> reservations = reservationService.getBOReservationsBetweenDates(from, to, Integer.parseInt(id));
+            Integer profit = 0;
+            for (Reservation r: reservations) {
+                profit += profitService.getCalculatedPriceCut(r.getId());
+            }
+            return new ResponseEntity<>(profit, HttpStatus.OK);
+
+        } catch (ParseException e) {
+            return new ResponseEntity<>(-1, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
