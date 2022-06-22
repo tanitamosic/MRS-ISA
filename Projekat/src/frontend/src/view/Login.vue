@@ -118,6 +118,8 @@ export default {
             }
             case 'ROLE_INSTRUCTOR': {
               self.$store.User = cookie.instructor;
+              sessionData['User'] = cookie.instructor;
+              self.save_session_storage(sessionData);
               self.$router.push('/instructor/profile');
               break;
             }
@@ -133,13 +135,6 @@ export default {
               sessionData['User'] = cookie.client;
               self.save_session_storage(sessionData);
               self.$router.push('/client/profile');
-              break;
-            }
-            case 'ROLE_INSTRUCTOR': {
-              self.$store.User = cookie.instructor;
-              sessionData['User'] = cookie.instructor;
-              self.save_session_storage(sessionData);
-              self.$router.push('/instructor/profile');
               break;
             }
             case 'ROLE_BOATOWNER': {

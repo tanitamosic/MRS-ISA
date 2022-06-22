@@ -90,7 +90,6 @@ export default {
             let self = this;
             axios.get('/api/co/' + this.$store.User.id + '/get-completed-reservations')
             .then((response) => {
-                debugger;
                 self.Reservations = response.data;
                 self.ReservationsEmpty = self.Reservations.length === 0 ? true : false;
                 self.ReservationsLoaded = true;
