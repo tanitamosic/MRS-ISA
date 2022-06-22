@@ -1,5 +1,6 @@
 package com.Projekat.repository;
 
+import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,8 @@ public interface CottageRepository extends JpaRepository<Cottage,Integer> {
     @Modifying
     @Query(nativeQuery = true, value="UPDATE COTTAGES SET photo_id=?2 WHERE id=?1")
     void setAdventurePrimaryPhoto(Integer id, Integer photo_id);
+
+    @Query(nativeQuery = true, value="SELECT * FROM COTTAGES WHERE owner_id=?1 AND id=?2 AND is_deleted=false")
+    Cottage getCottage(Integer ownerId, Integer id);
 
 }

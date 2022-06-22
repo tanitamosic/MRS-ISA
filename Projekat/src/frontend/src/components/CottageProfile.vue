@@ -93,8 +93,29 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-6 pb-2">
+                                            <span>Datum kada pocinje</span>
+                                            <input type="date" class="form-control" v-model="dateFrom" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>Datum kada se zavrsava</span>
+                                            <input type="date" class="form-control" v-model="dateTo" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="timeFrom">Vreme kada pocinje</label>
+                                            <input type="time" class="form-control" name="timeFrom"
+                                                v-model="timeFrom" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="timeTo">Vreme kada se zavrsava</label>
+                                            <input type="time" class="form-control" name="timeTo" v-model="timeTo" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-6 col-sm-6 pb-2">
-                                            
+
                                         </div>
                                         <div class="col-lg-6 col-sm-6"></div>
                                     </div>
@@ -104,23 +125,32 @@
                     </div>
                     <div class="row gx-3 mb-3">
                         <!-- Detalji deo -->
-                        <div class="col-lg-12 col-sm-12 text-left pt-5">
+                        <div class="col-lg-12 col-sm-12 text-left">
                             <h4>Detalji</h4>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6 text-left pt-3">
+                            <div class="col-md-3 text-left pt-3">
                                 <span>Pravila: </span>
-                                <div class="col-lg-6">
-                                    <textarea class="form-control" id="Rules" name="Rules" type="text"
-                                        placeholder="Unesite pravila vikendice" v-model="cottage.rules" />
-                                </div>
+                                <textarea class="form-control" id="Rules" name="Rules" type="text"
+                                    placeholder="Unesite pravila vikendice" v-model="cottage.rules"></textarea>
                             </div>
-                            <div class="col-lg-6 text-left pt-1">
+                            <div class="col-md-3 text-left pt-3">
                                 <span>Uslovi otkazivanja: </span>
-                                <div class="col-lg-6">
-                                    <textarea class="form-control" id="Rules" name="Rules" type="text"
-                                        placeholder="Unesite uslove otkazivanja rezervacije vikendice"
-                                        v-model="cottage.cancellationTerms" />
+                                <textarea class="form-control" id="Rules" name="Rules" type="text"
+                                    placeholder="Unesite uslove otkazivanja rezervacije vikendice"
+                                    v-model="cottage.cancellationTerms"></textarea>
+                            </div>
+                            <div class="col">
+                                <div class="card shadow-lg border-dark" style="width: 18rem; margin:20px;">
+                                    <div class="card-header">Klijent: {{ this.client.name }} {{ this.client.surname }}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Kontakt telefon: {{ this.client.phone }}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <button class="btn btn-success" v-if="!this.client.id"
+                                            @click="showClientResModal = true">Napravi rezervaciju za klijenta</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -142,19 +172,22 @@
                                     placeholder="Unesite broj kreveta u vikendici" v-model="cottage.numberOfBeds" />
                             </div>
                         </div>
-                    </div>
-                    <div class="row" v-if="this.additionalServicesExists">
-                        <!-- Dodatne usluge deo -->
-                        <div class="col-lg-12 col-sm-12 text-center pt-2">
-                            <h4>Dodatne usluge</h4>
-                        </div>
-                        <div class="col-lg-12 col-sm-12 text-left pt-3">
-                            <div v-for="service in this.cottage.additionalServices" :key="service.id">
-                                <div class="col-lg-6">
-                                    <input class="form-control" id="AdditionalServices" name="AdditionalServices"
-                                        type="text" placeholder="Unesite dodatne usluge"
-                                        v-model="this.additionalServicesText" />
-                                </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6 mt-4">
+                                <input type="text" v-model="addedService" id="addedServiceName" maxlength="20"
+                                    placeholder="Dodatna usluga" class="form-control mb-1" />
+                                <input type="number" min="0" max="100" v-model="addedServicePrice"
+                                    placeholder="Cena dodatne usluge ($)" onkeydown="return false"
+                                    id="addedServicePrice" class="form-control mb-1" />
+                                <button v-on:click.prevent="addService" class="btn btn-primary">Dodaj uslugu</button>
+                                <button v-on:click.prevent="removeServices" class="btn btn-danger mx-1">Ukloni
+                                    usluge</button>
+                            </div>
+                            <div class="col-md-6 mt-4">
+                                <select name="services" id="services" class="form-control" multiple>
+                                    <option v-for="(s, i) in this.services" :key="i">{{ s.name }} - ${{ s.price }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -165,51 +198,179 @@
                     <button id="account-deletion" class="btn btn-danger mx-1" type="button" v-on:click="delete_cottage">
                         Obriši vikendicu
                     </button>
+                    <button id="show-modal" class="btn btn-success m-1" @click="showQuickActionModal = true">
+                        Napravi akciju
+                    </button>
                 </form>
             </div>
         </div>
     </div>
+
+     <!-- MODAL IMPLEMENTATION -->
+    <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <QuickActionModal :show="showQuickActionModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showQuickActionModal = false">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </QuickActionModal>
+    </Teleport>
+    <!-- MODAL IMPLEMENTATION -->
+    <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <ClientReservationModal :show="showClientResModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showClientResModal = false">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </ClientReservationModal>
+    </Teleport>
 </template>
 
 
 <script>
 import axios from "axios";
+import QuickActionModal from '@/components/QuickReservationModal.vue'
+import ClientReservationModal from '@/components/ClientReservationModa.vue'
 
 export default {
     name: "CottageProfile",
+     components: {
+        QuickActionModal,
+        ClientReservationModal
+    },
     data() {
         return {
+            showQuickActionModal: false,
+            showClientResModal: false,
+
+            owner: this.$store.User.id,
+
             id: null,
             cottage: {},
             additionalServicesExists: false,
             primaryPhotoExists: false,
             addressExists: false,
             photosExists: false,
+
+            addedService: null,
+            addedServicePrice: null,
+            services: [],
+
+            dateFrom: null,
+            dateTo: null,
+            timeFrom: null,
+            timeTo: null,
+
+            client: { name: 'Niko nije rezervisao ovu vikendicu', surname: '', phone: '/', id: null }
         };
     },
     mounted() {
         this.id = this.$route.params.id;
-        axios
-            .get("/api/cottages/getCottage/" + this.id)
-            .then(
-                (response) => (
-                    (this.cottage = response.data),
-                    (this.additionalServicesExists =
-                        this.cottage.additionalServices.length === 0 ? false : true),
-                    (this.primaryPhotoExists =
-                        this.cottage.primaryPhoto === undefined ? false : true),
-                    (this.photosExists = this.cottage.photos.length === 0 ? false : true),
-                    (this.addressExists =
-                        this.cottage.address === undefined ? false : true),
-                    (this.address = this.transformAddress(this.cottage.address)),
-                    (this.additionalServicesText = this.transformServices(
-                        this.cottage.additionalServices
-                    )),
-                    console.log(this.cottage)
-                )
-            );
+        this.set_details();
+        this.find_client();
     },
     methods: {
+        find_client() {
+            let self = this;
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            axios.get('/api/co/' + this.id + '/find-client')
+                .then((response) => {
+                    if (response.data) {
+                        self.client = response.data;
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    alert("Doslo je do greske");
+                })
+        },
+        set_details() {
+
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            axios
+                .get("/api/cottages/getCottage/" + this.id)
+                .then(
+                    (response) => {
+                        (this.cottage = response.data),
+                            (this.primaryPhotoExists =
+                                this.cottage.primaryPhoto === undefined ? false : true),
+                            (this.photosExists = this.cottage.photos.length === 0 ? false : true),
+                            (this.addressExists =
+                                this.cottage.address === undefined ? false : true),
+                            (this.address = this.transformAddress(this.cottage.address)),
+                            (this.additionalServicesText = this.transformServices(
+                                this.cottage.additionalServices
+                            )),
+                            this.services = this.cottage.additionalServices;
+                        this.set_endDate();
+                        this.set_startDate();
+                        this.set_startTime();
+                        this.set_endTime();
+
+
+
+                        console.log(this.cottage);
+                    }
+                ).catch((err) => {
+                    console.log(err);
+                    alert(err.response.status);
+                });
+        },
+        set_startTime() {
+            let hours = this.cottage.availabilityStart[3];
+            let minutes = this.cottage.availabilityStart[4];
+            if (hours < 10) { hours = '0' + hours; }
+            if (minutes < 10) { minutes = '0' + minutes; }
+
+            this.timeFrom = hours + ':' + minutes;
+        },
+        set_endTime() {
+            let hours = this.cottage.availabilityEnd[3];
+            let minutes = this.cottage.availabilityEnd[4];
+            if (hours < 10) { hours = '0' + hours; }
+            if (minutes < 10) { minutes = '0' + minutes; }
+
+            this.timeTo = hours + ':' + minutes;
+        },
+        set_startDate() {
+            let year = this.cottage.availabilityStart[0];
+            let month = this.cottage.availabilityStart[1];
+            if (month < 10) { month = "0" + month; }
+            let day = this.cottage.availabilityStart[2];
+            if (day < 10) { day = "0" + day; }
+            this.dateFrom = year + "-" + month + "-" + day;
+        },
+        set_endDate() {
+            let year = this.cottage.availabilityEnd[0];
+            let month = this.cottage.availabilityEnd[1];
+            if (month < 10) { month = "0" + month; }
+            let day = this.cottage.availabilityEnd[2];
+            if (day < 10) { day = "0" + day; }
+            this.dateTo = year + "-" + month + "-" + day;
+        },
+        addService() {
+            if (!this.addedService) {
+                return;
+            }
+            let newService = { name: this.addedService, price: this.addedServicePrice }
+
+            this.services.push(newService);
+
+            let newOption = new Option('', newService);
+            let listbox = document.getElementById('services');
+            listbox.options[this.services.length - 1] = newOption;
+            if (listbox.size < 5) {
+                listbox.size = this.services.length
+            }
+
+            this.addedServicePrice = null;
+            this.addedService = null;
+        },
+        removeServices() {
+            this.services = []
+        },
+
         transformAddress(address) {
             if (!(address === null))
                 return address.street + ", " + address.city + ", " + address.state;
@@ -225,30 +386,53 @@ export default {
             });
             return result;
         },
+
+
         update_cottage: function () {
+            if (this.client.id !== null) {
+                alert('Ne mozete menjati rezervisanu vikendicu.');
+            }
 
             if (this.cottage.name === '' ||
                 this.cottage.price === '' ||
                 this.cottage.description === '' ||
-                this.rules === '' ||
-                this.cancellationTerms === '' ||
-                this.address.state === '' ||
-                this.address.city === '' ||
-                this.address.street === '' ||
-                this.cottage.numberOfRooms === '' ||
-                this.cottage.numberOfBeds === '') {
+                this.cottage.rules === '' ||
+                this.cottage.cancellationTerms === '' ||
+                this.cottage.address.state === '' ||
+                this.cottage.address.city === '' ||
+                this.cottage.address.street === '' ||
+                this.cottage.numberOfBeds === '' ||
+                this.cottage.numberOfRooms === '') {
                 alert("Polja sa osnovnim podacima vikendice ne smeju biti prazna.")
                 return;
             }
 
-            
-            if(checkInput(this.cottage)) {
+
+            if (checkInput(this.cottage)) {
+                let updatedCottage = {
+                    'id': this.id,
+                    'owner_id': this.owner,
+                    'availabilityStart': this.dateFrom + 'T' + this.timeFrom,
+                    'availabilityEnd': this.dateTo + 'T' + this.timeTo,
+                    'cancellationTerms': this.cottage.cancellationTerms,
+                    'numberOfRooms': this.cottage.numberOfRooms,
+                    'numberOfBeds': this.cottage.numberOfBeds,
+                    'rules': this.cottage.rules,
+                    'price': this.cottage.price,
+                    'name': this.cottage.name,
+                    'description': this.cottage.description,
+                    'state': this.cottage.address.state,
+                    'city': this.cottage.address.city,
+                    'street': this.cottage.address.street
+                }
+                updatedCottage['additionalServices'] = this.services;
+
                 // let self = this;
                 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
 
-                axios.post('/api/cottages/update-cottage-profile',
-                    this.cottage).then(function (requestResponse) {
+                axios.post('/api/co/update-cottage',
+                    updatedCottage).then(function (requestResponse) {
                         if (requestResponse.status === 200) {
                             alert("Promena podataka je uspesna.")
                         }
@@ -261,40 +445,40 @@ export default {
             }
 
         },
-        delete_profile: function () {
-            let usr = {
-                'id': this.$store.User.id
-            };
+        delete_cottage: function () {
+            if (this.client.id !== null) {
+                alert('Ne mozete obrisati rezervisanu vikendicu');
+                return;
+            }
+            let self = this;
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
-            axios.post('/api/profile/make-delete-profile-request', usr)
+            axios.delete('/api/co/delete-cottage/' + this.$store.User.id + '/' + this.id)
                 .then((response) => {
-                    if (response.status === 200) {
-                        alert(response.data);
-                    }
+                    alert(response.data);
+                    self.$router.push('/co/cottages');
+
                 }).catch((err) => {
-                    alert(err.data);
-                });
+                    console.log(err);
+                    alert(err.response.data);
+                })
+        },
+        makeClientReservation() {
+
         }
     },
-};
-
-
+}
 
 function checkInput(cottage) {
     if (!checkPrice(cottage)) {
         alert('Cena mora biti broj između 1 i 999999');
         return false;
     }
-    if (!checkRooms(cottage)) {
-        alert('Broj soba i kreveta sme sadržati samo cifre');
-        return false;
-    }
     if (!checkName(cottage)) {
         alert('Ime sme sadržati samo slova i brojeve.');
         return false;
     }
-    if (!checkAddress(cottage)){
+    if (!checkAddress(cottage)) {
         alert('Država i grad smeju sadržati samo slova.\nUlica sme sadžati samo slova i brojeve.');
         return false;
     }
@@ -312,17 +496,7 @@ function checkPrice(cottage) {
     return true;
 }
 
-function checkRooms(cottage) {
-    let regExp = /[1-9][0-9]{0,5}/
-    let rooms = cottage.numberOfRooms;
-    let beds = cottage.numberOfBeds;
-    if (!(regExp.test(rooms) && regExp.test(beds))) {
-        return false; // nesto sem cifara u ceni ili previsoka cena
-    } else if (rooms === "" || beds === "") {
-        return false; // no phone input
-    }
-    return true;
-}
+
 function checkName(cottage) {
     let regExp = /[!@#$%^&*()]]/
 
@@ -335,9 +509,9 @@ function checkName(cottage) {
     return true;
 }
 
-function checkAddress(cottage){
+function checkAddress(cottage) {
     let street = /[!@#$%^&*()]]/
-    let statecity=/[!@#$%^&*()]]/
+    let statecity = /[!@#$%^&*()]]/
     let address = cottage.address
     if (street.test(address.street)) {
         return false; // found numbers in the name
@@ -350,6 +524,7 @@ function checkAddress(cottage){
 }
 
 </script>
+
 
 
 <style scoped>

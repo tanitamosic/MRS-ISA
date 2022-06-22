@@ -1,5 +1,6 @@
 package com.Projekat.service;
 
+import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.repository.CottageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,12 @@ public class CottageService {
     }
 
     public Cottage save(Cottage cottage) {
-        return cottageRepository.save(cottage);
+        return cottageRepository.saveAndFlush(cottage);
     }
 
+    public void delete(Integer id) { cottageRepository.deleteCottage(id); }
+
+    public Cottage getCottage(Integer ownerId, Integer advId) { return cottageRepository.getCottage(ownerId, advId); }
     public void remove(Integer id) {
         cottageRepository.deleteCottage(id);
     }

@@ -9,10 +9,12 @@ import com.Projekat.model.Photo;
 import com.Projekat.model.services.AdditionalService;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
+import com.Projekat.model.users.Client;
 import com.Projekat.model.users.CottageOwner;
 import com.Projekat.model.users.Instructor;
 import com.Projekat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,6 +98,21 @@ public class CottageController {
         Cottage a = new Cottage(ua, address, owner, additionalServices);
         cottageService.save(a);
         return new ResponseEntity<>("Uspesno ste updateovali avanturu", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value="/co/delete-cottage/{usr_id}/{adv_id}")
+    @PreAuthorize("hasRole('COTTAGEOWNER')")
+    public ResponseEntity<String> deleteAdventure(@PathVariable Integer adv_id, @PathVariable Integer usr_id) {
+        try {
+            Cottage a = cottageService.getCottage(usr_id, adv_id);
+            if (null == a) {
+                return new ResponseEntity<>("Niste vlasnik ove avanture", HttpStatus.BAD_REQUEST);
+            }
+            cottageService.delete(adv_id);
+            return new ResponseEntity<>("Uspešno ste obrisali avanturu", HttpStatus.OK);
+        } catch (DataAccessException err) {
+            return new ResponseEntity<>("Avantura ne postoji", HttpStatus.NOT_FOUND);
+        }
     }
 
     private Set<AdditionalService> getAdditionalServices(CottageDTO cottageDTO) {
@@ -207,6 +224,15 @@ public class CottageController {
             buffer.append((char) randomLimitedInt);
         }
         return buffer.toString() + ".jpg";
+    }
+
+    @GetMapping("/co/{cot_id}/find-client")
+    @PreAuthorize("hasRole('COTTAGEOWNER')")
+    public ResponseEntity<Client> isAdventureReserved(@PathVariable Integer cot_id) {
+        Client c = reservationService.findIfAdventureIsReserved(cot_id);
+        // returning null as client is fine. cuz front knows to handle null for return value
+        return new ResponseEntity<>(c, HttpStatus.OK);
+
     }
 
 }
