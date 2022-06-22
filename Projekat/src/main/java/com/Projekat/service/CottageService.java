@@ -24,6 +24,10 @@ public class CottageService {
         return cottageRepository.findAll();
     }
 
+    public Page<Cottage> findAllByOwner(Pageable page, Integer owner) {
+        return cottageRepository.findAllByOwner(page, owner);
+    }
+
     public Page<Cottage> getCottagesWithPagination(int pageNumber, int pageSize) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         return findAll(page);
@@ -34,10 +38,27 @@ public class CottageService {
     }
 
     public Cottage save(Cottage cottage) {
-        return cottageRepository.save(cottage);
+        return cottageRepository.saveAndFlush(cottage);
+    }
+
+    public void delete(Integer id) {
+        cottageRepository.deleteCottage(id);
+    }
+
+    public Cottage getCottage(Integer ownerId, Integer advId) {
+        return cottageRepository.getCottage(ownerId, advId);
     }
 
     public void remove(Integer id) {
         cottageRepository.deleteCottage(id);
     }
+
+    public Cottage saveCottage(Cottage cottage) {
+        return cottageRepository.saveAndFlush(cottage);
+    }
+
+    public void setCottagePrimaryPhoto(Integer serviceId, Integer photoId) {
+        cottageRepository.setAdventurePrimaryPhoto(serviceId, photoId);
+    }
+
 }

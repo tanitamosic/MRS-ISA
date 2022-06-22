@@ -47,7 +47,7 @@ export default {
     show: Boolean,
     dateFrom: Object,
     dateTo: Object,
-    adventureId: Object
+    boatId: Object
 
   },
   data() {
@@ -76,12 +76,12 @@ export default {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
         
         let newAction = {
-          'serviceId': this.adventureId,
+          'serviceId': this.boatId,
           'actionDateFrom': this.actionDateFrom + "T00:00",
           'actionDateTo': this.actionDateTo + "T00:00",
           'discount': this.discount
         }
-        axios.post('/api/adventure/create-action/', newAction).then((response) => {
+        axios.post('/api/boat/create-action/', newAction).then((response) => {
           alert(response.data);
           this.$emit('close');
         }).catch((err) => {

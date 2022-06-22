@@ -114,7 +114,18 @@ export default {
               } else {
                 self.$router.push('/admin/profile');
               }
-
+              break;
+            }
+            case 'ROLE_INSTRUCTOR': {
+              self.$store.User = cookie.instructor;
+              self.$router.push('/instructor/profile');
+              break;
+            }
+            case 'ROLE_COTTAGEOWNER': {
+              self.$store.User = cookie.cottageOwner;
+              sessionData['User'] = cookie.cottageOwner;
+              self.save_session_storage(sessionData);
+              self.$router.push('/co/profile')
               break;
             }
             case 'ROLE_CLIENT': {
@@ -131,8 +142,13 @@ export default {
               self.$router.push('/instructor/profile');
               break;
             }
-            case 'ROLE_COTTAGEOWNER': break;
-            case 'ROLE_BOATOWNER': break;
+            case 'ROLE_BOATOWNER': {
+              self.$store.User = cookie.boatOwner;
+              sessionData['User'] = cookie.boatOwner;
+              self.save_session_storage(sessionData);
+              self.$router.push('/bo/profile');
+              break;
+            }
           }
           return cookie;
         }).catch((err) => {

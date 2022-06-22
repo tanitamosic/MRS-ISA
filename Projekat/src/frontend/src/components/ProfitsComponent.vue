@@ -88,8 +88,8 @@ export default {
         switch (this.$store.role) {
             case "ROLE_ADMIN": this.isAdmin = true; break;
             case "ROLE_INSTRUCTOR": this.isInstructor = true; break;
-            case "ROLE_COTTAGE_OWNER": this.isCottageOwner = true; break;
-            case "ROLE_BOAT_OWNER": this.isBoatOwner = true; break;
+            case "ROLE_COTTAGEOWNER": this.isCottageOwner = true; break;
+            case "ROLE_BOATOWNER": this.isBoatOwner = true; break;
             default: { alert("Došlo je do greške"); return; }
         }
     },
@@ -150,7 +150,7 @@ export default {
                 console.log(response);
             }).catch((err) => {
                 console.log(err);
-                alert("Došlo je do greške prilikom kalkulisanja profita sa brodova");
+                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
             })
         },
         calcBoatProfits: function () {
@@ -161,7 +161,7 @@ export default {
                 console.log(response);
             }).catch((err) => {
                 console.log(err);
-                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+                alert("Došlo je do greške prilikom kalkulisanja profita sa brodova");
             })
         },
 
@@ -177,14 +177,33 @@ export default {
                 console.log(response);
             }).catch((err) => {
                 console.log(err);
-                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+                alert("Došlo je do greške prilikom kalkulisanja profita sa avantura");
             });
         },
         calcMyCottageProfits: function () {
+            let self = this;
+            axios.get('/api/co/cottage-profits/'+ this.dateFrom + '/' + this.dateTo + '/' + this.$store.User.id)
+            .then((response) => {
+                self.cottageProfits += response.data;
+                console.log(response.data)
+                console.log(response);
+            }).catch((err) => {
+                console.log(err);
+                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+            });
 
         },
         calcMyBoatProfits: function () {
-
+            let self = this;
+            axios.get('/api/bo/boat-profits/'+ this.dateFrom + '/' + this.dateTo + '/' + this.$store.User.id)
+            .then((response) => {
+                self.boatProfits += response.data;
+                console.log(response.data)
+                console.log(response);
+            }).catch((err) => {
+                console.log(err);
+                alert("Došlo je do greške prilikom kalkulisanja profita sa brodova");
+            });
         }
     }
 }
