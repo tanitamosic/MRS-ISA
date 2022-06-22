@@ -71,7 +71,7 @@ export default {
       this.$router.push('/instructor/view-adventures');
     },
     goToAdventureHistory: function() {
-      this.$router.push('/instructor1/view-history')
+      this.$router.push('/instructor/view-history')
     },
     goToGraphicProfits: function() {
       this.$router.push('/instructor/graphic-profits');

@@ -330,6 +330,7 @@ const routes = [
     components: {
       Navbar: LoggedNavBar,
       LeftSidebar: InstructorSidebar,
+      MainContent: ProfileView
     }
   },
   {
