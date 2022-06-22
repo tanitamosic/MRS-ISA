@@ -167,19 +167,19 @@
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-12">
-                                        <div>Datum od: {{ qr.dateFrom }} </div>
+                                        <div>Datum od: {{ transformDates(qr.dateFrom) }} </div>
                                     </div>
                                 </div>
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-12">
-                                        <div>Datum do: {{ qr.dateTo }} </div>
+                                        <div>Datum do: {{ transformDates(qr.dateTo) }} </div>
                                     </div>
                                 </div>
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-12">
-                                        <div>Popust: {{ qr.dateTo }} </div>
+                                        <div>Popust: {{ qr.discount }} </div>
                                     </div>
                                 </div>
 
@@ -308,12 +308,16 @@ export default {
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
             await axios
-                .get('api/getqr')
+                .get('api/getqr/' + this.adventure.id)
                 .then(response => (
                     this.responseData = response.data,
-                    this.QuickReservations = this.responseData.content,
+                    this.QuickReservations = this.responseData,
                     this.QuickReservationsLoaded = true
                 ));
+        },
+        transformDates(date) {
+            //  2020, 5, 6, 0, 0
+            return date[2].toString() + '.' + date[1].toString() + '.' + date[0].toString() + '.';
         }
     },
     components: {
