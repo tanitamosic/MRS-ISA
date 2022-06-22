@@ -1,16 +1,21 @@
 package com.Projekat.controller;
 
 import com.Projekat.dto.ReservationDTO;
+import com.Projekat.dto.SimpleCottageDTO;
+import com.Projekat.dto.SubscriptionDTO;
 import com.Projekat.exception.*;
 import com.Projekat.model.Account;
 import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Boat;
 import com.Projekat.model.services.Cottage;
+import com.Projekat.model.services.Subscription;
 import com.Projekat.model.users.Client;
 import com.Projekat.model.users.User;
 import com.Projekat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -105,4 +110,32 @@ public class SubscriptionController {
         }
     }
 
+
+    @GetMapping(value = "/get-all-client-subscriptions")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Page<SubscriptionDTO>> getAllClientSubscriptions(Pageable page) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
+
+            Client client = (Client) user;      //ClassCastException e
+
+            Page<Subscription> pageSub = subscriptionService.getAllClientSubscriptions(client.getId(), page);
+            Page<SubscriptionDTO> pageSubscriptionDTO = pageSub.map(this::convertToSubscriptionDTO);
+
+            return new ResponseEntity<>(pageSubscriptionDTO,
+                    HttpStatus.OK);
+        }
+        catch (ClassCastException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    private SubscriptionDTO convertToSubscriptionDTO(Subscription s) {
+        return new SubscriptionDTO(s);
+    }
 }

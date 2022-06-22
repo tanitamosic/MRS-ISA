@@ -11,6 +11,8 @@ import com.Projekat.model.users.Client;
 import com.Projekat.repository.ServiceRepository;
 import com.Projekat.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,4 +74,10 @@ public class SubscriptionService {
             throw new SubscriptionDoesNotExistException("Pretplata na izabrani servis ne postoji!");
         }
     }
+
+
+    public Page<Subscription> getAllClientSubscriptions(Integer clientId, Pageable page) {
+        return subscriptionRepository.getAllClientSubscriptions(clientId, page);
+    }
+
 }

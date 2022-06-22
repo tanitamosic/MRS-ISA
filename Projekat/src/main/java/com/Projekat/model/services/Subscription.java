@@ -15,11 +15,11 @@ public class Subscription {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id",referencedColumnName = "id")
     private Client client;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id",referencedColumnName = "id")
     private Service service;
 
