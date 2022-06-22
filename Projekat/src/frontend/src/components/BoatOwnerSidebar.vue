@@ -13,9 +13,6 @@
       <tr class="fs-5" v-on:click="goToHistory">
         <td>Istorija rezervacija</td>
       </tr>
-      <tr class="fs-5" v-on:click="goToSale">
-        <td>Napravi novu akciju</td>
-      </tr>
       <tr class="fs-5" v-on:click="goToReports">
         <td>Izveštaji</td>
       </tr>
@@ -57,10 +54,9 @@ tr:hover {
 </style>
 
 <script>
-import func from 'vue-editor-bridge';
 
 export default {
-  name: 'BOSidebar',
+  name: 'BoatOwnerSidebar',
 
   methods: {
     goToProfile: function() {

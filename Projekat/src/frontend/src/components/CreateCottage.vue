@@ -273,7 +273,7 @@ export default {
         },
 
         createAdventure() {
-            let newAdventure = {
+            let newCottage = {
                 'owner_id': this.$store.User.id,
                 'availabilityStart': this.dateFrom + 'T' + this.timeFrom,
                 'availabilityEnd': this.dateTo + 'T' + this.timeTo,
@@ -288,17 +288,17 @@ export default {
                 'city': this.city,
                 'street': this.street
             }
-            if (this.checkProperties(newAdventure)) {
+            if (this.checkProperties(newCottage)) {
                 alert("Morate popuniti sva polja.");
                 return;
             }
             if (!checkInput(this)){
                 return;
             }
-            newAdventure['additionalServices'] = this.services;
+            newCottage['additionalServices'] = this.services;
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
-            axios.post('/api/co/add-cottage', newAdventure)
+            axios.post('/api/co/add-cottage', newCottage)
                 .then((response) => {
                     console.log(response);
                     this.uploadImages(response.data);

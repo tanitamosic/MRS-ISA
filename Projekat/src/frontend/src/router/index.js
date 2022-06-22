@@ -7,6 +7,11 @@ import BoatsOverview from '@/view/BoatsOverview.vue'
 import BoatDetails from '@/view/BoatDetails.vue'
 import AdventureOverview from '@/view/AdventureOverview.vue'
 import AdventureDetails from '@/view/AdventureDetails.vue'
+
+import BoatProfile from '@/components/BoatProfile.vue'
+import CreateBoat from '@/components/CreateBoat.vue'
+import BoatOwnerSidebar from '@/components/BoatOwnerSidebar.vue'
+
 import CottageProfile from '@/components/CottageProfile'
 import CottageOwnerSidebar from '@/components/CottageOwnerSidebar.vue'
 import CreateCottage from '@/components/CreateCottage.vue'
@@ -136,6 +141,72 @@ const routes = [
     } // DONE
   },
   {
+    path: '/admin/admin-registration',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: AdminRegistration
+    } // DONE
+  },
+  {
+    path: '/admin/new-admin-pass-reset',
+    components: {
+      UnloggedContent: AccountDelRequests
+    } // DONE
+  },
+  {
+    path: '/admin/users',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: UserOverview
+    } // DONE
+  },
+  {
+    path: '/admin/profits',
+    components: {
+      LeftSidebar: AdminSidebar,
+      MainContent: ProfitsComponent
+    } // DONE
+  },
+  {
+    path: '/bo/profile/',
+    name: 'BOProfileView',
+    components: {
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: ProfileView
+    } // DONE
+  },
+  {
+    path: '/bo/boat-overview/',
+    name: 'BOBoats',
+    components: {
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: BoatsOverview
+    } // DONE
+  },
+  {
+    path: '/bo/boat-profile/:id?',
+    name: 'BoatProfileOverview',
+    components: {
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: BoatProfile
+    } // FLASH SALE UNFINISHED
+  },
+  {
+    path: '/bo/add-boat',
+    name: 'AddBoat',
+    components:{
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: CreateBoat
+    }
+  },
+  {
+    path: '/bo/profits',
+    components: {
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: ProfitsComponent
+    },
+  },
+  {
     path: '/co/profile/',
     name: 'COProfileView',
     components: {
@@ -168,31 +239,11 @@ const routes = [
     }
   },
   {
-    path: '/admin/admin-registration',
+    path: '/co/profits',
     components: {
-      LeftSidebar: AdminSidebar,
-      MainContent: AdminRegistration
-    } // DONE
-  },
-  {
-    path: '/admin/new-admin-pass-reset',
-    components: {
-      UnloggedContent: AccountDelRequests
-    } // DONE
-  },
-  {
-    path: '/admin/users',
-    components: {
-      LeftSidebar: AdminSidebar,
-      MainContent: UserOverview
-    } // DONE
-  },
-  {
-    path: '/admin/profits',
-    components: {
-      LeftSidebar: AdminSidebar,
+      LeftSidebar: CottageOwnerSidebar,
       MainContent: ProfitsComponent
-    } // DONE
+    },
   },
   {
     path: '/instructor/profile',

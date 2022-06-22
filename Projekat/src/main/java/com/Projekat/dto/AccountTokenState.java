@@ -33,7 +33,7 @@ public class AccountTokenState {
                 this.cottageOwner = (CottageOwner) loggedUser;
                 break;
             }
-            case "ROLE_BOAT_OWNER": {
+            case "ROLE_BOATOWNER": {
                 this.boatOwner = (BoatOwner) loggedUser;
                 break;
             }

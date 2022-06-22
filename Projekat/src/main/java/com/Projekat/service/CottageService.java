@@ -1,6 +1,5 @@
 package com.Projekat.service;
 
-import com.Projekat.model.services.Adventure;
 import com.Projekat.model.services.Cottage;
 import com.Projekat.repository.CottageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,8 @@ public class CottageService {
     }
 
     public Page<Cottage> findAllByOwner(Pageable page, Integer owner) {
-        return cottageRepository.findAllByOwner(page, owner);}
+        return cottageRepository.findAllByOwner(page, owner);
+    }
 
     public Page<Cottage> getCottagesWithPagination(int pageNumber, int pageSize) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
@@ -41,17 +41,24 @@ public class CottageService {
         return cottageRepository.saveAndFlush(cottage);
     }
 
-    public void delete(Integer id) { cottageRepository.deleteCottage(id); }
+    public void delete(Integer id) {
+        cottageRepository.deleteCottage(id);
+    }
 
-    public Cottage getCottage(Integer ownerId, Integer advId) { return cottageRepository.getCottage(ownerId, advId); }
+    public Cottage getCottage(Integer ownerId, Integer advId) {
+        return cottageRepository.getCottage(ownerId, advId);
+    }
+
     public void remove(Integer id) {
         cottageRepository.deleteCottage(id);
     }
 
-    public Cottage saveCottage(Cottage cottage){
+    public Cottage saveCottage(Cottage cottage) {
         return cottageRepository.saveAndFlush(cottage);
     }
 
-    public void setCottagePrimaryPhoto(Integer serviceId, Integer photoId) { cottageRepository.setAdventurePrimaryPhoto(serviceId, photoId); }
+    public void setCottagePrimaryPhoto(Integer serviceId, Integer photoId) {
+        cottageRepository.setAdventurePrimaryPhoto(serviceId, photoId);
+    }
 
 }

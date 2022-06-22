@@ -209,7 +209,7 @@
      <!-- MODAL IMPLEMENTATION -->
     <Teleport to="body">
         <!-- use the modal component, pass in the prop -->
-        <QuickActionModal :show="showQuickActionModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showQuickActionModal = false">
+        <QuickActionModal :show="showQuickActionModal" :dateFrom="dateFrom" :dateTo="dateTo" :serviceId="id" @close="showQuickActionModal = false">
             <template #header>
                 <h3>custom header</h3>
             </template>
@@ -218,7 +218,7 @@
     <!-- MODAL IMPLEMENTATION -->
     <Teleport to="body">
         <!-- use the modal component, pass in the prop -->
-        <ClientReservationModal :show="showClientResModal" :dateFrom="dateFrom" :dateTo="dateTo" :adventureId="id" @close="showClientResModal = false">
+        <ClientReservationModal :show="showClientResModal" :dateFrom="dateFrom" :dateTo="dateTo" :serviceId="id" @close="showClientResModal = false">
             <template #header>
                 <h3>custom header</h3>
             </template>

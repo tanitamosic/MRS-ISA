@@ -83,7 +83,7 @@ public class CottageController {
         Set<AdditionalService> additionalServices = getAdditionalServices(cottageDTO);
         additionalServicesService.addServices(additionalServices);
         Cottage a = new Cottage(cottageDTO, address, owner, additionalServices);
-        a = cottageService.save(a);
+        a = cottageService.saveCottage(a);
         return new ResponseEntity<>(a.getId(), HttpStatus.OK);
     }
 
