@@ -2,7 +2,6 @@
     <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-lg-8 border p-3 main-section bg-white">
-                <form id="profileForm">
                     <div class="row m-0 pt-3">
                         <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
                         <img class="border p-3 img-thumbnail" :src="this.cottage.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
@@ -201,7 +200,6 @@
                     <button id="show-modal" class="btn btn-success m-1" @click="showQuickActionModal = true">
                         Napravi akciju
                     </button>
-                </form>
             </div>
         </div>
     </div>

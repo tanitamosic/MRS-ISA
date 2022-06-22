@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div class="col-lg-7 col-sm-12">
-                            <textarea placeholder="Opišite vašu vikendicu" class="form-control"
+                            <textarea placeholder="Opišite vaš brod" class="form-control"
                                 v-model="description"></textarea>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                         </div>
                     </div>
                     <hr />
-                    <button class="btn btn-primary mt-3" v-on:click="createBoat">Dodaj vikendicu</button>
+                    <button class="btn btn-primary mt-3" v-on:click="createBoat">Dodaj brod</button>
                 </div>
             </div>
         </div>
@@ -292,7 +292,7 @@ export default {
                 ).then(
                     (response) => {
                         console.log(response);
-                        alert("Uspesno dodavanje vikendice");
+                        alert("Uspesno dodavanje broda");
                     }
                 );
             }

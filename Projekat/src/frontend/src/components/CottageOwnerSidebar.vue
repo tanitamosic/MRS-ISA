@@ -13,14 +13,11 @@
       <tr class="fs-5" v-on:click="goToHistory">
         <td>Istorija rezervacija</td>
       </tr>
-      <tr class="fs-5" v-on:click="goToSale">
-        <td>Napravi novu akciju</td>
-      </tr>
       <tr class="fs-5" v-on:click="goToReports">
-        <td>Izveštaji</td>
+        <td>Izveštaj o profitima</td>
       </tr>
-      <tr class="fs-5" v-on:click="goToCalendar">
-        <td>Kalendar zauzetosti</td>
+      <tr class="fs-5" v-on:click="goToProfits">
+        <td>Prihodi</td>
       </tr>
     </table>
   </b-sidebar>
@@ -59,7 +56,7 @@ tr:hover {
 <script>
 
 export default {
-  name: 'COSidebar',
+  name: 'CottageOwnerSidebar',
 
   methods: {
     goToProfile: function() {
@@ -74,8 +71,8 @@ export default {
     goToHistory: function(){
         this.$router.push('/co/history')
     },
-    goToSale: function(){
-        this.$router.push('/co/add-sale')
+    goToProfits: function() {
+      this.$router.push('/co/profits');
     },
     goToReports: function(){
         this.$router.push('/co/reports')

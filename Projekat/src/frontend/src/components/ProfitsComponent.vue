@@ -150,7 +150,7 @@ export default {
                 console.log(response);
             }).catch((err) => {
                 console.log(err);
-                alert("Došlo je do greške prilikom kalkulisanja profita sa brodova");
+                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
             })
         },
         calcBoatProfits: function () {
@@ -161,7 +161,7 @@ export default {
                 console.log(response);
             }).catch((err) => {
                 console.log(err);
-                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+                alert("Došlo je do greške prilikom kalkulisanja profita sa brodova");
             })
         },
 
@@ -177,14 +177,33 @@ export default {
                 console.log(response);
             }).catch((err) => {
                 console.log(err);
-                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+                alert("Došlo je do greške prilikom kalkulisanja profita sa avantura");
             });
         },
         calcMyCottageProfits: function () {
+            let self = this;
+            axios.get('/api/co/cottage-profits/'+ this.dateFrom + '/' + this.dateTo + '/' + this.$store.User.id)
+            .then((response) => {
+                self.cottageProfits += response.data;
+                console.log(response.data)
+                console.log(response);
+            }).catch((err) => {
+                console.log(err);
+                alert("Došlo je do greške prilikom kalkulisanja profita sa vikendica");
+            });
 
         },
         calcMyBoatProfits: function () {
-
+            let self = this;
+            axios.get('/api/bo/boat-profits/'+ this.dateFrom + '/' + this.dateTo + '/' + this.$store.User.id)
+            .then((response) => {
+                self.boatProfits += response.data;
+                console.log(response.data)
+                console.log(response);
+            }).catch((err) => {
+                console.log(err);
+                alert("Došlo je do greške prilikom kalkulisanja profita sa brodova");
+            });
         }
     }
 }

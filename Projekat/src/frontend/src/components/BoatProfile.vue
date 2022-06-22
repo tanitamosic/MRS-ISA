@@ -2,7 +2,6 @@
     <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-lg-8 border p-3 main-section bg-white">
-                <form id="profileForm">
                     <div class="row m-0 pt-3">
                         <!-- <div class="col-lg-5 col-sm-12 left-side-product-box pb-3">
                         <img class="border p-3 img-thumbnail" :src="this.boat.primaryPhoto.assetPath" v-if="this.primaryPhotoExists">
@@ -29,14 +28,6 @@
                                         <img :src="photo.assetPath" class="d-block w-100 img-fluid img-responsive"
                                             alt="image" />
                                     </div>
-                                    <!-- <div class="carousel-item active">
-                                    <img src="img/boats/vikendica11.jpg" class="d-block w-100 img-fluid img-responsive"
-                                        alt="image">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="img/boats/vikendica12.jpg" class="d-block w-100 img-fluid img-responsive"
-                                        alt="image">
-                                </div> -->
                                 </div>
                                 <button class="carousel-control-prev" type="button"
                                     data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -57,18 +48,18 @@
                                     <div class="col-md-6">
                                         <h5 class="mb-1" for="Name">Ime</h5>
                                         <input class="form-control" id="Name" name="Name" type="text"
-                                            placeholder="Unesite ime vikendice" v-model="boat.name" />
+                                            placeholder="Unesite ime broda" v-model="boat.name" />
                                     </div>
                                     <div class="col-md-6">
                                         <h5 class="mb-1 price-pro" for="Name">Cena</h5>
                                         <input class="form-control" id="Price" name="Price" type="text"
-                                            placeholder="Unesite cenu vikendice" v-model="boat.price" />
+                                            placeholder="Unesite cenu broda" v-model="boat.price" />
                                     </div>
                                     <div class="col-lg-12 col-sm-12 pt-2">
                                         <h5>Opis</h5>
                                         <div class="col-lg-12">
                                             <textarea class="form-control" id="Description" name="Description"
-                                                type="text" placeholder="Unesite opis vikendice"
+                                                type="text" placeholder="Unesite opis broda"
                                                 v-model="boat.description" />
                                         </div>
                                     </div>
@@ -77,17 +68,17 @@
                                         <!-- <span>Marka Kraljevića 18, Novi Sad, Srbija</span> -->
                                         <div class="col-md-4">
                                             <input v-if="this.addressExists" class="form-control" id="State"
-                                                name="State" type="text" placeholder="Unesite državu vikendice"
+                                                name="State" type="text" placeholder="Unesite državu"
                                                 v-model="this.boat.address.state" />
                                         </div>
                                         <div class="col-md-4">
                                             <input v-if="this.addressExists" class="form-control" id="City" name="City"
-                                                type="text" placeholder="Unesite grad vikendice"
+                                                type="text" placeholder="Unesite grad"
                                                 v-model="this.boat.address.city" />
                                         </div>
                                         <div class="col-md-4">
                                             <input v-if="this.addressExists" class="form-control" id="Street"
-                                                name="Street" type="text" placeholder="Unesite ulicu i broj vikendice"
+                                                name="Street" type="text" placeholder="Unesite ulicu i broj"
                                                 v-model="this.boat.address.street" />
                                         </div>
                                     </div>
@@ -131,12 +122,12 @@
                             <div class="col-md-3 text-left pt-3">
                                 <span>Pravila: </span>
                                 <textarea class="form-control" id="Rules" name="Rules" type="text"
-                                    placeholder="Unesite pravila vikendice" v-model="boat.rules"></textarea>
+                                    placeholder="Unesite pravila" v-model="boat.rules"></textarea>
                             </div>
                             <div class="col-md-3 text-left pt-3">
                                 <span>Uslovi otkazivanja: </span>
                                 <textarea class="form-control" id="Rules" name="Rules" type="text"
-                                    placeholder="Unesite uslove otkazivanja rezervacije vikendice"
+                                    placeholder="Unesite uslove otkazivanja rezervacije broda"
                                     v-model="boat.cancellationTerms"></textarea>
                             </div>
                             <div class="col">
@@ -239,12 +230,11 @@
                         Sačuvaj izmene
                     </button>
                     <button id="account-deletion" class="btn btn-danger mx-1" type="button" v-on:click="delete_boat">
-                        Obriši vikendicu
+                        Obriši brod
                     </button>
                     <button id="show-modal" class="btn btn-success m-1" @click="showQuickActionModal = true">
                         Napravi akciju
                     </button>
-                </form>
             </div>
         </div>
     </div>
@@ -306,7 +296,7 @@ export default {
             timeFrom: null,
             timeTo: null,
 
-            client: { name: 'Niko nije rezervisao ovu vikendicu', surname: '', phone: '/', id: null }
+            client: { name: 'Niko nije rezervisao ovaj brod', surname: '', phone: '/', id: null }
         };
     },
     mounted() {
@@ -435,7 +425,7 @@ export default {
 
         update_boat: function () {
             if (this.client.id !== null) {
-                alert('Ne mozete menjati rezervisanu vikendicu.');
+                alert('Ne mozete menjati rezervisani brod.');
             }
 
             if (this.boat.name === '' ||
@@ -453,7 +443,7 @@ export default {
                 this.boat.enginePower === '' ||
                 this.boat.maxSpeed === '' ||
                 this.boat.navigationalEquipment === '') {
-                alert("Polja sa osnovnim podacima vikendice ne smeju biti prazna.")
+                alert("Polja sa osnovnim podacima broda ne smeju biti prazna.")
                 return;
             }
 
@@ -503,7 +493,7 @@ export default {
         },
         delete_boat: function () {
             if (this.client.id !== null) {
-                alert('Ne mozete obrisati rezervisanu vikendicu');
+                alert('Ne mozete obrisati rezervisani brod');
                 return;
             }
             let self = this;

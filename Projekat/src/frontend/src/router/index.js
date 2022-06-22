@@ -14,10 +14,12 @@ import AdventureDetails from '@/view/AdventureDetails.vue'
 import BoatProfile from '@/components/BoatProfile.vue'
 import CreateBoat from '@/components/CreateBoat.vue'
 import BoatOwnerSidebar from '@/components/BoatOwnerSidebar.vue'
+import BOCompletedReservations from '@/components/BoatOwnerHistory.vue'
 
 import CottageProfile from '@/components/CottageProfile'
 import CottageOwnerSidebar from '@/components/CottageOwnerSidebar.vue'
 import CreateCottage from '@/components/CreateCottage.vue'
+import COCompletedReservations from '@/components/CottageOwnerHistory.vue'
 
 import ProfileView from '@/components/ProfileView.vue';
 
@@ -208,6 +210,15 @@ const routes = [
     } // DONE
   },
   {
+    path: '/bo/history/',
+    name: 'BOHistory',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: BOCompletedReservations
+    } // DONE
+  },
+  {
     path: '/bo/boat-overview/',
     name: 'BOBoats',
     components: {
@@ -284,7 +295,16 @@ const routes = [
       Navbar: LoggedNavBar,
       LeftSidebar: CottageOwnerSidebar,
       MainContent: ProfitsComponent
-    },
+    }
+  },
+  {
+    path: '/co/history/',
+    name: 'COHistory',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: COCompletedReservations
+    } // DONE
   },
   {
     path: '/instructor/profile',

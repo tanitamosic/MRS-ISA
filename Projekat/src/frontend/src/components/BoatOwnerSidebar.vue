@@ -14,10 +14,10 @@
         <td>Istorija rezervacija</td>
       </tr>
       <tr class="fs-5" v-on:click="goToReports">
-        <td>Izveštaji</td>
+        <td>Izveštaj o profitima</td>
       </tr>
-      <tr class="fs-5" v-on:click="goToCalendar">
-        <td>Kalendar zauzetosti</td>
+      <tr class="fs-5" v-on:click="goToProfits">
+        <td>Prihodi</td>
       </tr>
     </table>
   </b-sidebar>
@@ -71,8 +71,8 @@ export default {
     goToHistory: function(){
         this.$router.push('/bo/history')
     },
-    goToSale: function(){
-        this.$router.push('/bo/add-sale')
+    goToProfits: function() {
+      this.$router.push('/bo/profits');
     },
     goToReports: function(){
         this.$router.push('/bo/reports')
