@@ -56,7 +56,7 @@ public class ReservationService {
         return reservationRepository.getInstructorsReservationsBetweenDates(from, to, id);
     }
 
-    public List<Reservation> getInstructorsCompletedReservations(Integer owner_id) {
+    public List<Reservation> getProviderCompletedReservations(Integer owner_id) {
         return reservationRepository.fetchCompletedReservations(owner_id);
     }
     public User findIfAdventureIsReserved(Integer adv_id) { return reservationRepository.findIfAdventureIsReserved(adv_id); }
@@ -434,5 +434,9 @@ public class ReservationService {
         reviewRepository.save(review);
 
         reservationRepository.addReviewIDToReservation(reservation.getId(), review.getId());
+    }
+
+    public List<Reservation> getBOReservationsBetweenDates(Timestamp from, Timestamp to, int parseInt) {
+        return reservationRepository.getBOReservationsBetweenDates(from,to,parseInt);
     }
 }

@@ -15,11 +15,13 @@ import BoatProfile from '@/components/BoatProfile.vue'
 import CreateBoat from '@/components/CreateBoat.vue'
 import BoatOwnerSidebar from '@/components/BoatOwnerSidebar.vue'
 import BOCompletedReservations from '@/components/BoatOwnerHistory.vue'
+import BoatOwnerReport from '@/components/BoatOwnerGraphicProfits.vue'
 
 import CottageProfile from '@/components/CottageProfile'
 import CottageOwnerSidebar from '@/components/CottageOwnerSidebar.vue'
 import CreateCottage from '@/components/CreateCottage.vue'
 import COCompletedReservations from '@/components/CottageOwnerHistory.vue'
+import CottageOwnerReport from '@/components/CottageOwnerGraphicProfits.vue'
 
 import ProfileView from '@/components/ProfileView.vue';
 
@@ -254,6 +256,14 @@ const routes = [
     },
   },
   {
+    path: '/bo/reports',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: BoatOwnerSidebar,
+      MainContent: BoatOwnerReport
+    },
+  },
+  {
     path: '/co/profile/',
     name: 'COProfileView',
     components: {
@@ -305,6 +315,14 @@ const routes = [
       LeftSidebar: CottageOwnerSidebar,
       MainContent: COCompletedReservations
     } // DONE
+  },
+  {
+    path: '/co/reports',
+    components: {
+      Navbar: LoggedNavBar,
+      LeftSidebar: CottageOwnerSidebar,
+      MainContent: CottageOwnerReport
+    }
   },
   {
     path: '/instructor/profile',

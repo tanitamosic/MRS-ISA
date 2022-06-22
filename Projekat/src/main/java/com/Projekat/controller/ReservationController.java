@@ -60,9 +60,25 @@ public class ReservationController {
     @GetMapping("/instructor/{usr_id}/get-completed-reservations")
     @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<List<Reservation>> getAdventureHistory(@PathVariable Integer usr_id) {
-        List<Reservation> reservations =  reservationService.getInstructorsCompletedReservations(usr_id);
+        List<Reservation> reservations =  reservationService.getProviderCompletedReservations(usr_id);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @GetMapping("/co/{usr_id}/get-completed-reservations")
+    @PreAuthorize("hasRole('COTTAGEOWNER')")
+    public ResponseEntity<List<Reservation>> getCottageHistory(@PathVariable Integer usr_id) {
+        List<Reservation> reservations =  reservationService.getProviderCompletedReservations(usr_id);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/bo/{usr_id}/get-completed-reservations")
+    @PreAuthorize("hasRole('BOATOWNER')")
+    public ResponseEntity<List<Reservation>> getBoatHistory(@PathVariable Integer usr_id) {
+        List<Reservation> reservations =  reservationService.getProviderCompletedReservations(usr_id);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 
 
     @PostMapping(value="/admin/change-cut")
@@ -217,37 +233,47 @@ public class ReservationController {
     @PostMapping(value = "/instructor/create-client-reservation")
     @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> reserveClientAdventure(@RequestBody ReservationDTO reservationRequest) {
-        try { Instructor inst = (Instructor) user;      //ClassCastException e
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account account = (Account) auth.getPrincipal();
+            String username = account.getUsername();
+            User user = userService.getUserData(username);
 
-        Adventure adventure = adventureService.findOne(reservationRequest.getServiceId());
-        if (null == adventure) {
-            throw new ServiceDoesNotExistException("Izabrana vikendica ne postoji!");
+            Instructor inst = (Instructor) user;      //ClassCastException e
+
+            Adventure adventure = adventureService.findOne(reservationRequest.getServiceId());
+            if (null == adventure) {
+                throw new ServiceDoesNotExistException("Izabrana vikendica ne postoji!");
+            }
+            Client c = (Client) userService.findUserById(reservationRequest.getClientId());
+            reservationService.reserveAdventureForClient(reservationRequest, account, c, adventure);
+
+            return new ResponseEntity<>("Uspešno je izvršena rezervacija. " +
+                    "Potvrda treba da Vam stigne na email adresu.", HttpStatus.OK);
         }
-        Client c = (Client) userService.findUserById(reservationRequest.getClientId());
-        reservationService.reserveAdventureForClient(reservationRequest, account, c, adventure);
+        catch (ClassCastException e) {
+            //System.out.println("ClassCastException");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ServiceDoesNotExistException e) {
+            //System.out.println("ServiceDoesNotExistException");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (RequestNotValidException e) {
+            //System.out.println("RequestNotValid");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (ServiceNotAvailableException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (DataAccessException selectException) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
+        }
+    }
 
-        return new ResponseEntity<>("Uspešno je izvršena rezervacija. " +
-                "Potvrda treba da Vam stigne na email adresu.", HttpStatus.OK);
-    }
-    catch (ClassCastException e) {
-        //System.out.println("ClassCastException");
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    catch (ServiceDoesNotExistException e) {
-        //System.out.println("ServiceDoesNotExistException");
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    catch (RequestNotValidException e) {
-        //System.out.println("RequestNotValid");
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    catch (ServiceNotAvailableException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    catch (DataAccessException selectException) {
-        return new ResponseEntity<>("Došlo je do greške!", HttpStatus.BAD_REQUEST);
-    }
-}
     @PostMapping(value = "/client/reservations")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Page<ReservationSimpleDTO>> getAllUserReservations(Pageable page,

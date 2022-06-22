@@ -229,7 +229,7 @@ public class CottageController {
     @GetMapping("/co/{cot_id}/find-client")
     @PreAuthorize("hasRole('COTTAGEOWNER')")
     public ResponseEntity<Client> isAdventureReserved(@PathVariable Integer cot_id) {
-        Client c = reservationService.findIfAdventureIsReserved(cot_id);
+        Client c = (Client) reservationService.findIfAdventureIsReserved(cot_id);
         // returning null as client is fine. cuz front knows to handle null for return value
         return new ResponseEntity<>(c, HttpStatus.OK);
 

@@ -103,4 +103,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE reservation SET review_id=?2 WHERE reservation.id=?1")
     void addReviewIDToReservation(Integer resId, Integer revId);
+
+    @Query(nativeQuery = true,
+            value="SELECT * FROM RESERVATION AS r INNER JOIN BOATS AS ad ON r.service_id=ad.id " +
+                    "WHERE (?1>=r.start_date AND ?1<=r.end_date) " +
+                    "OR (?2>=r.start_date AND ?2<=r.end_date) " +
+                    "OR (?1<r.start_date AND ?2>r.end_date) AND ad.owner_id=?3")
+    List<Reservation> getBOReservationsBetweenDates(Timestamp from, Timestamp to, int parseInt);
 }
