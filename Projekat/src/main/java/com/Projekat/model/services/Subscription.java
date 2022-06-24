@@ -15,12 +15,38 @@ public class Subscription {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id",referencedColumnName = "id")
     private Client client;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id",referencedColumnName = "id")
     private Service service;
 
+
+    public Subscription() {}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
 }

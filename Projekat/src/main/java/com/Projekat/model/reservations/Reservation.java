@@ -25,7 +25,7 @@ public class Reservation {
     @Column(name="end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @Column(name="capacity", nullable = false)
+    @Column(name="capacity", nullable = true)
     private Integer capacity;
 
     @Column(name="price", nullable = false)

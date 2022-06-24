@@ -73,6 +73,19 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-12 col-sm-12 mt-1">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6"></div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <button type="button" class="btn btn-success w-100"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalAction" v-if="!(this.$store.accessToken==null)">
+                                                Pretplati se na akcije
+                                            </button>
+                                        </div>                                        
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -140,12 +153,14 @@
         </div>
     </div>
     <Modal :serviceProp="this.boat" :options="this.options" :price-prop="this.boat.price"></Modal>
+    <ActionsModal :servicePropID="this.boat.id"></ActionsModal>
 </template>
 
 <script>
 import axios from 'axios';
 import BoatReservationModalVue from '@/components/BoatReservationModal.vue';
 import StarRating from 'vue-star-rating';
+import ActionsModal from '@/components/ActionsModal.vue';
 
 export default {
     name: 'BoatDetails',
@@ -197,7 +212,8 @@ export default {
     },
     components: {
         'Modal': BoatReservationModalVue,
-        StarRating: StarRating
+        StarRating: StarRating,
+        ActionsModal: ActionsModal
      }
 
 }

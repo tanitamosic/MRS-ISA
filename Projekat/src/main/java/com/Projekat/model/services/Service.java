@@ -75,7 +75,11 @@ public abstract class Service {
                 joinColumns = {@JoinColumn(name = "service_id")},
                 inverseJoinColumns = {@JoinColumn(name = "additional_id")}
     )
-    Set<AdditionalService> additionalServices;
+    private Set<AdditionalService> additionalServices;
+
+    @OneToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "action_id", referencedColumnName = "id")
+    private Set<QuickAction> quickActions;
 
 
     @Column(name="cancellation_terms", unique=false, nullable=false)
@@ -168,6 +172,14 @@ public abstract class Service {
 
     public void setAdditionalServices(Set<AdditionalService> additionalServices) {
         this.additionalServices = additionalServices;
+    }
+
+    public Set<QuickAction> getQuickActions() {
+        return quickActions;
+    }
+
+    public void setQuickActions(Set<QuickAction> quickActions) {
+        this.quickActions = quickActions;
     }
 
     public String getCancellationTerms() {

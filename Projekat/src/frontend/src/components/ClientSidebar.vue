@@ -22,7 +22,7 @@
             <tr class="fs-5">
                 <td>Uvid u penale</td>
             </tr>
-            <tr class="fs-5">
+            <tr class="fs-5" v-on:click="goToSubscriptions">
                 <td>Akcije</td>
             </tr>
         </table>
@@ -83,6 +83,9 @@ export default {
         goToReservationsHistoryOverview: function () {
             //historicalReservations
             this.$router.push('/client/historicalReservations');
+        },
+        goToSubscriptions: function() {
+            this.$router.push('/client/subscriptionCancelation');
         }
     }
 }

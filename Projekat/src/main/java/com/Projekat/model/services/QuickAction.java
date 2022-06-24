@@ -1,6 +1,7 @@
 package com.Projekat.model.services;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,32 +9,29 @@ import java.time.LocalDateTime;
 public class QuickAction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
     private LocalDateTime dateFrom;
     private LocalDateTime dateTo;
     private Integer discount;
+    private QuickActionStatus status;
 
-    @JoinColumn(name="service_id", nullable = false)
-    @ManyToOne(targetEntity = Service.class, fetch = FetchType.EAGER)
-    private Service service;
 
-    public QuickAction(LocalDateTime dateFrom, LocalDateTime dateTo, Integer discount, Service service) {
+    public QuickAction(LocalDateTime dateFrom, LocalDateTime dateTo, Integer discount) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.discount = discount;
-        this.service = service;
+        this.status = QuickActionStatus.ACTIVE;
     }
 
-    public QuickAction() {
-    }
+    public QuickAction() {}
 
     public LocalDateTime getDateFrom() {
         return dateFrom;
@@ -57,5 +55,13 @@ public class QuickAction {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    public QuickActionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(QuickActionStatus status) {
+        this.status = status;
     }
 }

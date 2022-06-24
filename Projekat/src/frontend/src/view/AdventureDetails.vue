@@ -8,29 +8,31 @@
                     </div> -->
 
                     <div class="col-lg-5 col-sm-12 left-side-product-box pb-3" v-if="this.photosExists">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
+                            data-bs-interval="false">
                             <div class="carousel-indicators">
-                                <button v-for="(photo, i) in this.adventure.photos" :key="i" type="button" 
-                                    data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i"
-                                    class="active" aria-current="true" :aria-label="createAriaLabel(i)"></button>
+                                <button v-for="(photo, i) in this.adventure.photos" :key="i" type="button"
+                                    data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i" class="active"
+                                    aria-current="true" :aria-label="createAriaLabel(i)"></button>
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img :src="this.adventure.photos[0].assetPath" class="d-block w-100 img-fluid img-responsive"
-                                        alt="image">
+                                    <img :src="this.adventure.photos[0].assetPath"
+                                        class="d-block w-100 img-fluid img-responsive" alt="image">
                                 </div>
-                                <div v-for="(photo, i) in this.adventure.photos.slice(1)" :key="i" class="carousel-item">
+                                <div v-for="(photo, i) in this.adventure.photos.slice(1)" :key="i"
+                                    class="carousel-item">
                                     <img :src="photo.assetPath" class="d-block w-100 img-fluid img-responsive"
                                         alt="image">
                                 </div>
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                                data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                                data-bs-slide="next">
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -41,24 +43,26 @@
                         <div class="right-side-pro-detail border p-3 m-0">
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12">
-                                    <p class="m-0 p-0">{{this.adventure.name}}</p>
+                                    <p class="m-0 p-0">{{ this.adventure.name }}</p>
                                 </div>
                                 <div class="col-lg-12 col-sm-12 mt-2 mb-2">
-                                    <star-rating v-model:rating="this.adventure.rating" :increment="0.01" :show-rating="false" read-only></star-rating>
+                                    <star-rating v-model:rating="this.adventure.rating" :increment="0.01"
+                                        :show-rating="false" read-only></star-rating>
                                 </div>
                                 <div class="col-lg-12 col-sm-12">
-                                    <p class="m-0 p-0 price-pro">${{this.adventure.price}}</p>
+                                    <p class="m-0 p-0 price-pro">${{ this.adventure.price }}</p>
                                     <hr class="p-0 m-0 mt-2">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 pt-2">
                                     <h5>Opis</h5>
-                                    <div>{{this.adventure.description}}</div>
+                                    <div>{{ this.adventure.description }}</div>
                                     <hr class="m-0 p-0 pt-0 mt-3">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 pt-2">
                                     <span>Adresa: </span>
                                     <!-- <span>Marka Kraljevića 18, Novi Sad, Srbija</span> -->
-                                    <span v-if="this.addressExists">{{ this.transformAddress(this.adventure.address) }}</span>
+                                    <span v-if="this.addressExists">{{ this.transformAddress(this.adventure.address)
+                                    }}</span>
                                     <hr class="m-0 p-0 pt-0 mt-3">
                                 </div>
                                 <div class="col-lg-12 col-sm-12 mt-5">
@@ -69,13 +73,41 @@
                                             <!-- <router-link class="btn btn-primary btn-sm" :to="/">
                                                 Rezerviši
                                             </router-link> -->
-                                            <button type="button" class="btn btn-success w-100"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal" v-if="!(this.$store.accessToken==null)">
+                                            <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                v-if="!(this.$store.accessToken == null)">
                                                 Rezerviši
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-12 col-sm-12 mt-1">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6"></div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalAction"
+                                                v-if="!(this.$store.accessToken == null)">
+                                                Pretplati se na akcije
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 mt-1">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6"></div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalQuickActions"
+                                                v-if="!(this.$store.accessToken == null)">
+                                                Brze akcije
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -87,19 +119,19 @@
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-3">
                         <span>Pravila: </span>
-                        <span>{{this.adventure.rules}}</span>
+                        <span>{{ this.adventure.rules }}</span>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-1">
                         <span>Uslovi otkazivanja: </span>
-                        <span>{{this.adventure.cancellationTerms}}</span>
+                        <span>{{ this.adventure.cancellationTerms }}</span>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-1">
                         <span>Kapacitet: </span>
-                        <span>{{this.adventure.capacity}}</span>
+                        <span>{{ this.adventure.capacity }}</span>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-1">
                         <span>Oprema za pecanje: </span>
-                        <span>{{this.adventure.fishingEquipment}}</span>
+                        <span>{{ this.adventure.fishingEquipment }}</span>
                     </div>
                 </div>
                 <div class="row" v-if="this.additionalServicesExists">
@@ -108,19 +140,78 @@
                         <h4>Dodatne usluge</h4>
                     </div>
                     <div class="col-lg-12 col-sm-12 text-left pt-3">
-                        <div v-for="service in this.adventure.additionalServices" :key="service.id">{{service.name}}</div>
+                        <div v-for="service in this.adventure.additionalServices" :key="service.id">{{ service.name }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <Modal :serviceProp="this.adventure" :options="this.options" :price-prop="this.adventure.price"></Modal>
+    <ActionsModal :servicePropID="this.adventure.id"></ActionsModal>
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="exampleModalQuickActions" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Brze akcije</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            v-on:click="modalClosing"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="searchForm">
+
+                            <div v-for="qr,i in this.QuickReservations" :key="i">
+
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-12">
+                                        <div>Datum od: {{ transformDates(qr.dateFrom) }} </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-12">
+                                        <div>Datum do: {{ transformDates(qr.dateTo) }} </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-12">
+                                        <div>Popust: {{ qr.discount }} </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-1 mt-4">
+                                    <div class="col-md-12">
+                                        <div v-if="!(this.returnMessage === undefined || this.returnMessage === '')"
+                                            :class="this.klasa">{{ this.returnMessage }}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            v-on:click="modalClosing">Zatvori</button>
+                        <button type="button" class="btn btn-primary" v-on:click="makeQuickReservation(qr.id)">Rezervisi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
 import axios from 'axios';
 import AdventureReservationModalVue from '@/components/AdventureReservationModal.vue';
 import StarRating from 'vue-star-rating';
+import ActionsModal from '@/components/ActionsModal.vue';
 
 export default {
     name: 'AdventureDetails',
@@ -133,11 +224,16 @@ export default {
             addressExists: false,
             photosExists: false,
 
-            options: []
+            options: [],
+
+            returnMessage: '',
+            klasa: 'text-primary',
+            QuickReservations: [],
+            QuickReservationsLoaded: false
         };
     },
     async mounted() {
-        this.id=this.$route.params.id;
+        this.id = this.$route.params.id;
         await axios
             .get('/api/adventures/getAdventure/' + this.id)
             .then(response => (
@@ -146,8 +242,9 @@ export default {
                 this.primaryPhotoExists = this.adventure.primaryPhoto === undefined ? false : true,
                 this.photosExists = this.adventure.photos.length === 0 ? false : true,
                 this.addressExists = this.adventure.address === undefined ? false : true
-                ));
+            ));
         await this.fillOptions();
+        await this.loadQuickActions();
     },
     methods: {
         transformAddress(address) {
@@ -163,16 +260,70 @@ export default {
             // if(null == this.serviceProp.additionalServices)
             //     return;
             for (let i = 0; i < this.adventure.additionalServices?.length; i++) {
-                let newD = {text: this.adventure.additionalServices[i].name + '    ' +  '$' + this.adventure.additionalServices[i].price, 
-                            value: this.adventure.additionalServices[i], 
-                            disabled: false};
+                let newD = {
+                    text: this.adventure.additionalServices[i].name + '    ' + '$' + this.adventure.additionalServices[i].price,
+                    value: this.adventure.additionalServices[i],
+                    disabled: false
+                };
                 this.options.push(newD);
             }
-         }
+        },
+        async makeQuickReservation(quid) {
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+
+            let jsonData = JSON.stringify({
+                quickActionId: quid,
+                serviceId: this.adventure.id,
+                type: "adventure"
+            });
+            await axios
+                .post('api/quick-action/reservation', jsonData,
+                    { headers: { 'Content-Type': 'application/json' } })
+                .then(response => (
+                    this.returnMessage = response.data,
+                    this.klasa = 'text-success'
+                ))
+                .catch(err => {
+                    if (err.response.status === 400) {
+                        // alert(err.response.data);
+                        this.returnMessage = err.response.data,
+                            this.klasa = 'text-danger'
+                    }
+                    else {
+                        // alert(err);
+                        this.returnMessage = err.response.data,
+                            this.klasa = 'text-danger'
+                    }
+                    console.log(err);
+                }
+                );
+        },
+        modalClosing() {
+            this.returnMessage = '';
+            this.klasa = 'text-primary';
+        },
+        async loadQuickActions() {
+            // api/getqr
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.accessToken;
+            await axios
+                .get('api/getqr/' + this.adventure.id)
+                .then(response => (
+                    this.responseData = response.data,
+                    this.QuickReservations = this.responseData,
+                    this.QuickReservationsLoaded = true
+                ));
+        },
+        transformDates(date) {
+            //  2020, 5, 6, 0, 0
+            return date[2].toString() + '.' + date[1].toString() + '.' + date[0].toString() + '.';
+        }
     },
     components: {
         'Modal': AdventureReservationModalVue,
-        StarRating: StarRating
+        StarRating: StarRating,
+        ActionsModal: ActionsModal
     }
 
 }
@@ -180,53 +331,53 @@ export default {
 
 
 <style scoped>
-    body {
-      font-family: 'Roboto Condensed', sans-serif;
-      background-color: #f5f5f5
-    }
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #f5f5f5
+}
 
-    .hedding {
-      font-size: 20px;
-      color: #ab8181;
-    }
+.hedding {
+    font-size: 20px;
+    color: #ab8181;
+}
 
-    .main-section {
-      position: absolute;
-      left: 50%;
-      right: 50%;
-      transform: translate(-50%, 5%);
-    }
+.main-section {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, 5%);
+}
 
-    .left-side-product-box img {
-      width: 100%;
-    }
+.left-side-product-box img {
+    width: 100%;
+}
 
-    .left-side-product-box .sub-img img {
-      margin-top: 5px;
-      width: 83px;
-      height: 100px;
-    }
+.left-side-product-box .sub-img img {
+    margin-top: 5px;
+    width: 83px;
+    height: 100px;
+}
 
-    .right-side-pro-detail span {
-      font-size: 15px;
-    }
+.right-side-pro-detail span {
+    font-size: 15px;
+}
 
-    .right-side-pro-detail p {
-      font-size: 25px;
-      color: #a1a1a1;
-    }
+.right-side-pro-detail p {
+    font-size: 25px;
+    color: #a1a1a1;
+}
 
-    .right-side-pro-detail .price-pro {
-      color: #E45641;
-    }
+.right-side-pro-detail .price-pro {
+    color: #E45641;
+}
 
-    .right-side-pro-detail .tag-section {
-      font-size: 18px;
-      color: #5D4C46;
-    }
+.right-side-pro-detail .tag-section {
+    font-size: 18px;
+    color: #5D4C46;
+}
 
-    .pro-box-section .pro-box img {
-      width: 100%;
-      height: 200px;
-    }
+.pro-box-section .pro-box img {
+    width: 100%;
+    height: 200px;
+}
 </style>
